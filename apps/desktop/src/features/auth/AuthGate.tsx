@@ -159,7 +159,7 @@ export const useLogout = () => {
   return async () => {
     try {
       await apiClient.auth.logout();
-    } catch (error) {
+    } catch {
       // ignore
     }
     clearSession();
