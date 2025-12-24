@@ -1,8 +1,9 @@
+import { logRitualPayloadSchema,updateUserPayloadSchema } from '@lifequest/schemas';
 import { Body, Controller, Get, Patch, Post, UseGuards } from '@nestjs/common';
-import { UsersService } from './users.service.js';
-import { SessionGuard } from '../common/guards/session.guard.js';
+
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
-import { updateUserPayloadSchema, logRitualPayloadSchema } from '@lifequest/schemas';
+import { SessionGuard } from '../common/guards/session.guard.js';
+import { UsersService } from './users.service.js';
 
 @Controller('users')
 export class UsersController {

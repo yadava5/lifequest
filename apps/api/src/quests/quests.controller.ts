@@ -1,8 +1,9 @@
 import { Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { z } from 'zod';
-import { QuestsService } from './quests.service.js';
-import { SessionGuard } from '../common/guards/session.guard.js';
+
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
+import { SessionGuard } from '../common/guards/session.guard.js';
+import { QuestsService } from './quests.service.js';
 
 const questParam = z.object({ questId: z.string().min(1) });
 

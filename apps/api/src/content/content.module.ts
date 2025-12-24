@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
-import { ContentSchedulerService } from './content-scheduler.service.js';
+
 import { AiContentService } from './ai-content.service.js';
+import { ContentSchedulerService } from './content-scheduler.service.js';
 
 @Module({
   providers: [ContentSchedulerService, AiContentService],

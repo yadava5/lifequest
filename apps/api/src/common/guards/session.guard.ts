@@ -1,4 +1,5 @@
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
+
 import { SessionService } from '../../auth/session.service.js';
 import type { RequestWithSession } from '../types/request-with-session.js';
 

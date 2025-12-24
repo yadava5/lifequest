@@ -1,5 +1,6 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { z } from 'zod';
+
 import { MeetupsService } from './meetups.service.js';
 
 const querySchema = z.object({

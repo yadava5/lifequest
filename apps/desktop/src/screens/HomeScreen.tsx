@@ -53,7 +53,6 @@ export const HomeScreen = () => {
     return entryDate.toDateString() === today.toDateString();
   });
   const loggedRituals = new Set(todaysRituals.map((ritual) => ritual.name));
-  const completedRituals = rituals.filter((ritual) => loggedRituals.has(ritual)).length;
   const questProgressPercent = quests.length ? Math.round((completedCount / quests.length) * 100) : 0;
   const activeQuest = inProgress ?? nextQuest ?? quests[0];
 

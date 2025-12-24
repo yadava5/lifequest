@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
-import { RewardsController } from './rewards.controller.js';
-import { RewardsService } from './rewards.service.js';
+
 import { AuthModule } from '../auth/auth.module.js';
 import { ContentModule } from '../content/content.module.js';
+import { RewardsController } from './rewards.controller.js';
+import { RewardsService } from './rewards.service.js';
 
 @Module({
   imports: [AuthModule, ContentModule],

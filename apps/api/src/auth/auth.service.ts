@@ -1,8 +1,9 @@
 import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
-import { PrismaService } from '../database/prisma.service.js';
 import { hash, verify } from 'argon2';
-import { SessionService, serializeSession } from './session.service.js';
+
+import { PrismaService } from '../database/prisma.service.js';
 import { buildUserResponse, userWithRelations } from '../users/user.presenter.js';
+import { serializeSession,SessionService } from './session.service.js';
 
 @Injectable()
 export class AuthService {
