@@ -1,0 +1,143 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String          @id @default(uuid())
+  name         String
+  email        String          @unique
+  passwordHash String
+  audience     Audience
+  coins        Int             @default(0)
+  tier         String          @default("EXPLORER")
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+  quests       QuestProgress[]
+  redemptions  Redemption[]
+  sessions     Session[]
+  ritualLogs   RitualLog[]
+}
+
+model Quest {
+  id          String          @id @default(uuid())
+  title       String          @unique
+  description String
+  audience    Audience
+  type        QuestType
+  reward      Int
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  progresses  QuestProgress[]
+}
+
+model QuestProgress {
+  id          String      @id @default(uuid())
+  userId      String
+  questId     String
+  status      QuestStatus @default(PENDING)
+  notes       String?
+  completedAt DateTime?
+  createdAt   DateTime    @default(now())
+  quest       Quest       @relation(fields: [questId], references: [id])
+  user        User        @relation(fields: [userId], references: [id])
+}
+
+model Reward {
+  id          String       @id @default(uuid())
+  name        String       @unique
+  description String
+  cost        Int
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  redemptions Redemption[]
+}
+
+model Redemption {
+  id        String           @id @default(uuid())
+  userId    String
+  rewardId  String
+  status    RedemptionStatus @default(COMPLETED)
+  createdAt DateTime         @default(now())
+  reward    Reward           @relation(fields: [rewardId], references: [id])
+  user      User             @relation(fields: [userId], references: [id])
+}
+
+model Meetup {
+  id          String   @id @default(uuid())
+  title       String   @unique
+  location    String
+  startsAt    DateTime
+  audience    Audience
+  description String?
+  rsvpUrl     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ResumePrompt {
+  id        String   @id @default(uuid())
+  title     String   @unique
+  content   String
+  category  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model ContentGeneration {
+  id              String   @id @default(uuid())
+  key             String   @unique
+  lastGeneratedAt DateTime @default(now())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model RitualLog {
+  id        String   @id @default(uuid())
+  userId    String
+  name      String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+enum Audience {
+  LAID_OFF
+  RETIRED
+  SHARED
+}
+
+enum QuestType {
+  TASK
+  COMMUNITY
+  WELLNESS
+}
+
+enum QuestStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum RedemptionStatus {
+  PENDING
+  COMPLETED
+  CANCELLED
+}

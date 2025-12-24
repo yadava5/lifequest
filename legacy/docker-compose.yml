@@ -1,0 +1,15 @@
+services:
+  api:
+    build:
+      context: ./backend
+    environment:
+      PORT: 4000
+      DATABASE_URL: file:./data/dev.db
+    ports:
+      - '8080:4000'
+    volumes:
+      - backend_data:/app/data
+    command: ./backend-entrypoint.sh
+
+volumes:
+  backend_data:
