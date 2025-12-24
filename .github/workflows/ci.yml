@@ -17,7 +17,7 @@ jobs:
           node-version: 20
           cache: npm
           cache-dependency-path: package-lock.json
-      - run: npm ci --workspaces --include-workspace-root
+      - run: npm install --workspaces --include-workspace-root --no-fund --no-audit
       - run: npm run build:packages
       - run: npm run lint:api
       - run: npm run test:api
@@ -32,7 +32,7 @@ jobs:
           node-version: 20
           cache: npm
           cache-dependency-path: package-lock.json
-      - run: npm ci --workspaces --include-workspace-root
+      - run: npm install --workspaces --include-workspace-root --no-fund --no-audit
       - run: npm run build:packages
       - run: npm run lint:desktop
       - run: npm run build:desktop
