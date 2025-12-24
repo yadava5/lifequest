@@ -1,6 +1,6 @@
 # Deployment
 
-This repo ships the API and desktop web build to managed hosting without changing local workflows.
+This repo ships the API and desktop web build to managed hosting without changing local workflows. Deployments are triggered directly from Render and Vercel (no GitHub Actions deploy workflow).
 
 ## Option: Render (API) + Vercel (web)
 
@@ -33,26 +33,6 @@ The web UI will be available at:
 ```
 https://<your-vercel-project>.vercel.app
 ```
-
-## One-click deploy from GitHub
-
-This repo includes a manual deploy workflow at `.github/workflows/deploy.yml`.
-
-### 1) Create deploy hooks
-
-- **Render**: open your service → Settings → Deploy Hook → create a hook URL.
-- **Vercel**: open your project → Settings → Git → Deploy Hooks → create a hook URL.
-
-### 2) Add GitHub secrets
-
-Add the two hook URLs in **Settings → Secrets and variables → Actions**:
-
-- `RENDER_DEPLOY_HOOK`
-- `VERCEL_DEPLOY_HOOK`
-
-### 3) Trigger deploy
-
-Go to **Actions → Deploy → Run workflow**.
 
 ## Local workflow (unchanged)
 
