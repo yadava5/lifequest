@@ -1,0 +1,29 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Trigger Render + Vercel
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify deploy hook secrets
+        run: |
+          if [ -z "${{ secrets.RENDER_DEPLOY_HOOK }}" ]; then
+            echo "Missing RENDER_DEPLOY_HOOK secret" >&2
+            exit 1
+          fi
+          if [ -z "${{ secrets.VERCEL_DEPLOY_HOOK }}" ]; then
+            echo "Missing VERCEL_DEPLOY_HOOK secret" >&2
+            exit 1
+          fi
+      - name: Trigger Render deploy
+        run: |
+          curl -fsSL -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+      - name: Trigger Vercel deploy
+        run: |
+          curl -fsSL -X POST "${{ secrets.VERCEL_DEPLOY_HOOK }}"
