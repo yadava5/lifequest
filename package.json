@@ -1,39 +1,20 @@
 {
   "name": "lifequest",
-  "version": "0.1.0",
   "private": true,
-  "dependencies": {
-    "@testing-library/dom": "^10.4.0",
-    "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^16.2.0",
-    "@testing-library/user-event": "^13.5.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
-  },
+  "description": "LifeQuest monorepo for desktop, API, and shared packages",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "docs"
+  ],
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "dev:desktop": "pnpm -C apps/desktop dev",
+    "dev:api": "pnpm -C apps/api dev",
+    "dev": "pnpm -C apps/desktop dev",
+    "build:desktop": "pnpm -C apps/desktop build",
+    "build:api": "pnpm -C apps/api build",
+    "lint:desktop": "pnpm -C apps/desktop lint",
+    "lint:api": "pnpm -C apps/api lint",
+    "test:api": "pnpm -C apps/api test"
   }
 }
