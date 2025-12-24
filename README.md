@@ -74,6 +74,10 @@ The original web + Electron prototype lives in `legacy/`. See `legacy/README.md`
 
 This repo is a prototype under active development toward the desktop-first rebuild described in `docs/architecture.md`. The legacy prototype is preserved for reference and parity checks.
 
+## AI assistance
+
+Some code and documentation were drafted with AI assistance and reviewed by the author. To the best of our knowledge, no proprietary third-party code is included. If you believe any content conflicts with a license, please open an issue.
+
 ## License
 
 MIT. See `LICENSE`.
