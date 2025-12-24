@@ -13,7 +13,7 @@
     "prisma:migrate": "prisma migrate deploy",
     "prisma:push": "prisma db push",
     "prisma:seed": "tsx prisma/seed.ts",
-    "test": "vitest",
+    "test": "vitest --passWithNoTests",
     "smoke": "tsx tests/smoke.ts"
   },
   "dependencies": {
