@@ -5,6 +5,7 @@
 - `docs/development.md` - local setup, tooling, and workflows
 - `docs/architecture.md` - rebuild architecture plan
 - `docs/legacy.md` - legacy prototype overview
+- `docs/deployment.md` - hosting via Render + Vercel
 
 ## Assets
 
