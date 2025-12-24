@@ -50,7 +50,7 @@ npm run dev
 # npm run tauri dev
 ```
 
-If you are using `pnpm` workspaces, you can run installs from the repo root instead of per-app. See `docs/development.md` for a workspace-first setup.
+If you are using npm workspaces, you can run installs from the repo root instead of per-app. See `docs/development.md` for a workspace-first setup.
 
 ## Documentation
 

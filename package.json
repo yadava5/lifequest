@@ -2,19 +2,21 @@
   "name": "lifequest",
   "private": true,
   "description": "LifeQuest monorepo for desktop, API, and shared packages",
+  "packageManager": "npm@11.6.0",
   "workspaces": [
     "apps/*",
     "packages/*",
     "docs"
   ],
   "scripts": {
-    "dev:desktop": "pnpm -C apps/desktop dev",
-    "dev:api": "pnpm -C apps/api dev",
-    "dev": "pnpm -C apps/desktop dev",
-    "build:desktop": "pnpm -C apps/desktop build",
-    "build:api": "pnpm -C apps/api build",
-    "lint:desktop": "pnpm -C apps/desktop lint",
-    "lint:api": "pnpm -C apps/api lint",
-    "test:api": "pnpm -C apps/api test"
+    "dev:desktop": "npm run -w apps/desktop dev",
+    "dev:api": "npm run -w apps/api dev",
+    "dev": "npm run -w apps/desktop dev",
+    "build:desktop": "npm run -w apps/desktop build",
+    "build:api": "npm run -w apps/api build",
+    "build:packages": "npm run -w packages/schemas build && npm run -w packages/client build",
+    "lint:desktop": "npm run -w apps/desktop lint",
+    "lint:api": "npm run -w apps/api lint",
+    "test:api": "npm run -w apps/api test"
   }
 }
