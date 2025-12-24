@@ -2,6 +2,7 @@
   "name": "lifequest",
   "private": true,
   "description": "LifeQuest monorepo for desktop, API, and shared packages",
+  "license": "MIT",
   "packageManager": "npm@11.6.0",
   "workspaces": [
     "apps/*",

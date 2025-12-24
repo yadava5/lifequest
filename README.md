@@ -1,5 +1,7 @@
 # LifeQuest
 
+[![CI](https://github.com/yadava5/lifequest/actions/workflows/ci.yml/badge.svg)](https://github.com/yadava5/lifequest/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 LifeQuest is a desktop-first, real-world quest platform designed to help laid-off professionals and retirees rebuild routines, social ties, and motivation through missions, community, and tangible rewards.
 
 This repository is the primary monorepo for the new desktop rebuild (Tauri + React) and NestJS API. The original CRA + Express + Electron prototype is preserved under `legacy/`.
@@ -67,3 +69,7 @@ The original web + Electron prototype lives in `legacy/`. See `legacy/README.md`
 ## Status
 
 This repo is actively evolving toward the desktop-first rebuild described in `docs/architecture.md`. The legacy prototype is preserved for reference and parity checks.
+
+## License
+
+MIT. See `LICENSE`.
