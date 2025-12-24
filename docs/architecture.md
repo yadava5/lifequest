@@ -1,5 +1,11 @@
 # LifeQuest Desktop Rebuild – Architecture Plan
 
+## 0. Repository context
+
+- Primary stack: `apps/desktop`, `apps/api`, and shared `packages/*`.
+- Legacy prototype lives in `legacy/` (CRA + Express + Electron) for parity reference.
+- Local data services are defined in `docker-compose.dev.yml` (Postgres + Redis).
+
 ## 1. Product Scope & Goals
 
 - **Experience**: Reimagine LifeQuest as a **macOS‑first desktop app** with a large‑screen layout (no more faux mobile shell). Focus on laid-off professionals and retirees rebuilding routines through quests, rewards, resume guidance, and community.
@@ -82,7 +88,7 @@ Prisma migrations will codify these with auditing columns (`createdAt`, `updated
 
 ## 6. Deployment & Dev Workflow
 
-- **Dev**: `pnpm dev` launches Tauri (desktop) + Nest API + Redis/Postgres via `docker compose up db redis`.
+- **Dev**: run `docker compose -f docker-compose.dev.yml up -d` for Postgres/Redis, then start the API (`apps/api`) and desktop app (`apps/desktop`) with their local scripts.
 - **CI**: GitHub Actions (matrix for desktop lint/test, backend lint/test, Playwright E2E against packaged Tauri build).
 - **Release**:
   - API packaged as Docker image -> Fly.io/Render (or k8s cluster).
