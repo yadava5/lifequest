@@ -54,7 +54,7 @@
 | Auth | **Lucia** (Nest adapter) + **JWT** stored in secure cookies (desktop uses Tauri secure storage). Optional OAuth later. |
 | Telemetry | **Pino** logging + **OpenTelemetry** (OTLP exporter) | Structured logs and tracing for API + jobs. |
 | Testing | Desktop: **Vitest** + **React Testing Library**; E2E: **Playwright** (drives Tauri build). Backend: **Jest** (Nest default) + **Supertest**; contract checks via **Pactum**. |
-| Tooling | **pnpm** workspaces + **Turborepo**, **ESLint/Prettier** shared configs, **Husky** pre-commit hooks | Consistent lint/test pipelines, parallel builds. |
+| Tooling | **npm** workspaces + **Turborepo**, **ESLint/Prettier** shared configs, **Husky** pre-commit hooks | Consistent lint/test pipelines, parallel builds. |
 
 ## 4. Module Breakdown
 
@@ -118,11 +118,11 @@ Prisma migrations will codify these with auditing columns (`createdAt`, `updated
 - `eslint`, `@typescript-eslint/*`, `prettier`
 - `vitest`, `@vitejs/plugin-react`
 - `playwright`
-- `turbo`, `pnpm`, `husky`, `lint-staged`
+- `turbo`, `npm`, `husky`, `lint-staged`
 
 ## 8. Next Steps
 
-1. Scaffold the pnpm workspace (`apps/desktop`, `apps/api`, `packages/schemas`, `packages/client`).
+1. Scaffold the npm workspace (`apps/desktop`, `apps/api`, `packages/schemas`, `packages/client`).
 2. Provision Postgres + Redis containers, add Prisma schema + seed script aligned with the domain snapshot.
 3. Begin backend module scaffolding (Phase 2) followed by the desktop shell (Phase 3).
 

@@ -3,19 +3,19 @@
 ## Prerequisites
 
 - Node.js 20+
-- npm 10+ (or pnpm 9+ if you prefer workspaces)
+- npm 10+
 - Docker Desktop (for Postgres + Redis)
 - Rust toolchain for Tauri (`rustup`) and platform build tools
 
 ## Install dependencies
 
-### Option A: pnpm workspace (recommended)
+### npm workspaces (recommended)
 
 ```bash
-pnpm install
+npm install
 ```
 
-### Option B: npm per package
+### npm per package
 
 ```bash
 cd packages/schemas && npm install
