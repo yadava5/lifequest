@@ -1,8 +1,9 @@
 import { Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { z } from 'zod';
-import { RewardsService } from './rewards.service.js';
-import { SessionGuard } from '../common/guards/session.guard.js';
+
 import { CurrentUser } from '../common/decorators/current-user.decorator.js';
+import { SessionGuard } from '../common/guards/session.guard.js';
+import { RewardsService } from './rewards.service.js';
 
 const redeemParams = z.object({ rewardId: z.string().min(1) });
 

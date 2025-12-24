@@ -1,7 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+
+import { ContentSchedulerService } from '../content/content-scheduler.service.js';
 import { PrismaService } from '../database/prisma.service.js';
 import { buildUserResponse, userWithRelations } from './user.presenter.js';
-import { ContentSchedulerService } from '../content/content-scheduler.service.js';
 
 type Audience = 'LAID_OFF' | 'RETIRED';
 

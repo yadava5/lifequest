@@ -1,8 +1,9 @@
-import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
-import { AuthService } from './auth.service.js';
-import { SessionGuard } from '../common/guards/session.guard.js';
-import { CurrentSession } from '../common/decorators/current-session.decorator.js';
 import { authLoginPayloadSchema, authSignupPayloadSchema } from '@lifequest/schemas';
+import { Body, Controller, HttpCode, Post, UseGuards } from '@nestjs/common';
+
+import { CurrentSession } from '../common/decorators/current-session.decorator.js';
+import { SessionGuard } from '../common/guards/session.guard.js';
+import { AuthService } from './auth.service.js';
 
 @Controller('auth')
 export class AuthController {

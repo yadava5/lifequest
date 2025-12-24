@@ -110,8 +110,10 @@ export class AiContentService {
       return null;
     }
 
-    const json = (await response.json()) as any;
-    const text = Array.isArray(json) ? json[0]?.generated_text ?? '' : json.generated_text ?? '';
+    const json = (await response.json()) as unknown;
+    const text = Array.isArray(json)
+      ? (json[0] as { generated_text?: string } | undefined)?.generated_text ?? ''
+      : (json as { generated_text?: string }).generated_text ?? '';
     return text.trim();
   }
 
