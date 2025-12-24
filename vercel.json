@@ -1,0 +1,7 @@
+{
+  "framework": "vite",
+  "installCommand": "npm install",
+  "buildCommand": "npm run build:packages && npm run -w apps/desktop build",
+  "outputDirectory": "apps/desktop/dist",
+  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+}

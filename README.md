@@ -62,6 +62,10 @@ If you are using npm workspaces, you can run installs from the repo root instead
 - `docs/legacy.md` - legacy prototype overview and how to run it
 - `docs/assets/` - concept and presentation files
 
+## Deployment
+
+See `docs/deployment.md` for hosting the API on Render and the web build on Vercel without changing local workflows.
+
 ## Legacy prototype
 
 The original web + Electron prototype lives in `legacy/`. See `legacy/README.md` and `docs/legacy.md` for how to run it and what it contains.

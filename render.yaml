@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: lifequest-api
+    runtime: node
+    plan: free
+    buildCommand: |
+      npm install --include=dev
+      npm run build:packages
+      npm run -w apps/api prisma:generate
+      npm run -w apps/api build
+    startCommand: |
+      npm run -w apps/api prisma:migrate
+      npm run -w apps/api start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: lifequest-db
+          property: connectionString
+      - key: CORS_ORIGIN
+        value: https://your-vercel-domain.example
+
+databases:
+  - name: lifequest-db
+    plan: free
