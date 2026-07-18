@@ -12,15 +12,47 @@ import { useUserQuery } from '@/hooks/useUserQuery';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { apiClient, isDemoMode } from '@/lib/apiClient';
+import { LandingScreen } from '@/features/landing/LandingScreen';
+
+/** One-click demo login shared by the landing page and the auth card. */
+export const useDemoLogin = () => {
+  const setAuthPayload = useJourneyStore((state) => state.setAuthPayload);
+  const [busy, setBusy] = useState(false);
+  const enterDemo = async () => {
+    setBusy(true);
+    try {
+      const response = await apiClient.auth.login({
+        email: 'demo@lifequest.app',
+        password: 'LifeQuest123!',
+      });
+      setAuthPayload(response);
+    } finally {
+      setBusy(false);
+    }
+  };
+  return { enterDemo, busy };
+};
 
 export const AuthGate = ({ children }: { children: React.ReactNode }) => {
   const session = useJourneyStore((state) => state.session);
   const user = useJourneyStore((state) => state.user);
   const clearSession = useJourneyStore((state) => state.clearSession);
   const { isLoading } = useUserQuery();
+  const [entry, setEntry] = useState<'landing' | 'auth'>('landing');
+  const { enterDemo, busy } = useDemoLogin();
 
   if (!session) {
-    return <AuthScreen onAuthenticated={() => {}} />;
+    // The public front door: a proper landing page first; the auth card
+    // only when the visitor asks for it.
+    return entry === 'landing' ? (
+      <LandingScreen
+        onEnterDemo={() => void enterDemo()}
+        onSignIn={() => setEntry('auth')}
+        demoBusy={busy}
+      />
+    ) : (
+      <AuthScreen onAuthenticated={() => {}} onBack={() => setEntry('landing')} />
+    );
   }
 
   if (isLoading && !user) {
@@ -43,7 +75,13 @@ export const AuthGate = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
-const AuthScreen = ({ onAuthenticated }: { onAuthenticated: () => void }) => {
+const AuthScreen = ({
+  onAuthenticated,
+  onBack,
+}: {
+  onAuthenticated: () => void;
+  onBack?: () => void;
+}) => {
   const [mode, setMode] = useState<'login' | 'signup'>('login');
   const setAuthPayload = useJourneyStore((state) => state.setAuthPayload);
   const [error, setError] = useState<string | null>(null);
@@ -93,6 +131,15 @@ const AuthScreen = ({ onAuthenticated }: { onAuthenticated: () => void }) => {
     <div className="flex min-h-screen items-center justify-center bg-muted/30 px-4">
       <Card className="w-full max-w-md">
         <CardHeader>
+          {onBack && (
+            <button
+              type="button"
+              onClick={onBack}
+              className="w-fit font-mono text-[0.65rem] uppercase tracking-widest text-muted-foreground transition hover:text-foreground"
+            >
+              ← back
+            </button>
+          )}
           <CardDescription className="uppercase tracking-[0.4em] text-muted-foreground">
             LifeQuest Desktop
           </CardDescription>
