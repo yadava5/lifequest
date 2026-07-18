@@ -93,8 +93,8 @@ export const HomeScreen = () => {
       value: journey.next ? `${journey.pct}%` : 'MAX',
       hint: journey.next ? `${journey.toNext} coins to ${journey.next}` : 'Peak reached',
       icon: Medal,
-      ring: 'text-violet',
-      chip: 'bg-violet/10 border-violet/25',
+      ring: 'text-coral',
+      chip: 'bg-coral/10 border-coral/25',
     },
     {
       label: 'Missions cleared',
@@ -114,7 +114,7 @@ export const HomeScreen = () => {
         variants={fade}
         initial="hidden"
         animate="show"
-        className="grad-border relative overflow-hidden rounded-2xl p-6 sm:p-8"
+        className="feature-frame relative overflow-hidden rounded-2xl p-6 sm:p-8"
       >
         <div className="relative z-10 max-w-2xl">
           <p className="flex items-center gap-2 font-mono text-[0.65rem] uppercase tracking-[0.35em] text-primary">
@@ -122,7 +122,7 @@ export const HomeScreen = () => {
           </p>
           <h1 className="mt-3 font-display text-4xl font-bold tracking-tight sm:text-5xl">
             Welcome back,{' '}
-            <span className="grad-text">{user.name.split(' ')[0]}</span>.
+            <span className="text-coral">{user.name.split(' ')[0]}</span>.
           </h1>
           <p className="serif mt-2 text-xl text-muted-foreground">{journey.blurb}</p>
           <div className="mt-6 flex flex-wrap gap-3">

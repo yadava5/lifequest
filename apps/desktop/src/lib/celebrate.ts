@@ -1,8 +1,9 @@
 import confetti from 'canvas-confetti';
 
 // LifeQuest brand burst — fired when a mission is completed or a reward
-// is claimed. Respects reduced-motion preferences.
-const COLORS = ['#a855f7', '#ec4899', '#fbbf24', '#2dd4bf', '#ffffff'];
+// is claimed. Dawn-expedition colours: coral, honey, aqua, sky, paper.
+// Respects reduced-motion preferences.
+const COLORS = ['#f2795c', '#f0b429', '#2fbfa2', '#63b3d9', '#faf5ea'];
 
 export function celebrate(): void {
   confetti({

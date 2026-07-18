@@ -52,8 +52,8 @@ export default {
         warning: 'hsl(var(--warning))',
         gold: 'hsl(var(--gold))',
         teal: 'hsl(var(--teal))',
-        violet: 'hsl(var(--violet))',
-        fuchsia: 'hsl(var(--fuchsia))',
+        coral: 'hsl(var(--coral))',
+        sky: 'hsl(var(--sky))',
         'surface-2': 'hsl(var(--surface-2))',
       },
       borderRadius: {
@@ -69,9 +69,10 @@ export default {
         serif: ['"Instrument Serif"', 'ui-serif', 'Georgia', ...fontFamily.serif],
       },
       boxShadow: {
-        glow: '0 0 0 1px hsl(var(--primary) / 0.25), 0 10px 44px -8px hsl(var(--primary) / 0.5)',
-        'glow-gold': '0 0 0 1px hsl(var(--gold) / 0.3), 0 10px 40px -10px hsl(var(--gold) / 0.55)',
-        'glow-teal': '0 0 0 1px hsl(var(--teal) / 0.3), 0 10px 40px -10px hsl(var(--teal) / 0.55)',
+        glow: '0 0 0 1px hsl(var(--coral) / 0.24), 0 10px 40px -10px hsl(var(--coral) / 0.42)',
+        'glow-gold': '0 0 0 1px hsl(var(--gold) / 0.28), 0 10px 38px -10px hsl(var(--gold) / 0.45)',
+        'glow-teal': '0 0 0 1px hsl(var(--teal) / 0.28), 0 10px 38px -10px hsl(var(--teal) / 0.45)',
+        'glow-sky': '0 0 0 1px hsl(var(--sky) / 0.28), 0 10px 38px -10px hsl(var(--sky) / 0.45)',
       },
       keyframes: {
         'accordion-down': { from: { height: 0 }, to: { height: 'var(--radix-accordion-content-height)' } },

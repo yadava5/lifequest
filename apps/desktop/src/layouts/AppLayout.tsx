@@ -58,9 +58,9 @@ const PlayerCard = () => {
     .toUpperCase();
 
   return (
-    <div className="grad-border rounded-2xl p-4">
+    <div className="feature-frame rounded-2xl p-4">
       <div className="flex items-center gap-3">
-        <div className="grid h-11 w-11 place-items-center rounded-xl grad-energy font-display text-sm font-bold text-white shadow-glow">
+        <div className="grid h-11 w-11 place-items-center rounded-xl bg-coral font-display text-sm font-bold text-primary-foreground shadow-glow">
           {initials}
         </div>
         <div className="min-w-0">
@@ -75,7 +75,7 @@ const PlayerCard = () => {
       </div>
       <div className="mt-1.5 h-2 overflow-hidden rounded-full bg-muted">
         <motion.div
-          className="h-full rounded-full grad-energy"
+          className="h-full rounded-full bg-coral"
           initial={{ width: 0 }}
           animate={{ width: `${pct}%` }}
           transition={{ duration: 0.9, ease: 'easeOut' }}
@@ -102,12 +102,12 @@ export const AppLayout = () => {
 
   return (
     <div className="relative flex min-h-screen text-foreground">
-      <div className="aurora" aria-hidden />
+      <div className="haze" aria-hidden />
 
       <aside className="hidden w-72 flex-col border-r border-border/70 bg-card/50 backdrop-blur-xl lg:flex">
         <div className="flex items-center justify-between px-6 py-5">
           <div>
-            <p className="grad-text font-display text-xl font-bold tracking-tight">LifeQuest</p>
+            <p className="font-display text-xl font-bold tracking-tight text-foreground">Life<span className="text-coral">Quest</span></p>
             <p className="font-mono text-[0.6rem] uppercase tracking-[0.3em] text-muted-foreground">
               routines → missions
             </p>
@@ -169,7 +169,7 @@ export const AppLayout = () => {
       <div className="flex flex-1 flex-col">
         <header className="flex items-center justify-between border-b border-border/60 bg-card/30 px-4 py-4 backdrop-blur-xl lg:px-8">
           <div className="lg:hidden">
-            <p className="grad-text font-display text-lg font-bold">LifeQuest</p>
+            <p className="font-display text-lg font-bold text-foreground">Life<span className="text-coral">Quest</span></p>
           </div>
           <p className="hidden font-mono text-[0.65rem] uppercase tracking-[0.35em] text-muted-foreground lg:block">
             Your journey, one mission at a time

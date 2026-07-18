@@ -45,7 +45,7 @@ export const RewardsScreen = () => {
   return (
     <div className="space-y-6">
       {/* Vault header */}
-      <div className="grad-border relative overflow-hidden rounded-2xl p-6">
+      <div className="feature-frame relative overflow-hidden rounded-2xl p-6">
         <div className="relative z-10 flex flex-wrap items-end justify-between gap-4">
           <div>
             <p className="flex items-center gap-2 font-mono text-[0.62rem] uppercase tracking-[0.35em] text-primary">

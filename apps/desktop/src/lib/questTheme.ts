@@ -1,6 +1,6 @@
 /**
- * Per quest-type visual identity. Full class strings (not interpolated) so
- * Tailwind's content scanner picks them up.
+ * Per quest-type visual identity — dawn-expedition accents. Full class
+ * strings (not interpolated) so Tailwind's content scanner picks them up.
  */
 export type QuestTheme = {
   label: string;
@@ -14,11 +14,11 @@ export type QuestTheme = {
 const THEMES: Record<string, QuestTheme> = {
   COMMUNITY: {
     label: 'Community',
-    text: 'text-violet',
-    bg: 'bg-violet/10',
-    border: 'border-violet/30',
-    dot: 'bg-violet',
-    glow: 'hover:shadow-glow',
+    text: 'text-sky',
+    bg: 'bg-sky/10',
+    border: 'border-sky/30',
+    dot: 'bg-sky',
+    glow: 'hover:shadow-glow-sky',
   },
   WELLNESS: {
     label: 'Wellness',

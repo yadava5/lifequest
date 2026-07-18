@@ -44,7 +44,7 @@ export const QuestsScreen = () => {
   };
 
   const stats = [
-    { label: 'Total quests', value: quests.length, ring: 'text-violet', chip: 'bg-violet/10 border-violet/25', icon: Scroll },
+    { label: 'Total quests', value: quests.length, ring: 'text-coral', chip: 'bg-coral/10 border-coral/25', icon: Scroll },
     { label: 'In progress', value: inProgress.length, ring: 'text-gold', chip: 'bg-gold/10 border-gold/25', icon: Sword },
     { label: 'Cleared', value: completed.length, ring: 'text-teal', chip: 'bg-teal/10 border-teal/25', icon: CheckCircle },
   ];
@@ -124,7 +124,7 @@ export const QuestsScreen = () => {
           <span className="text-foreground">{pct}%</span>
         </div>
         <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-muted">
-          <motion.div className="h-full rounded-full grad-energy" initial={{ width: 0 }} animate={{ width: `${pct}%` }} transition={{ duration: 0.9, ease: 'easeOut' }} />
+          <motion.div className="h-full rounded-full bg-coral" initial={{ width: 0 }} animate={{ width: `${pct}%` }} transition={{ duration: 0.9, ease: 'easeOut' }} />
         </div>
       </div>
 

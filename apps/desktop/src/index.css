@@ -3,117 +3,94 @@
 @import '@fontsource/instrument-serif';
 
 /*
- * LifeQuest — "the adventure map".
- * A vibrant, game-native look: deep twilight base, electric violet →
- * fuchsia → gold energy, neon glow, XP/journey visuals. Both themes are
- * real (the toggle actually works): "Night" (immersive, default) + "Day".
+ * LifeQuest — "dawn expedition".
+ * A calm, warm game world: deep-lagoon night / warm-paper day, with a
+ * coral sun, honey-gold coins, aqua wellness and powder-sky community.
+ * Flat colour + soft light — no gradient branding, nothing shouting.
+ * Both themes are real; the toggle switches Night ⇄ Day.
  */
 :root,
 :root.dark,
 .dark {
-  --background: 252 40% 6%; /* deep twilight indigo */
-  --foreground: 250 25% 91%;
+  --background: 197 42% 8%; /* deep lagoon */
+  --foreground: 190 18% 88%;
 
-  --card: 250 32% 10%;
-  --card-foreground: 250 25% 95%;
-  --surface-2: 250 30% 14%;
+  --card: 197 36% 11%;
+  --card-foreground: 190 20% 94%;
+  --surface-2: 196 32% 15%;
 
-  --popover: 250 34% 9%;
-  --popover-foreground: 250 25% 95%;
+  --popover: 197 38% 10%;
+  --popover-foreground: 190 20% 94%;
 
-  --primary: 268 92% 68%; /* electric violet */
-  --primary-foreground: 252 40% 6%;
+  --primary: 14 86% 64%; /* coral sun */
+  --primary-foreground: 197 42% 8%;
 
-  --secondary: 250 28% 16%;
-  --secondary-foreground: 250 25% 91%;
+  --secondary: 196 28% 16%;
+  --secondary-foreground: 190 18% 88%;
 
-  --muted: 250 26% 15%;
-  --muted-foreground: 250 14% 63%;
+  --muted: 196 26% 15%;
+  --muted-foreground: 194 12% 62%;
 
-  --accent: 322 90% 64%; /* fuchsia */
-  --accent-foreground: 252 40% 6%;
+  --accent: 172 62% 45%; /* lagoon aqua */
+  --accent-foreground: 197 42% 8%;
 
-  --gold: 42 96% 62%; /* coins, rewards */
-  --teal: 168 78% 52%; /* wellness, live, success */
-  --violet: 268 92% 68%;
-  --fuchsia: 322 90% 64%;
+  --coral: 14 86% 64%;
+  --gold: 41 92% 60%; /* honey — coins, rewards */
+  --teal: 168 66% 52%; /* aqua — wellness, success */
+  --sky: 199 68% 64%; /* powder sky — community */
 
-  --destructive: 0 84% 64%;
-  --destructive-foreground: 250 25% 95%;
-  --success: 168 78% 52%;
-  --warning: 42 96% 62%;
+  --destructive: 4 72% 58%;
+  --destructive-foreground: 190 20% 94%;
+  --success: 168 66% 52%;
+  --warning: 41 92% 60%;
 
-  --border: 255 30% 20%;
-  --input: 255 30% 22%;
-  --ring: 268 92% 68%;
+  --border: 196 26% 19%;
+  --input: 196 26% 21%;
+  --ring: 14 86% 64%;
 
   --radius: 1rem;
-
-  /* Signature "quest energy" gradient */
-  --grad-energy: linear-gradient(
-    135deg,
-    hsl(268 92% 64%),
-    hsl(322 90% 62%) 55%,
-    hsl(42 96% 60%)
-  );
-  --grad-twilight: radial-gradient(
-    120% 120% at 0% 0%,
-    hsl(268 60% 16%) 0%,
-    hsl(252 40% 8%) 55%
-  );
   color-scheme: dark;
 }
 
-/* Higher specificity than :root so light reliably wins in the prod build. */
+/* Day — warm paper, ink-lagoon text, the same accents deepened. */
 :root.light,
 .light {
-  --background: 254 60% 98%;
-  --foreground: 252 40% 14%;
+  --background: 42 48% 96%;
+  --foreground: 200 42% 15%;
 
-  --card: 0 0% 100%;
-  --card-foreground: 252 44% 12%;
-  --surface-2: 252 40% 96%;
+  --card: 40 55% 99%;
+  --card-foreground: 200 45% 13%;
+  --surface-2: 42 40% 92%;
 
-  --popover: 0 0% 100%;
-  --popover-foreground: 252 44% 12%;
+  --popover: 40 55% 99%;
+  --popover-foreground: 200 45% 13%;
 
-  --primary: 268 82% 58%;
-  --primary-foreground: 0 0% 100%;
+  --primary: 14 74% 53%;
+  --primary-foreground: 40 55% 99%;
 
-  --secondary: 252 40% 94%;
-  --secondary-foreground: 252 40% 20%;
+  --secondary: 42 38% 91%;
+  --secondary-foreground: 200 40% 20%;
 
-  --muted: 252 36% 95%;
-  --muted-foreground: 252 16% 46%;
+  --muted: 42 34% 92%;
+  --muted-foreground: 200 16% 44%;
 
-  --accent: 322 82% 56%;
-  --accent-foreground: 0 0% 100%;
+  --accent: 172 58% 36%;
+  --accent-foreground: 40 55% 99%;
 
-  --gold: 38 92% 48%;
-  --teal: 168 70% 40%;
-  --violet: 268 82% 58%;
-  --fuchsia: 322 82% 56%;
+  --coral: 14 74% 53%;
+  --gold: 39 88% 45%;
+  --teal: 168 60% 34%;
+  --sky: 201 62% 40%;
 
-  --destructive: 0 74% 52%;
-  --destructive-foreground: 0 0% 100%;
-  --success: 168 70% 38%;
-  --warning: 38 92% 46%;
+  --destructive: 4 70% 48%;
+  --destructive-foreground: 40 55% 99%;
+  --success: 168 60% 34%;
+  --warning: 39 88% 45%;
 
-  --border: 252 30% 90%;
-  --input: 252 30% 88%;
-  --ring: 268 82% 58%;
+  --border: 40 26% 86%;
+  --input: 40 26% 84%;
+  --ring: 14 74% 53%;
 
-  --grad-energy: linear-gradient(
-    135deg,
-    hsl(268 82% 56%),
-    hsl(322 82% 54%) 55%,
-    hsl(38 92% 50%)
-  );
-  --grad-twilight: radial-gradient(
-    120% 120% at 0% 0%,
-    hsl(268 80% 96%) 0%,
-    hsl(254 60% 99%) 55%
-  );
   color-scheme: light;
 }
 
@@ -136,87 +113,76 @@
 }
 
 @layer components {
-  /* Signature gradient fills */
-  .grad-energy {
-    background-image: var(--grad-energy);
+  /* Feature frame — a quiet spotlight card: soft coral edge + lift. */
+  .feature-frame {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--coral) / 0.28);
+    box-shadow:
+      0 1px 0 hsl(var(--coral) / 0.12) inset,
+      0 14px 44px -18px hsl(var(--coral) / 0.35);
   }
-  .grad-text {
-    background-image: var(--grad-energy);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-  .grad-border {
-    position: relative;
-    background:
-      linear-gradient(hsl(var(--card)), hsl(var(--card))) padding-box,
-      var(--grad-energy) border-box;
-    border: 1px solid transparent;
-  }
-  /* Neon glow — pass a color via --glow */
+  /* Soft glow — pass a colour via --glow (defaults to coral). */
   .glow {
-    box-shadow: 0 0 0 1px hsl(var(--glow, var(--primary)) / 0.25),
-      0 8px 40px -8px hsl(var(--glow, var(--primary)) / 0.45);
-  }
-  .glow-sm {
-    box-shadow: 0 6px 24px -10px hsl(var(--glow, var(--primary)) / 0.5);
+    box-shadow:
+      0 0 0 1px hsl(var(--glow, var(--coral)) / 0.22),
+      0 8px 36px -10px hsl(var(--glow, var(--coral)) / 0.4);
   }
   .serif {
     font-family: 'Instrument Serif', ui-serif, Georgia, serif;
   }
 }
 
-/* Ambient twilight backdrop with drifting aurora blobs (Night only). */
-.aurora {
+/* Ambient backdrop — two slow lantern glows (aqua + coral), barely there.
+ * Calmer + dimmer than any "aurora"; near-invisible in Day. */
+.haze {
   position: fixed;
   inset: 0;
   z-index: -1;
   overflow: hidden;
   pointer-events: none;
-  background: var(--grad-twilight);
+  background: hsl(var(--background));
 }
-.aurora::before,
-.aurora::after {
+.haze::before,
+.haze::after {
   content: '';
   position: absolute;
-  width: 46rem;
-  height: 46rem;
+  width: 44rem;
+  height: 44rem;
   border-radius: 9999px;
-  filter: blur(120px);
-  opacity: 0.5;
-  animation: drift 26s ease-in-out infinite;
+  filter: blur(130px);
+  animation: lantern 34s ease-in-out infinite;
 }
-.aurora::before {
-  top: -12rem;
-  left: -8rem;
-  background: hsl(var(--violet) / 0.5);
+.haze::before {
+  top: -14rem;
+  left: -10rem;
+  background: hsl(var(--teal) / 0.16);
 }
-.aurora::after {
-  bottom: -14rem;
-  right: -10rem;
-  background: hsl(var(--fuchsia) / 0.42);
-  animation-delay: -13s;
+.haze::after {
+  bottom: -16rem;
+  right: -12rem;
+  background: hsl(var(--coral) / 0.14);
+  animation-delay: -17s;
 }
-.light .aurora::before {
-  opacity: 0.28;
+.light .haze::before {
+  background: hsl(var(--teal) / 0.1);
 }
-.light .aurora::after {
-  opacity: 0.22;
+.light .haze::after {
+  background: hsl(var(--coral) / 0.09);
 }
 
-@keyframes drift {
+@keyframes lantern {
   0%,
   100% {
     transform: translate(0, 0) scale(1);
   }
   50% {
-    transform: translate(4rem, 3rem) scale(1.12);
+    transform: translate(3rem, 2.5rem) scale(1.08);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .aurora::before,
-  .aurora::after {
+  .haze::before,
+  .haze::after {
     animation: none;
   }
 }
