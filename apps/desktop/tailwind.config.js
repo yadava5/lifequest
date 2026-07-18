@@ -48,6 +48,8 @@ export default {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        success: 'hsl(var(--success))',
+        warning: 'hsl(var(--warning))',
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -55,7 +57,9 @@ export default {
         sm: 'calc(var(--radius) - 4px)',
       },
       fontFamily: {
-        sans: ['Inter', ...fontFamily.sans],
+        sans: ['ui-sans-serif', 'system-ui', '-apple-system', ...fontFamily.sans],
+        mono: ['ui-monospace', 'SF Mono', 'Menlo', 'Cascadia Code', ...fontFamily.mono],
+        serif: ['"Instrument Serif"', 'ui-serif', 'Georgia', ...fontFamily.serif],
       },
       keyframes: {
         'accordion-down': {

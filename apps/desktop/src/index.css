@@ -1,63 +1,47 @@
-:root {
-  --background: 0 0% 100%;
-  --foreground: 222 47% 11%;
+/* Self-hosted serif accent (no CDN — strict-CSP safe). */
+@import '@fontsource/instrument-serif/400.css';
 
-  --card: 0 0% 100%;
-  --card-foreground: 222 47% 11%;
+/*
+ * House design system — monochrome near-black.
+ * #0a0a0b background, hairline borders, white-on-black primaries,
+ * colour reserved for semantics only (live/warn). Dark-first: the
+ * app renders the house look regardless of the theme toggle.
+ */
+:root,
+.dark,
+.light {
+  --background: 240 5% 4%; /* #0a0a0b */
+  --foreground: 216 6% 85%; /* #d6d8db */
 
-  --popover: 0 0% 100%;
-  --popover-foreground: 222 47% 11%;
+  --card: 210 6% 6%; /* #0f1011 surface */
+  --card-foreground: 180 5% 97%; /* #f7f8f8 strong */
 
-  --primary: 212 85% 55%;
-  --primary-foreground: 0 0% 100%;
+  --popover: 210 6% 7%;
+  --popover-foreground: 180 5% 97%;
 
-  --secondary: 220 13% 91%;
-  --secondary-foreground: 222 47% 11%;
+  --primary: 180 5% 97%; /* near-white — primary buttons are light on dark */
+  --primary-foreground: 240 5% 4%;
 
-  --muted: 220 14% 96%;
-  --muted-foreground: 215 16% 46%;
+  --secondary: 220 5% 10%;
+  --secondary-foreground: 216 6% 85%;
 
-  --accent: 215 90% 62%;
-  --accent-foreground: 0 0% 100%;
+  --muted: 220 5% 10%;
+  --muted-foreground: 219 6% 57%; /* #8a8f98 */
 
-  --destructive: 0 84% 60%;
-  --destructive-foreground: 0 0% 100%;
+  --accent: 220 5% 12%;
+  --accent-foreground: 180 5% 97%;
 
-  --border: 220 13% 91%;
-  --input: 220 13% 91%;
-  --ring: 215 90% 62%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 180 5% 97%;
 
-  --radius: 1rem;
-}
+  --success: 142 71% 45%; /* #4ade80 — live only */
+  --warning: 38 92% 50%; /* #f59e0b — warn only */
 
-.dark {
-  --background: 222 47% 8%;
-  --foreground: 213 31% 91%;
+  --border: 240 3% 13%; /* hairline over #0a0a0b */
+  --input: 240 3% 13%;
+  --ring: 216 6% 40%;
 
-  --card: 222 47% 11%;
-  --card-foreground: 210 40% 98%;
-
-  --popover: 222 47% 11%;
-  --popover-foreground: 210 40% 98%;
-
-  --primary: 212 85% 60%;
-  --primary-foreground: 0 0% 100%;
-
-  --secondary: 222 47% 16%;
-  --secondary-foreground: 213 31% 91%;
-
-  --muted: 223 42% 15%;
-  --muted-foreground: 215 20% 65%;
-
-  --accent: 215 90% 70%;
-  --accent-foreground: 222 47% 10%;
-
-  --destructive: 0 84% 60%;
-  --destructive-foreground: 0 0% 100%;
-
-  --border: 223 42% 15%;
-  --input: 223 42% 15%;
-  --ring: 212 85% 60%;
+  --radius: 0.5rem;
 }
 
 @tailwind base;
@@ -70,6 +54,10 @@
   }
   body {
     @apply min-h-screen bg-background text-foreground antialiased;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family:
+      ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+      Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
