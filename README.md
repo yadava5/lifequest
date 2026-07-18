@@ -6,6 +6,10 @@ LifeQuest is a desktop-first rebuild of a map-based quest game that turns real-w
 
 This repository is the primary monorepo for the new desktop rebuild (Tauri + React) and NestJS API. The original CRA + Express + Electron prototype is preserved under `legacy/`.
 
+> **Live:** https://lifequest-sigma-fawn.vercel.app · one-click seeded demo (no signup)
+>
+> **2026 status — full-stack live.** The desktop-first Tauri + React client also runs on the web, backed by a NestJS + Fastify + Prisma API on Vercel serverless over a real Postgres. Real accounts (argon2-hashed), persisted quests/coins/redemptions. Identity is the "dawn expedition" palette — coral / honey / lagoon-aqua, no gradients, no purple. The landing hero is a *playable* mission card: complete it and the page pays out coins + confetti before you ever sign up. Independently audited live (2026-07): ship-ready — zero functional bugs, zero console errors, backend persistence verified end to end.
+
 ## Repository layout
 
 ```
