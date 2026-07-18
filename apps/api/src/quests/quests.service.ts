@@ -66,7 +66,12 @@ export class QuestsService {
       });
       const updatedUser = await tx.user.update({
         where: { id: userId },
-        data: { coins: { increment: progress.quest.reward } },
+        // Awarding coins also grows lifetime earned so tier progress advances
+        // and never regresses when the player later spends on rewards.
+        data: {
+          coins: { increment: progress.quest.reward },
+          lifetimeCoins: { increment: progress.quest.reward },
+        },
         select: { coins: true },
       });
       return {
