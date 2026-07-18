@@ -2,6 +2,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { useJourneyStore, type JourneyState } from '@/store/journeyStore';
 import { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Info } from 'phosphor-react';
 import { useProfileMutations } from '@/hooks/useProfileMutations';
 
 const audienceOptions = [
@@ -13,6 +15,7 @@ export const SettingsScreen = () => {
   const user = useJourneyStore((state) => state.user);
   const { updateProfile, resetProgress } = useProfileMutations();
   const [profile, setProfile] = useState({ name: '', email: '', audience: 'LAID_OFF' as 'LAID_OFF' | 'RETIRED' });
+  const [readOnlyNotice, setReadOnlyNotice] = useState<string | null>(null);
 
   useEffect(() => {
     if (user) {
@@ -20,14 +23,30 @@ export const SettingsScreen = () => {
     }
   }, [user]);
 
+  // Auto-dismiss the read-only notice so it reads like a transient toast.
+  useEffect(() => {
+    if (!readOnlyNotice) return;
+    const timer = setTimeout(() => setReadOnlyNotice(null), 5000);
+    return () => clearTimeout(timer);
+  }, [readOnlyNotice]);
+
   if (!user) {
     return null;
   }
 
   const handleSave = async () => {
+    // Capture what we asked the server to persist so we can detect when the
+    // shared demo account silently rejects an identity change (200 + revert).
+    const attempted = { name: profile.name.trim(), email: profile.email.trim() };
+    setReadOnlyNotice(null);
     try {
       const updatedUser = await updateProfile.mutateAsync(profile);
       if (updatedUser) {
+        const nameBlocked = attempted.name.length > 0 && attempted.name !== updatedUser.name;
+        const emailBlocked = attempted.email.length > 0 && attempted.email !== (updatedUser.email ?? '');
+        if (nameBlocked || emailBlocked) {
+          setReadOnlyNotice('Display name and email can’t be changed on the shared demo account.');
+        }
         setProfile({
           name: updatedUser.name,
           email: updatedUser.email ?? '',
@@ -55,6 +74,7 @@ export const SettingsScreen = () => {
   };
 
   return (
+    <>
     <div className="grid gap-6 lg:grid-cols-2">
       <Card>
         <CardHeader>
@@ -129,6 +149,29 @@ export const SettingsScreen = () => {
         </CardContent>
       </Card>
     </div>
+
+      <AnimatePresence>
+        {readOnlyNotice && (
+          <motion.div
+            role="status"
+            aria-live="polite"
+            initial={{ opacity: 0, y: 16, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 16, scale: 0.98 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            className="fixed inset-x-4 bottom-6 z-50 mx-auto flex max-w-sm items-start gap-3 rounded-2xl border border-gold/30 bg-card/95 px-4 py-3 shadow-glow backdrop-blur-xl sm:inset-x-auto sm:right-6"
+          >
+            <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-gold/30 bg-gold/10 text-gold">
+              <Info size={18} weight="fill" />
+            </span>
+            <div className="min-w-0">
+              <p className="font-display text-sm font-semibold text-foreground">Demo account is read-only</p>
+              <p className="mt-0.5 text-xs text-muted-foreground">{readOnlyNotice}</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
