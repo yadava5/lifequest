@@ -1,47 +1,120 @@
-/* Self-hosted serif accent (no CDN — strict-CSP safe). */
-@import '@fontsource/instrument-serif/400.css';
+/* Display + narrative faces, self-hosted (strict-CSP safe, no CDN). */
+@import '@fontsource-variable/space-grotesk';
+@import '@fontsource/instrument-serif';
 
 /*
- * House design system — monochrome near-black.
- * #0a0a0b background, hairline borders, white-on-black primaries,
- * colour reserved for semantics only (live/warn). Dark-first: the
- * app renders the house look regardless of the theme toggle.
+ * LifeQuest — "the adventure map".
+ * A vibrant, game-native look: deep twilight base, electric violet →
+ * fuchsia → gold energy, neon glow, XP/journey visuals. Both themes are
+ * real (the toggle actually works): "Night" (immersive, default) + "Day".
  */
 :root,
-.dark,
+:root.dark,
+.dark {
+  --background: 252 40% 6%; /* deep twilight indigo */
+  --foreground: 250 25% 91%;
+
+  --card: 250 32% 10%;
+  --card-foreground: 250 25% 95%;
+  --surface-2: 250 30% 14%;
+
+  --popover: 250 34% 9%;
+  --popover-foreground: 250 25% 95%;
+
+  --primary: 268 92% 68%; /* electric violet */
+  --primary-foreground: 252 40% 6%;
+
+  --secondary: 250 28% 16%;
+  --secondary-foreground: 250 25% 91%;
+
+  --muted: 250 26% 15%;
+  --muted-foreground: 250 14% 63%;
+
+  --accent: 322 90% 64%; /* fuchsia */
+  --accent-foreground: 252 40% 6%;
+
+  --gold: 42 96% 62%; /* coins, rewards */
+  --teal: 168 78% 52%; /* wellness, live, success */
+  --violet: 268 92% 68%;
+  --fuchsia: 322 90% 64%;
+
+  --destructive: 0 84% 64%;
+  --destructive-foreground: 250 25% 95%;
+  --success: 168 78% 52%;
+  --warning: 42 96% 62%;
+
+  --border: 255 30% 20%;
+  --input: 255 30% 22%;
+  --ring: 268 92% 68%;
+
+  --radius: 1rem;
+
+  /* Signature "quest energy" gradient */
+  --grad-energy: linear-gradient(
+    135deg,
+    hsl(268 92% 64%),
+    hsl(322 90% 62%) 55%,
+    hsl(42 96% 60%)
+  );
+  --grad-twilight: radial-gradient(
+    120% 120% at 0% 0%,
+    hsl(268 60% 16%) 0%,
+    hsl(252 40% 8%) 55%
+  );
+  color-scheme: dark;
+}
+
+/* Higher specificity than :root so light reliably wins in the prod build. */
+:root.light,
 .light {
-  --background: 240 5% 4%; /* #0a0a0b */
-  --foreground: 216 6% 85%; /* #d6d8db */
+  --background: 254 60% 98%;
+  --foreground: 252 40% 14%;
 
-  --card: 210 6% 6%; /* #0f1011 surface */
-  --card-foreground: 180 5% 97%; /* #f7f8f8 strong */
+  --card: 0 0% 100%;
+  --card-foreground: 252 44% 12%;
+  --surface-2: 252 40% 96%;
 
-  --popover: 210 6% 7%;
-  --popover-foreground: 180 5% 97%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 252 44% 12%;
 
-  --primary: 180 5% 97%; /* near-white — primary buttons are light on dark */
-  --primary-foreground: 240 5% 4%;
+  --primary: 268 82% 58%;
+  --primary-foreground: 0 0% 100%;
 
-  --secondary: 220 5% 10%;
-  --secondary-foreground: 216 6% 85%;
+  --secondary: 252 40% 94%;
+  --secondary-foreground: 252 40% 20%;
 
-  --muted: 220 5% 10%;
-  --muted-foreground: 219 6% 57%; /* #8a8f98 */
+  --muted: 252 36% 95%;
+  --muted-foreground: 252 16% 46%;
 
-  --accent: 220 5% 12%;
-  --accent-foreground: 180 5% 97%;
+  --accent: 322 82% 56%;
+  --accent-foreground: 0 0% 100%;
 
-  --destructive: 0 72% 51%;
-  --destructive-foreground: 180 5% 97%;
+  --gold: 38 92% 48%;
+  --teal: 168 70% 40%;
+  --violet: 268 82% 58%;
+  --fuchsia: 322 82% 56%;
 
-  --success: 142 71% 45%; /* #4ade80 — live only */
-  --warning: 38 92% 50%; /* #f59e0b — warn only */
+  --destructive: 0 74% 52%;
+  --destructive-foreground: 0 0% 100%;
+  --success: 168 70% 38%;
+  --warning: 38 92% 46%;
 
-  --border: 240 3% 13%; /* hairline over #0a0a0b */
-  --input: 240 3% 13%;
-  --ring: 216 6% 40%;
+  --border: 252 30% 90%;
+  --input: 252 30% 88%;
+  --ring: 268 82% 58%;
 
-  --radius: 0.5rem;
+  --grad-energy: linear-gradient(
+    135deg,
+    hsl(268 82% 56%),
+    hsl(322 82% 54%) 55%,
+    hsl(38 92% 50%)
+  );
+  --grad-twilight: radial-gradient(
+    120% 120% at 0% 0%,
+    hsl(268 80% 96%) 0%,
+    hsl(254 60% 99%) 55%
+  );
+  color-scheme: light;
 }
 
 @tailwind base;
@@ -55,9 +128,95 @@
   body {
     @apply min-h-screen bg-background text-foreground antialiased;
     font-family:
-      ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
-      Roboto, sans-serif;
+      'Space Grotesk Variable', ui-sans-serif, system-ui, -apple-system,
+      sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  /* Signature gradient fills */
+  .grad-energy {
+    background-image: var(--grad-energy);
+  }
+  .grad-text {
+    background-image: var(--grad-energy);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .grad-border {
+    position: relative;
+    background:
+      linear-gradient(hsl(var(--card)), hsl(var(--card))) padding-box,
+      var(--grad-energy) border-box;
+    border: 1px solid transparent;
+  }
+  /* Neon glow — pass a color via --glow */
+  .glow {
+    box-shadow: 0 0 0 1px hsl(var(--glow, var(--primary)) / 0.25),
+      0 8px 40px -8px hsl(var(--glow, var(--primary)) / 0.45);
+  }
+  .glow-sm {
+    box-shadow: 0 6px 24px -10px hsl(var(--glow, var(--primary)) / 0.5);
+  }
+  .serif {
+    font-family: 'Instrument Serif', ui-serif, Georgia, serif;
+  }
+}
+
+/* Ambient twilight backdrop with drifting aurora blobs (Night only). */
+.aurora {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--grad-twilight);
+}
+.aurora::before,
+.aurora::after {
+  content: '';
+  position: absolute;
+  width: 46rem;
+  height: 46rem;
+  border-radius: 9999px;
+  filter: blur(120px);
+  opacity: 0.5;
+  animation: drift 26s ease-in-out infinite;
+}
+.aurora::before {
+  top: -12rem;
+  left: -8rem;
+  background: hsl(var(--violet) / 0.5);
+}
+.aurora::after {
+  bottom: -14rem;
+  right: -10rem;
+  background: hsl(var(--fuchsia) / 0.42);
+  animation-delay: -13s;
+}
+.light .aurora::before {
+  opacity: 0.28;
+}
+.light .aurora::after {
+  opacity: 0.22;
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(4rem, 3rem) scale(1.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora::before,
+  .aurora::after {
+    animation: none;
   }
 }
