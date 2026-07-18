@@ -1,6 +1,8 @@
 /**
- * Tier ladder — a player's tier and journey progress derive from Quest
- * Coins earned, so advancement feels continuous and game-like.
+ * Tier ladder — a player's tier and journey progress derive from the cumulative
+ * coins they have EVER earned (lifetime), not their current spendable balance.
+ * This keeps advancement monotonic: redeeming a reward spends `coins` but must
+ * never move the player backward on the tier track. Always pass lifetime coins.
  */
 export type Tier = {
   name: string;
@@ -15,7 +17,7 @@ export const TIERS: Tier[] = [
   { name: 'LUMINARY', at: 4000, blurb: 'A beacon for the whole guild.' },
 ];
 
-export function tierProgress(coins: number): {
+export function tierProgress(lifetimeCoins: number): {
   tier: string;
   next: string | null;
   pct: number;
@@ -24,7 +26,7 @@ export function tierProgress(coins: number): {
 } {
   let idx = 0;
   for (let i = 0; i < TIERS.length; i += 1) {
-    if (coins >= TIERS[i].at) idx = i;
+    if (lifetimeCoins >= TIERS[i].at) idx = i;
   }
   const current = TIERS[idx];
   const next = TIERS[idx + 1];
@@ -32,6 +34,6 @@ export function tierProgress(coins: number): {
     return { tier: current.name, next: null, pct: 100, toNext: 0, blurb: current.blurb };
   }
   const span = next.at - current.at;
-  const pct = Math.max(0, Math.min(100, Math.round(((coins - current.at) / span) * 100)));
-  return { tier: current.name, next: next.name, pct, toNext: next.at - coins, blurb: current.blurb };
+  const pct = Math.max(0, Math.min(100, Math.round(((lifetimeCoins - current.at) / span) * 100)));
+  return { tier: current.name, next: next.name, pct, toNext: next.at - lifetimeCoins, blurb: current.blurb };
 }
