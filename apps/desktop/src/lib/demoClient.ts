@@ -90,6 +90,9 @@ const REWARDS: Reward[] = [
 // Mutable session state (re-seeds on reload — fine for a demo).
 type State = {
   coins: number;
+  // Cumulative coins earned; grows with quests, never shrinks on redeem, so
+  // tier progress is monotonic just like the live backend.
+  lifetimeCoins: number;
   progress: Map<string, QuestProgress>;
   redemptions: Redemption[];
   rituals: RitualLog[];
@@ -111,7 +114,7 @@ function seed(): State {
       quest: q,
     });
   }
-  return { coins: 320, progress, redemptions: [], rituals: [] };
+  return { coins: 320, lifetimeCoins: 320, progress, redemptions: [], rituals: [] };
 }
 
 let state = seed();
@@ -127,6 +130,7 @@ const DEMO_USER = {
 const buildUser = () => ({
   ...DEMO_USER,
   coins: state.coins,
+  lifetimeCoins: state.lifetimeCoins,
   quests: [...state.progress.values()],
   redemptions: state.redemptions,
   ritualsToday: state.rituals,
@@ -184,6 +188,7 @@ export const createDemoClient = (): ApiClient => {
           p.status = 'COMPLETED';
           p.completedAt = now();
           state.coins += p.quest.reward;
+          state.lifetimeCoins += p.quest.reward;
         }
         return delay(p);
       },
