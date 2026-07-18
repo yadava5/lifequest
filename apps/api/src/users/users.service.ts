@@ -6,6 +6,11 @@ import { buildUserResponse, userWithRelations } from './user.presenter.js';
 
 type Audience = 'LAID_OFF' | 'RETIRED';
 
+// The demo account is shared and its credentials are publicly documented.
+// Anyone can sign in as it, so its identity fields must be immutable — a single
+// visitor changing the email would permanently break the public demo login.
+const DEMO_EMAIL = (process.env.DEMO_EMAIL ?? 'demo@lifequest.app').toLowerCase();
+
 @Injectable()
 export class UsersService {
   constructor(private readonly prisma: PrismaService, private readonly scheduler: ContentSchedulerService) {}
@@ -38,11 +43,16 @@ export class UsersService {
       throw new NotFoundException('User not found');
     }
     const { audience, ...rest } = updates;
+    // Freeze identity (email/name) for the shared demo account; audience is a
+    // legitimate, non-destructive demo toggle so it stays editable.
+    const isDemo = user.email.toLowerCase() === DEMO_EMAIL;
     await this.prisma.user.update({
       where: { id },
       data: {
-        ...(typeof rest.name === 'string' ? { name: rest.name } : {}),
-        ...(typeof rest.email === 'string' ? { email: rest.email } : {}),
+        ...(!isDemo && typeof rest.name === 'string' ? { name: rest.name } : {}),
+        ...(!isDemo && typeof rest.email === 'string'
+          ? { email: rest.email }
+          : {}),
         audience: audience ?? user.audience,
       },
     });
