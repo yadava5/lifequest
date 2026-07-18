@@ -49,7 +49,11 @@ const ThemeToggle = ({ className }: { className?: string }) => {
 const PlayerCard = () => {
   const name = useJourneyStore((s) => s.user?.name ?? 'Explorer');
   const coins = useJourneyStore((s) => s.user?.coins ?? 0);
-  const { tier, next, pct, toNext } = tierProgress(coins);
+  // Tier progress tracks lifetime earned (monotonic), not the spendable balance,
+  // so redeeming a reward never lowers the journey bar. Fall back to `coins` only
+  // for legacy payloads that predate the lifetimeCoins field.
+  const lifetimeCoins = useJourneyStore((s) => s.user?.lifetimeCoins ?? s.user?.coins ?? 0);
+  const { tier, next, pct, toNext } = tierProgress(lifetimeCoins);
   const initials = name
     .split(' ')
     .map((p) => p[0])
