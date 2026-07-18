@@ -1,0 +1,26 @@
+# The web SPA build (apps/desktop via Vite) needs none of these.
+# Without this file Vercel tries to upload the 3.1GB Tauri Rust target
+# and the 145MB legacy prototype, which aborts the upload.
+
+# Tauri / Rust native build — not part of the web build at all
+apps/desktop/src-tauri
+
+# Orphaned first-gen prototype (CRA + Express + Electron)
+legacy
+
+# Dependencies & build outputs (regenerated in CI)
+node_modules
+**/node_modules
+dist
+**/dist
+apps/*/dist
+packages/*/dist
+
+# VCS / local / coverage
+.git
+coverage
+**/coverage
+*.log
+.env
+**/.env
+!**/.env.example

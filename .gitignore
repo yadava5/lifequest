@@ -36,3 +36,4 @@ playwright/.cache
 
 # tauri
 **/src-tauri/target
+.vercel
