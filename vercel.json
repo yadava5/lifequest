@@ -1,7 +1,13 @@
 {
   "framework": "vite",
   "installCommand": "npm install",
-  "buildCommand": "npm run build:packages && npm run -w apps/desktop build",
+  "buildCommand": "npm run build:packages && npm run -w apps/api prisma:generate && npm run -w apps/api build && npm run -w apps/desktop build",
   "outputDirectory": "apps/desktop/dist",
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
+  "functions": {
+    "api/index.ts": { "maxDuration": 30 }
+  },
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api" },
+    { "source": "/((?!api).*)", "destination": "/index.html" }
+  ]
 }
