@@ -24,6 +24,7 @@ export const buildUserResponse = (user: HydratedUser, ritualsToday: RitualLog[] 
   audience: user.audience,
   tier: user.tier,
   coins: user.coins,
+  lifetimeCoins: user.lifetimeCoins,
   quests: user.quests.map((progress) => ({
     progressId: progress.id,
     questId: progress.questId,
