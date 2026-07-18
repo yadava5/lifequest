@@ -69,9 +69,11 @@ const AuthScreen = ({ onAuthenticated }: { onAuthenticated: () => void }) => {
   const enterDemo = async () => {
     setError(null);
     try {
+      // Real demo credentials — accepted by the live backend, and (since
+      // demo mode accepts anything) by the in-browser client too.
       const response = await apiClient.auth.login({
         email: 'demo@lifequest.app',
-        password: 'demodemo',
+        password: 'LifeQuest123!',
       });
       setAuthPayload(response);
       onAuthenticated();
@@ -100,16 +102,16 @@ const AuthScreen = ({ onAuthenticated }: { onAuthenticated: () => void }) => {
           </p>
         </CardHeader>
         <CardContent className="space-y-4">
-          {isDemoMode && (
-            <div className="space-y-3 border-b border-border pb-4">
-              <Button type="button" className="w-full" onClick={enterDemo}>
-                Enter the demo →
-              </Button>
-              <p className="text-center font-mono text-[0.7rem] uppercase tracking-widest text-muted-foreground">
-                Runs entirely in your browser · no account, nothing leaves the page
-              </p>
-            </div>
-          )}
+          <div className="space-y-3 border-b border-border pb-4">
+            <Button type="button" className="w-full" onClick={enterDemo}>
+              Enter the demo →
+            </Button>
+            <p className="text-center font-mono text-[0.7rem] uppercase tracking-widest text-muted-foreground">
+              {isDemoMode
+                ? 'Runs entirely in your browser · no account, nothing leaves the page'
+                : 'Signs you in as the demo account · no signup needed'}
+            </p>
+          </div>
           {isLogin ? (
             <form
               className="space-y-3"
