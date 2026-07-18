@@ -30,6 +30,7 @@ export class UsersService {
       data: {
         ...payload,
         coins: 800,
+        lifetimeCoins: 800,
       },
     });
     await this.syncQuestsForAudience(user.id, payload.audience);
@@ -72,7 +73,9 @@ export class UsersService {
       await tx.questProgress.deleteMany({ where: { userId: id } });
       await tx.redemption.deleteMany({ where: { userId: id } });
       await tx.ritualLog.deleteMany({ where: { userId: id } });
-      await tx.user.update({ where: { id }, data: { coins: 1000 } });
+      // A full reset restores the default coin baseline, so lifetime earned is
+      // rebased to match (keeps the invariant lifetimeCoins >= coins).
+      await tx.user.update({ where: { id }, data: { coins: 1000, lifetimeCoins: 1000 } });
     });
     await this.syncQuestsForAudience(id, user.audience as Audience);
     return this.getById(id);
