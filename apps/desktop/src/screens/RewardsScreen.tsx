@@ -52,7 +52,7 @@ export const RewardsScreen = () => {
         </CardHeader>
         <CardContent className="grid gap-4 md:grid-cols-2">
           {lastRedeemed && (
-            <div className="md:col-span-2 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-2 text-sm font-medium text-emerald-900">
+            <div className="md:col-span-2 rounded-md border border-success/30 bg-success/10 px-4 py-2 text-sm font-medium text-success">
               {lastRedeemed}
             </div>
           )}

@@ -94,7 +94,7 @@ export const HomeScreen = () => {
 
   return (
     <div className="space-y-6">
-      <Card className="border-none bg-gradient-to-r from-blue-500/15 via-indigo-500/10 to-purple-500/10">
+      <Card className="bg-gradient-to-br from-card to-background">
         <CardHeader>
           <CardDescription className="uppercase tracking-[0.4em] text-muted-foreground">Daily mission control</CardDescription>
           <CardTitle className="text-4xl">Welcome back, {user.name.split(' ')[0]}.</CardTitle>
