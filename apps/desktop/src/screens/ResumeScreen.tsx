@@ -1,41 +1,69 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useState } from 'react';
+import { PuzzlePiece, NotePencil, Lightning } from 'phosphor-react';
 import { Button } from '@/components/ui/button';
 
+const prompts = [
+  {
+    title: 'Quantify impact',
+    body: 'Translate tasks into metrics that show retention, revenue, or efficiency gains.',
+  },
+  {
+    title: 'Bridge employment gaps',
+    body: 'Frame pauses as intentional growth, volunteer work, or skill sprints.',
+  },
+  {
+    title: 'Lead with outcomes',
+    body: 'Open each bullet with the result, then the action that produced it.',
+  },
+];
+
 export const ResumeScreen = () => {
+  const [draft, setDraft] = useState('');
+
   return (
-    <div className="grid gap-6 lg:grid-cols-[2fr,1fr]">
-      <Card>
-        <CardHeader>
-          <CardTitle>Resume boost lab</CardTitle>
-          <CardDescription>Capture brag bar bullets and iteration notes.</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
+    <div className="space-y-6">
+      <div>
+        <p className="flex items-center gap-2 font-mono text-[0.62rem] uppercase tracking-[0.35em] text-primary">
+          <PuzzlePiece size={14} weight="fill" /> Resume forge
+        </p>
+        <h1 className="mt-2 font-display text-3xl font-bold tracking-tight">Sharpen your story</h1>
+        <p className="serif mt-1 text-lg text-muted-foreground">Turn quests into a résumé that lands interviews.</p>
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-[1.7fr_1fr]">
+        <section className="rounded-2xl border border-border/70 bg-card/60 p-6 backdrop-blur-sm">
+          <p className="flex items-center gap-2 font-mono text-[0.62rem] uppercase tracking-widest text-muted-foreground">
+            <NotePencil size={14} weight="fill" /> Brag bar
+          </p>
           <textarea
-            className="min-h-[280px] w-full rounded-2xl border px-4 py-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-primary"
-            placeholder="Document quantifiable outcomes, leadership stories, and skills you want to surface."
+            value={draft}
+            onChange={(e) => setDraft(e.target.value.slice(0, 5000))}
+            className="mt-3 min-h-[300px] w-full resize-y rounded-xl border border-border bg-background/40 px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+            placeholder="Document quantifiable outcomes, leadership stories, and skills you want to surface…"
           />
-          <div className="flex items-center justify-end gap-3 text-xs text-muted-foreground">
-            <span>5000 characters max</span>
-            <Button size="sm">Save draft</Button>
+          <div className="mt-3 flex items-center justify-between">
+            <span className="font-mono text-[0.6rem] uppercase tracking-widest text-muted-foreground">
+              {draft.length} / 5000
+            </span>
+            <Button size="sm" className="gap-1.5">
+              <Lightning size={15} weight="fill" /> Save draft
+            </Button>
           </div>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Prompts & nudges</CardTitle>
-          <CardDescription>Use these with your favorite AI copilot.</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4 text-sm text-muted-foreground">
-          <div className="rounded-2xl border px-4 py-3">
-            <p className="font-semibold text-foreground">Quantify impact</p>
-            <p>Translate tasks into metrics that show retention, revenue, or efficiency gains.</p>
+        </section>
+
+        <aside className="rounded-2xl border border-border/70 bg-card/60 p-6 backdrop-blur-sm">
+          <p className="font-mono text-[0.62rem] uppercase tracking-widest text-muted-foreground">Power prompts</p>
+          <p className="serif mt-1 text-lg">Pair with your AI copilot.</p>
+          <div className="mt-4 space-y-3">
+            {prompts.map((p) => (
+              <div key={p.title} className="rounded-xl border border-border/60 p-4 transition hover:border-primary/40 hover:shadow-glow">
+                <p className="font-display text-sm font-semibold text-foreground">{p.title}</p>
+                <p className="mt-1 text-sm text-muted-foreground">{p.body}</p>
+              </div>
+            ))}
           </div>
-          <div className="rounded-2xl border px-4 py-3">
-            <p className="font-semibold text-foreground">Bridge employment gaps</p>
-            <p>Frame pauses as intentional growth, volunteer work, or skill sprints.</p>
-          </div>
-        </CardContent>
-      </Card>
+        </aside>
+      </div>
     </div>
   );
 };
