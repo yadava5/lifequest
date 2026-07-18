@@ -1,85 +1,72 @@
-import { demoMeetups } from '@/data/demo';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { ArrowUpRight, Medal, Sparkle, TrendUp, House, Files, Target, UsersThree, PuzzlePiece, GearSix } from 'phosphor-react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import {
+  ArrowRight,
+  Coins,
+  Medal,
+  CheckCircle,
+  Sparkle,
+  Lightning,
+  Compass,
+} from 'phosphor-react';
+import { Button } from '@/components/ui/button';
 import { useJourneyStore } from '@/store/journeyStore';
-import { resolveTierHint } from '@/lib/tier';
+import { tierProgress } from '@/lib/tiers';
+import { questTheme } from '@/lib/questTheme';
+import { celebrate } from '@/lib/celebrate';
 import { useQuestMutations } from '@/hooks/useQuestMutations';
 import { useRitualMutations } from '@/hooks/useRitualMutations';
 import type { QuestProgress } from '@lifequest/schemas';
-import { useState } from 'react';
 
 const rituals = ['Mindful break', 'Inbox zero sprint', 'Share a win'];
 
-const coreSections = [
-  { label: 'Overview', description: 'Daily pulse on XP, rituals, and coins.', icon: House, to: '/' },
-  { label: 'Quest Log', description: 'Prioritize missions and view history.', icon: Files, to: '/quests' },
-  { label: 'Rewards', description: 'Redeem coins for boosts and perks.', icon: Target, to: '/rewards' },
-  { label: 'Community', description: 'Coordinate rituals and meetups.', icon: UsersThree, to: '/community' },
-  { label: 'Resume Boost', description: 'Ship polished wins to your CV.', icon: PuzzlePiece, to: '/resume' },
-  { label: 'Settings', description: 'Personalize themes, alerts, privacy.', icon: GearSix, to: '/settings' },
-];
+const fade = {
+  hidden: { opacity: 0, y: 16 },
+  show: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] as const },
+  }),
+};
 
 export const HomeScreen = () => {
   const user = useJourneyStore((state) => state.user);
-  const lastEvent = useJourneyStore((state) => state.lastEvent);
   const { completeQuest, startQuest } = useQuestMutations();
   const { logRitual } = useRitualMutations();
   const [activeRitual, setActiveRitual] = useState<string | null>(null);
 
-  if (!user) {
-    return null;
-  }
+  if (!user) return null;
 
   const quests = user.quests;
   const coins = user.coins;
-  const tier = user.tier ?? 'Explorer';
-  const tierHint = resolveTierHint(coins);
-  const completedCount = quests.filter((quest) => quest.status === 'COMPLETED').length;
-  const inProgress = quests.find((quest) => quest.status === 'IN_PROGRESS');
-  const nextQuest = quests.find((quest) => quest.status === 'PENDING');
-  const prioritizedQuests = quests.filter((quest) => quest.status !== 'COMPLETED').slice(0, 3);
-  const quickStats = [
-    { label: 'Quest Coins', value: coins.toLocaleString(), hint: 'Spendable balance', icon: Sparkle },
-    { label: 'Tier Progress', value: tier, hint: tierHint, icon: Medal },
-    { label: 'Quests completed', value: `${completedCount}/${quests.length}`, hint: 'Lifetime quests', icon: TrendUp },
-  ];
-  const todaysRituals = (user.ritualsToday ?? []).filter((entry) => {
-    const entryDate = new Date(entry.createdAt);
-    const today = new Date();
-    return entryDate.toDateString() === today.toDateString();
-  });
-  const loggedRituals = new Set(todaysRituals.map((ritual) => ritual.name));
-  const questProgressPercent = quests.length ? Math.round((completedCount / quests.length) * 100) : 0;
+  const journey = tierProgress(coins);
+  const completedCount = quests.filter((q) => q.status === 'COMPLETED').length;
+  const inProgress = quests.find((q) => q.status === 'IN_PROGRESS');
+  const nextQuest = quests.find((q) => q.status === 'PENDING');
   const activeQuest = inProgress ?? nextQuest ?? quests[0];
+  const openMissions = quests.filter((q) => q.status !== 'COMPLETED').slice(0, 4);
 
-  const questActionBusy = startQuest.isLoading || completeQuest.isLoading;
+  const busy = startQuest.isLoading || completeQuest.isLoading;
 
-  const ensureQuestActive = async (quest: QuestProgress) => {
+  const todaysRituals = (user.ritualsToday ?? []).filter(
+    (e) => new Date(e.createdAt).toDateString() === new Date().toDateString(),
+  );
+  const loggedRituals = new Set(todaysRituals.map((r) => r.name));
+
+  const completeById = async (quest?: QuestProgress) => {
+    if (!quest) return;
     const questId = quest.quest.id ?? quest.questId;
     if (!questId) return;
-    if (quest.status === 'PENDING') {
-      await startQuest.mutateAsync(questId);
-    }
-  };
-
-  const handleLogWin = async () => {
-    const targetQuest = inProgress ?? nextQuest;
-    if (!targetQuest) return;
-    const questId = targetQuest.quest.id ?? targetQuest.questId;
-    if (!questId) return;
-    await ensureQuestActive(targetQuest);
+    if (quest.status === 'PENDING') await startQuest.mutateAsync(questId);
     await completeQuest.mutateAsync(questId);
+    celebrate();
   };
 
   const handleStartQuest = async () => {
     if (!nextQuest) return;
     const questId = nextQuest.quest.id ?? nextQuest.questId;
-    if (!questId) return;
-    await startQuest.mutateAsync(questId);
+    if (questId) await startQuest.mutateAsync(questId);
   };
 
   const handleRitualLog = async (ritual: string) => {
@@ -92,200 +79,196 @@ export const HomeScreen = () => {
     }
   };
 
+  const stats = [
+    {
+      label: 'Quest Coins',
+      value: coins.toLocaleString(),
+      hint: 'Spendable balance',
+      icon: Coins,
+      ring: 'text-gold',
+      chip: 'bg-gold/10 border-gold/25',
+    },
+    {
+      label: `${journey.tier} tier`,
+      value: journey.next ? `${journey.pct}%` : 'MAX',
+      hint: journey.next ? `${journey.toNext} coins to ${journey.next}` : 'Peak reached',
+      icon: Medal,
+      ring: 'text-violet',
+      chip: 'bg-violet/10 border-violet/25',
+    },
+    {
+      label: 'Missions cleared',
+      value: `${completedCount}/${quests.length}`,
+      hint: 'Lifetime quests',
+      icon: CheckCircle,
+      ring: 'text-teal',
+      chip: 'bg-teal/10 border-teal/25',
+    },
+  ];
+
   return (
     <div className="space-y-6">
-      <Card className="bg-gradient-to-br from-card to-background">
-        <CardHeader>
-          <CardDescription className="uppercase tracking-[0.4em] text-muted-foreground">Daily mission control</CardDescription>
-          <CardTitle className="text-4xl">Welcome back, {user.name.split(' ')[0]}.</CardTitle>
-          <p className="text-sm text-muted-foreground">
-            Line up today’s quests, capture a win, and swap coins for momentum boosts.
+      {/* Hero — narrative mission control */}
+      <motion.section
+        custom={0}
+        variants={fade}
+        initial="hidden"
+        animate="show"
+        className="grad-border relative overflow-hidden rounded-2xl p-6 sm:p-8"
+      >
+        <div className="relative z-10 max-w-2xl">
+          <p className="flex items-center gap-2 font-mono text-[0.65rem] uppercase tracking-[0.35em] text-primary">
+            <Compass size={14} weight="fill" /> Mission control
           </p>
-          {lastEvent && (
-            <p className="text-xs text-muted-foreground">
-              Last update · {lastEvent.message} · {new Date(lastEvent.timestamp).toLocaleTimeString()}
-            </p>
-          )}
-        </CardHeader>
-        <CardContent className="grid gap-4 md:grid-cols-2">
-          <Button
-            variant="outline"
-            className="justify-between rounded-2xl border-dashed text-base"
-            onClick={handleLogWin}
-            disabled={(!inProgress && !nextQuest) || questActionBusy}
-          >
-            {questActionBusy ? 'Logging...' : 'Log daily win'}
-            <ArrowUpRight size={16} />
-          </Button>
-          <Button
-            variant="outline"
-            className="justify-between rounded-2xl border-dashed text-base"
-            disabled={!nextQuest || startQuest.isLoading}
-            onClick={handleStartQuest}
-          >
-            {startQuest.isLoading ? 'Starting...' : 'Start a new quest'}
-            <ArrowUpRight size={16} />
-          </Button>
-        </CardContent>
-      </Card>
+          <h1 className="mt-3 font-display text-4xl font-bold tracking-tight sm:text-5xl">
+            Welcome back,{' '}
+            <span className="grad-text">{user.name.split(' ')[0]}</span>.
+          </h1>
+          <p className="serif mt-2 text-xl text-muted-foreground">{journey.blurb}</p>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Button size="lg" className="gap-2" onClick={() => completeById(activeQuest)} disabled={!activeQuest || busy}>
+              <Lightning size={18} weight="fill" />
+              {busy ? 'Logging win…' : 'Log today’s win'}
+            </Button>
+            <Button size="lg" variant="outline" className="gap-2" onClick={handleStartQuest} disabled={!nextQuest || startQuest.isLoading}>
+              Start a quest <ArrowRight size={16} />
+            </Button>
+          </div>
+        </div>
+        <Sparkle
+          size={220}
+          weight="thin"
+          className="pointer-events-none absolute -right-10 -top-10 text-primary/10 animate-float"
+        />
+      </motion.section>
 
-      <section className="grid gap-4 md:grid-cols-3">
-        {quickStats.map((stat) => (
-          <Card key={stat.label}>
-            <CardHeader className="flex items-center justify-between">
-              <div>
-                <CardDescription>{stat.label}</CardDescription>
-                <CardTitle className="text-3xl">{stat.value}</CardTitle>
-              </div>
-              <stat.icon size={22} />
-            </CardHeader>
-            <CardFooter className="text-xs uppercase tracking-wide text-muted-foreground">{stat.hint}</CardFooter>
-          </Card>
+      {/* Stat trio */}
+      <section className="grid gap-4 sm:grid-cols-3">
+        {stats.map((s, i) => (
+          <motion.div
+            key={s.label}
+            custom={i + 1}
+            variants={fade}
+            initial="hidden"
+            animate="show"
+            className="rounded-2xl border border-border/70 bg-card/60 p-5 backdrop-blur-sm"
+          >
+            <div className="flex items-center justify-between">
+              <p className="font-mono text-[0.62rem] uppercase tracking-widest text-muted-foreground">
+                {s.label}
+              </p>
+              <span className={`grid h-9 w-9 place-items-center rounded-lg border ${s.chip} ${s.ring}`}>
+                <s.icon size={18} weight="fill" />
+              </span>
+            </div>
+            <p className="mt-3 font-display text-4xl font-bold tabular-nums">{s.value}</p>
+            <p className="mt-1 text-xs text-muted-foreground">{s.hint}</p>
+          </motion.div>
         ))}
       </section>
 
-      <section className="grid gap-6 lg:grid-cols-[2fr_1fr]">
-        <Card>
-          <CardHeader className="flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <CardDescription>Focus quest</CardDescription>
-              <CardTitle>Stay in flow</CardTitle>
-            </div>
-            <Button variant="outline" size="sm" asChild>
-              <Link to="/quests">View quest log</Link>
-            </Button>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              {activeQuest ? (
-                <>
-                  <p className="text-lg font-semibold">{activeQuest.quest.title}</p>
-                  <p className="text-sm text-muted-foreground">{activeQuest.quest.description}</p>
-                </>
-              ) : (
-                <p className="text-sm text-muted-foreground">You’re all caught up for today.</p>
-              )}
-            </div>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between text-muted-foreground">
-                <span>Quest progress</span>
-                <span>{questProgressPercent}%</span>
+      {/* Active mission + rituals */}
+      <section className="grid gap-6 lg:grid-cols-[1.6fr_1fr]">
+        <motion.div custom={4} variants={fade} initial="hidden" animate="show" className="rounded-2xl border border-border/70 bg-card/60 p-6 backdrop-blur-sm">
+          <div className="flex items-center justify-between">
+            <p className="font-mono text-[0.62rem] uppercase tracking-widest text-muted-foreground">
+              Active mission
+            </p>
+            <Link to="/quests" className="font-mono text-[0.62rem] uppercase tracking-widest text-primary hover:underline">
+              Full quest log →
+            </Link>
+          </div>
+          {activeQuest ? (
+            <div className="mt-4">
+              <div className="flex items-center gap-2">
+                <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 font-mono text-[0.6rem] uppercase tracking-widest ${questTheme(activeQuest.quest.type).bg} ${questTheme(activeQuest.quest.type).border} ${questTheme(activeQuest.quest.type).text}`}>
+                  <span className={`h-1.5 w-1.5 rounded-full ${questTheme(activeQuest.quest.type).dot}`} />
+                  {questTheme(activeQuest.quest.type).label}
+                </span>
+                <span className="inline-flex items-center gap-1 font-mono text-[0.62rem] uppercase tracking-widest text-gold">
+                  <Coins size={13} weight="fill" /> +{activeQuest.quest.reward}
+                </span>
               </div>
-              <Progress value={questProgressPercent} />
-            </div>
-            <div className="flex flex-wrap gap-3">
-              <Button onClick={handleLogWin} disabled={!activeQuest || questActionBusy}>
-                {questActionBusy ? 'Logging...' : 'Log milestone'}
+              <h3 className="mt-3 font-display text-2xl font-semibold">{activeQuest.quest.title}</h3>
+              <p className="mt-1 text-muted-foreground">{activeQuest.quest.description}</p>
+              <Button className="mt-5 gap-2" onClick={() => completeById(activeQuest)} disabled={busy}>
+                <CheckCircle size={18} weight="fill" />
+                {busy ? 'Completing…' : 'Complete mission'}
               </Button>
             </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Today’s rituals</CardTitle>
-            <CardDescription>Micro practices to keep your energy high.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-3">
+          ) : (
+            <p className="mt-6 text-muted-foreground">Every mission cleared. Legendary. 🎉</p>
+          )}
+        </motion.div>
+
+        <motion.div custom={5} variants={fade} initial="hidden" animate="show" className="rounded-2xl border border-border/70 bg-card/60 p-6 backdrop-blur-sm">
+          <p className="font-mono text-[0.62rem] uppercase tracking-widest text-muted-foreground">
+            Daily rituals
+          </p>
+          <p className="serif mt-1 text-lg text-foreground">Small moves, big momentum.</p>
+          <div className="mt-4 space-y-2.5">
             {rituals.map((ritual) => {
               const isLogged = loggedRituals.has(ritual);
               const isProcessing = activeRitual === ritual && logRitual.isLoading;
               return (
-                <div key={ritual} className="flex items-center justify-between rounded-2xl border px-4 py-3">
-                  <p className="text-sm font-medium">{ritual}</p>
-                  <Button
-                    variant={isLogged ? 'outline' : 'ghost'}
-                    size="sm"
-                    disabled={isLogged || isProcessing}
-                    onClick={() => handleRitualLog(ritual)}
-                  >
-                    {isLogged ? 'Logged' : isProcessing ? 'Logging...' : 'Mark done'}
-                  </Button>
-                </div>
+                <button
+                  key={ritual}
+                  onClick={() => handleRitualLog(ritual)}
+                  disabled={isLogged || isProcessing}
+                  className={`flex w-full items-center justify-between rounded-xl border px-4 py-3 text-left text-sm transition ${
+                    isLogged
+                      ? 'border-teal/30 bg-teal/10 text-foreground'
+                      : 'border-border/70 hover:border-primary/40 hover:bg-secondary'
+                  }`}
+                >
+                  <span className="font-medium">{ritual}</span>
+                  {isLogged ? (
+                    <CheckCircle size={18} weight="fill" className="text-teal" />
+                  ) : (
+                    <span className="font-mono text-[0.6rem] uppercase tracking-widest text-muted-foreground">
+                      {isProcessing ? '…' : 'log'}
+                    </span>
+                  )}
+                </button>
               );
             })}
-          </CardContent>
-        </Card>
+          </div>
+        </motion.div>
       </section>
 
-      <section className="grid gap-6 lg:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Next adventures</CardTitle>
-            <CardDescription>Your suggested quests for today.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {prioritizedQuests.map((progress) => (
-              <div key={progress.progressId} className="rounded-2xl border px-4 py-3">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="font-semibold">{progress.quest.title}</p>
-                    <p className="text-sm text-muted-foreground">{progress.quest.description}</p>
-                  </div>
-                  <Badge
-                    variant={
-                      progress.status === 'COMPLETED'
-                        ? 'success'
-                        : progress.status === 'IN_PROGRESS'
-                        ? 'warning'
-                        : 'muted'
-                    }
-                  >
-                    {progress.status}
-                  </Badge>
-                </div>
-                <p className="mt-2 text-xs uppercase tracking-wide text-muted-foreground">
-                  Reward · {progress.quest.reward} coins
-                </p>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Momentum timeline</CardTitle>
-            <CardDescription>Upcoming check-ins and meetups.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {demoMeetups.map((meetup) => (
-              <div key={meetup.id} className="rounded-2xl border px-4 py-3">
-                <p className="text-xs uppercase tracking-wide text-muted-foreground">{meetup.date}</p>
-                <p className="text-base font-semibold">{meetup.title}</p>
-                <p className="text-sm text-muted-foreground">{meetup.location}</p>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-      </section>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Choose your next view</CardTitle>
-          <CardDescription>Jump straight into any LifeQuest desktop section.</CardDescription>
-        </CardHeader>
-        <CardContent className="grid gap-4 md:grid-cols-2">
-          {coreSections.map((section) => {
-            const Icon = section.icon;
+      {/* Open missions */}
+      <motion.section custom={6} variants={fade} initial="hidden" animate="show">
+        <div className="mb-3 flex items-center justify-between">
+          <h2 className="font-display text-lg font-semibold">Open missions</h2>
+          <Link to="/quests" className="font-mono text-[0.62rem] uppercase tracking-widest text-primary hover:underline">
+            View all →
+          </Link>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2">
+          {openMissions.map((progress) => {
+            const t = questTheme(progress.quest.type);
             return (
               <Link
-                key={section.label}
-                to={section.to}
-                className="group flex items-center justify-between rounded-2xl border border-border/60 bg-background px-4 py-4 transition hover:border-primary/50 hover:bg-primary/5"
+                key={progress.progressId}
+                to="/quests"
+                className={`group rounded-2xl border border-border/70 bg-card/60 p-5 backdrop-blur-sm transition ${t.glow}`}
               >
-                <div className="flex items-center gap-3">
-                  <span className="rounded-2xl bg-primary/10 p-3 text-primary group-hover:bg-primary/20">
-                    <Icon size={18} weight="duotone" />
+                <div className="flex items-center justify-between">
+                  <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 font-mono text-[0.58rem] uppercase tracking-widest ${t.bg} ${t.border} ${t.text}`}>
+                    <span className={`h-1.5 w-1.5 rounded-full ${t.dot}`} />
+                    {t.label}
                   </span>
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">{section.label}</p>
-                    <p className="text-xs text-muted-foreground">{section.description}</p>
-                  </div>
+                  <span className="inline-flex items-center gap-1 font-mono text-[0.6rem] uppercase tracking-widest text-gold">
+                    <Coins size={12} weight="fill" /> +{progress.quest.reward}
+                  </span>
                 </div>
-                <ArrowUpRight size={16} className="text-muted-foreground group-hover:text-primary" />
+                <h3 className="mt-3 font-display font-semibold">{progress.quest.title}</h3>
+                <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{progress.quest.description}</p>
               </Link>
             );
           })}
-        </CardContent>
-      </Card>
+        </div>
+      </motion.section>
     </div>
   );
 };
