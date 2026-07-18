@@ -19,9 +19,14 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const port = configService.get<number>('app.port', 4000);
 
+  // Bearer-token auth carries no cookies, so credentials must stay off —
+  // and `origin: '*'` + credentials is an invalid, unsafe combination.
+  // A configured CORS_ORIGIN may be a comma-separated allowlist.
+  const corsOrigin = configService.get<string>('app.corsOrigin', '*');
   app.enableCors({
-    origin: configService.get<string>('app.corsOrigin', '*'),
-    credentials: true,
+    origin:
+      corsOrigin === '*' ? true : corsOrigin.split(',').map((o) => o.trim()),
+    credentials: false,
   });
 
   app.setGlobalPrefix('api');
