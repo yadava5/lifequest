@@ -40,7 +40,10 @@ export const HomeScreen = () => {
 
   const quests = user.quests;
   const coins = user.coins;
-  const journey = tierProgress(coins);
+  // Journey/tier progress reads lifetime earned so it never drops when the
+  // player redeems a reward; `coins` remains the spendable balance shown below.
+  const lifetimeCoins = user.lifetimeCoins ?? user.coins;
+  const journey = tierProgress(lifetimeCoins);
   const completedCount = quests.filter((q) => q.status === 'COMPLETED').length;
   const inProgress = quests.find((q) => q.status === 'IN_PROGRESS');
   const nextQuest = quests.find((q) => q.status === 'PENDING');
