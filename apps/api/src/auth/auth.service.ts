@@ -26,6 +26,7 @@ export class AuthService {
         audience: payload.audience,
         passwordHash,
         coins: 800,
+        lifetimeCoins: 800,
       },
     });
 
