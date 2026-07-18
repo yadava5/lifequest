@@ -53,6 +53,9 @@ export const userResponseSchema = z.object({
   audience: audienceEnum,
   tier: z.string().optional().default('EXPLORER'),
   coins: z.number(),
+  // Cumulative coins ever earned; drives tier progress so it never regresses.
+  // Optional for backward-compat with pre-migration payloads / demo fixtures.
+  lifetimeCoins: z.number().int().nonnegative().optional(),
   quests: z.array(questProgressSchema),
   redemptions: z.array(redemptionSchema),
   ritualsToday: z.array(ritualLogSchema),
