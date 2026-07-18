@@ -11,7 +11,7 @@ import { useJourneyStore } from '@/store/journeyStore';
 import { useUserQuery } from '@/hooks/useUserQuery';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { apiClient } from '@/lib/apiClient';
+import { apiClient, isDemoMode } from '@/lib/apiClient';
 
 export const AuthGate = ({ children }: { children: React.ReactNode }) => {
   const session = useJourneyStore((state) => state.session);
@@ -66,6 +66,20 @@ const AuthScreen = ({ onAuthenticated }: { onAuthenticated: () => void }) => {
     onAuthenticated();
   };
 
+  const enterDemo = async () => {
+    setError(null);
+    try {
+      const response = await apiClient.auth.login({
+        email: 'demo@lifequest.app',
+        password: 'demodemo',
+      });
+      setAuthPayload(response);
+      onAuthenticated();
+    } catch {
+      setError('Unable to start the demo');
+    }
+  };
+
   const handleSignup = async (values: AuthSignupPayload) => {
     setError(null);
     const response = await apiClient.auth.signup(values);
@@ -86,6 +100,16 @@ const AuthScreen = ({ onAuthenticated }: { onAuthenticated: () => void }) => {
           </p>
         </CardHeader>
         <CardContent className="space-y-4">
+          {isDemoMode && (
+            <div className="space-y-3 border-b border-border pb-4">
+              <Button type="button" className="w-full" onClick={enterDemo}>
+                Enter the demo →
+              </Button>
+              <p className="text-center font-mono text-[0.7rem] uppercase tracking-widest text-muted-foreground">
+                Runs entirely in your browser · no account, nothing leaves the page
+              </p>
+            </div>
+          )}
           {isLogin ? (
             <form
               className="space-y-3"
@@ -99,7 +123,7 @@ const AuthScreen = ({ onAuthenticated }: { onAuthenticated: () => void }) => {
             >
               <AuthInput label="Email" type="email" {...loginForm.register('email')} />
               <AuthInput label="Password" type="password" {...loginForm.register('password')} />
-              {error && <p className="text-sm text-red-500">{error}</p>}
+              {error && <p className="text-sm text-destructive">{error}</p>}
               <Button type="submit" className="w-full">
                 Sign in
               </Button>
@@ -122,13 +146,13 @@ const AuthScreen = ({ onAuthenticated }: { onAuthenticated: () => void }) => {
                 <label className="text-sm font-medium text-muted-foreground">Focus audience</label>
                 <select
                   {...signupForm.register('audience')}
-                  className="w-full rounded-xl border px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  className="w-full rounded-md border bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring"
                 >
                   <option value="LAID_OFF">Career transition</option>
                   <option value="RETIRED">New chapter</option>
                 </select>
               </div>
-              {error && <p className="text-sm text-red-500">{error}</p>}
+              {error && <p className="text-sm text-destructive">{error}</p>}
               <Button type="submit" className="w-full">
                 Create account
               </Button>
@@ -147,7 +171,7 @@ const AuthInput = ({ label, ...props }: React.InputHTMLAttributes<HTMLInputEleme
   <label className="block text-sm font-medium text-muted-foreground">
     {label}
     <input
-      className="mt-1 w-full rounded-xl border px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+      className="mt-1 w-full rounded-md border bg-transparent px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring"
       {...props}
     />
   </label>
