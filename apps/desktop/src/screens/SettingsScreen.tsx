@@ -114,7 +114,7 @@ export const SettingsScreen = () => {
           </label>
         </CardContent>
         <div className="border-t px-6 py-4">
-          <Button className="w-full" onClick={handleSave} disabled={updateProfile.isLoading}>
+          <Button className="w-full" onClick={handleSave} disabled={updateProfile.isPending}>
             Save changes
           </Button>
         </div>
@@ -130,7 +130,7 @@ export const SettingsScreen = () => {
             <p className="text-sm text-muted-foreground">
               Restore the default coins and repopulate quests for your focus.
             </p>
-            <Button variant="outline" className="mt-3" size="sm" onClick={handleReset} disabled={resetProgress.isLoading}>
+            <Button variant="outline" className="mt-3" size="sm" onClick={handleReset} disabled={resetProgress.isPending}>
               Reset progress
             </Button>
           </div>
