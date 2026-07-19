@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -33,6 +33,13 @@ export const useDemoLogin = () => {
   return { enterDemo, busy };
 };
 
+/** A persisted session is only usable while its expiry is still in the future. */
+const sessionIsExpired = (expiresAt?: string): boolean => {
+  if (!expiresAt) return false;
+  const t = new Date(expiresAt).getTime();
+  return Number.isFinite(t) && t <= Date.now();
+};
+
 export const AuthGate = ({ children }: { children: React.ReactNode }) => {
   const session = useJourneyStore((state) => state.session);
   const user = useJourneyStore((state) => state.user);
@@ -41,7 +48,16 @@ export const AuthGate = ({ children }: { children: React.ReactNode }) => {
   const [entry, setEntry] = useState<'landing' | 'auth'>('landing');
   const { enterDemo, busy } = useDemoLogin();
 
-  if (!session) {
+  // A persisted session whose expiry has already lapsed (e.g. the 7-day TTL ran
+  // out between visits) must not gate the app — it would strand a returning
+  // visitor in a dead shell with no landing. Treat it as logged-out and purge
+  // it so the public front door shows immediately, no network round-trip.
+  const expired = sessionIsExpired(session?.expiresAt);
+  useEffect(() => {
+    if (expired) clearSession();
+  }, [expired, clearSession]);
+
+  if (!session || expired) {
     // The public front door: a proper landing page first; the auth card
     // only when the visitor asks for it.
     return entry === 'landing' ? (
