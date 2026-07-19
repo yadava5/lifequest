@@ -5,7 +5,6 @@ import { HomeScreen } from '@/screens/HomeScreen';
 import { QuestsScreen } from '@/screens/QuestsScreen';
 import { RewardsScreen } from '@/screens/RewardsScreen';
 import { CommunityScreen } from '@/screens/CommunityScreen';
-import { ResumeScreen } from '@/screens/ResumeScreen';
 import { SettingsScreen } from '@/screens/SettingsScreen';
 import { AuthGate } from '@/features/auth/AuthGate';
 
@@ -18,7 +17,6 @@ const router = createBrowserRouter([
       { path: 'quests', element: <QuestsScreen /> },
       { path: 'rewards', element: <RewardsScreen /> },
       { path: 'community', element: <CommunityScreen /> },
-      { path: 'resume', element: <ResumeScreen /> },
       { path: 'settings', element: <SettingsScreen /> },
     ],
   },
