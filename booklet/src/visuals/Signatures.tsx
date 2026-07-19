@@ -156,6 +156,69 @@ export const TierLadderSignature: React.FC<{
   </div>
 );
 
+// ── Tier gap trail — a number line showing the widening thresholds ──────────
+// A non-bar comparison: the four rungs plotted on a 0→max coin axis, so the
+// *spacing itself* shows the climb steepening (each rung costs more than the
+// last). Gap labels annotate the jump between consecutive rungs.
+
+export const TierGapTrail: React.FC<{
+  tiers: ReadonlyArray<{ name: string; at: number }>;
+}> = ({ tiers }) => {
+  const max = tiers[tiers.length - 1]?.at || 1;
+  const x0 = 44;
+  const x1 = 576;
+  const baseY = 104;
+  const xOf = (v: number) => x0 + (v / max) * (x1 - x0);
+  const seq = [COLORS.SKY_DEEP, COLORS.TEAL_DEEP, COLORS.GOLD_DEEP, COLORS.CORAL_DEEP];
+  const anchorOf = (i: number) => (i === 0 ? "start" : i === tiers.length - 1 ? "end" : "middle");
+  const txOf = (x: number, i: number) => (i === 0 ? x - 3 : i === tiers.length - 1 ? x + 3 : x);
+  // Adjacent rungs (e.g. EXPLORER @0 and ADVENTURER @500) sit close on the axis,
+  // so their names would collide — stagger the name labels by parity to separate
+  // them vertically while every dot/value stays on the true axis position.
+  const nameY = (i: number) => (i % 2 === 0 ? 34 : 50);
+  return (
+    <div style={{ ...CARD, gap: 10 }}>
+      <span style={{ fontFamily: FONTS.MONO, fontSize: 8.5, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: COLORS.INK_MUTED }}>
+        the climb steepens · lifetime coins to reach each rung
+      </span>
+      <svg viewBox="0 0 620 160" width="100%" style={{ display: "block", overflow: "visible" }}>
+        <line x1={x0} y1={baseY} x2={x1} y2={baseY} stroke={COLORS.HAIRLINE_STRONG} strokeWidth={1} />
+        {tiers.slice(1).map((t, i) => {
+          const prev = tiers[i]!;
+          const a = xOf(prev.at);
+          const b = xOf(t.at);
+          const mid = (a + b) / 2;
+          const gap = t.at - prev.at;
+          return (
+            <g key={`gap-${t.name}`}>
+              <line x1={a + 5} y1={baseY + 24} x2={b - 5} y2={baseY + 24} stroke={COLORS.NEUTRAL_400} strokeWidth={0.75} strokeDasharray="2 2" />
+              <text x={mid} y={baseY + 39} textAnchor="middle" fontFamily="ui-monospace, monospace" fontSize={8.5} fontWeight={700} fill={COLORS.INK_MUTED}>
+                +{gap.toLocaleString()}
+              </text>
+            </g>
+          );
+        })}
+        {tiers.map((t, i) => {
+          const x = xOf(t.at);
+          const c = seq[i % seq.length];
+          return (
+            <g key={t.name}>
+              <line x1={x} y1={68} x2={x} y2={baseY} stroke={c} strokeWidth={1.5} />
+              <circle cx={x} cy={62} r={6} fill={c} stroke={COLORS.PAPER} strokeWidth={1.5} />
+              <text x={txOf(x, i)} y={nameY(i)} textAnchor={anchorOf(i)} fontFamily="ui-monospace, monospace" fontSize={8} fontWeight={700} letterSpacing="0.02em" fill={c}>
+                {t.name}
+              </text>
+              <text x={txOf(x, i)} y={baseY + 15} textAnchor={anchorOf(i)} fontFamily="ui-monospace, monospace" fontSize={9.5} fontWeight={700} fill={COLORS.INK}>
+                {t.at.toLocaleString()}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+};
+
 // ── Guild constellation ─────────────────────────────────────────────────────
 
 export const GuildConstellation: React.FC<{ accent?: string }> = ({ accent = COLORS.SKY_DEEP }) => {
@@ -192,7 +255,7 @@ export const GuildConstellation: React.FC<{ accent?: string }> = ({ accent = COL
         </text>
       </svg>
       <SignatureCaption>
-        A guild is the people, not a leaderboard — meetups and shared wins link a season of life into a constellation.
+        A guild is the people, not a leaderboard — meetups and shared wins link a job search into a constellation.
       </SignatureCaption>
     </div>
   );
@@ -237,7 +300,6 @@ const GLYPH: Record<string, string> = {
   Quests: "✦",
   Rewards: "◎",
   Guild: "❖",
-  Forge: "⚒",
   Settings: "⚙",
 };
 
