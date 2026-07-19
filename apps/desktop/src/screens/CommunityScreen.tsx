@@ -1,8 +1,10 @@
-import { motion } from 'framer-motion';
-import { UsersThree, MapPin, CalendarBlank, Trophy, Sparkle } from 'phosphor-react';
+import { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { UsersThree, MapPin, CalendarBlank, Trophy, Sparkle, Megaphone } from 'phosphor-react';
 import { Button } from '@/components/ui/button';
 import { useJourneyStore } from '@/store/journeyStore';
 import { demoMeetups } from '@/data/demo';
+import { celebrate } from '@/lib/celebrate';
 import { questTheme } from '@/lib/questTheme';
 import { cn } from '@/lib/utils';
 
@@ -14,6 +16,32 @@ const audienceTheme = (audience: string) => {
 
 export const CommunityScreen = () => {
   const redemptions = useJourneyStore((state) => state.user?.redemptions ?? []);
+  const quests = useJourneyStore((state) => state.user?.quests ?? []);
+  const [shared, setShared] = useState<string | null>(null);
+
+  // Auto-dismiss the broadcast confirmation so it reads like a transient toast.
+  useEffect(() => {
+    if (!shared) return;
+    const timer = setTimeout(() => setShared(null), 3500);
+    return () => clearTimeout(timer);
+  }, [shared]);
+
+  // The "latest win" is grounded in real player state: the most recent redeemed
+  // reward, else the most recent cleared mission. Redemptions are stored
+  // newest-first, so index 0 is the latest.
+  const latestWin =
+    redemptions[0]?.reward.name ??
+    quests.find((q) => q.status === 'COMPLETED')?.quest.title ??
+    null;
+
+  const shareWin = () => {
+    setShared(
+      latestWin
+        ? `Shared “${latestWin}” with the guild — a beacon for everyone climbing.`
+        : 'Broadcast sent — clear a mission or claim a reward to light a brighter beacon.',
+    );
+    celebrate();
+  };
 
   return (
     <div className="space-y-6">
@@ -24,6 +52,22 @@ export const CommunityScreen = () => {
         <h1 className="mt-2 font-display text-3xl font-bold tracking-tight">Rally your crew</h1>
         <p className="serif mt-1 text-lg text-muted-foreground">No one levels up alone.</p>
       </div>
+
+      <AnimatePresence>
+        {shared && (
+          <motion.div
+            role="status"
+            aria-live="polite"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.25, ease: 'easeOut' }}
+            className="flex items-center gap-2 rounded-xl border border-teal/30 bg-teal/10 px-4 py-3 font-medium text-teal"
+          >
+            <Megaphone size={18} weight="fill" /> {shared}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <div className="grid gap-6 lg:grid-cols-2">
         <section className="rounded-2xl border border-border/70 bg-card/60 p-6 backdrop-blur-sm">
@@ -82,7 +126,7 @@ export const CommunityScreen = () => {
               </div>
             ))}
           </div>
-          <Button variant="outline" className="mt-4 w-full gap-2">
+          <Button variant="outline" className="mt-4 w-full gap-2" onClick={shareWin}>
             <Sparkle size={16} weight="fill" /> Share your latest win
           </Button>
         </section>
