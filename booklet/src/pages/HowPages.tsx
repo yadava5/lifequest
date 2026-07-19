@@ -3,7 +3,7 @@ import { BodyPage } from "../templates/BodyPage";
 import { COLORS, FONTS, TYPE, SECTION, SECTION_INK, type SectionKey } from "../theme";
 import { HOW, TIERS, DEMO_REWARDS } from "../content";
 import { SourceNote } from "../primitives/SourceNote";
-import { MissionCardSignature, TierLadderSignature, GuildConstellation } from "../visuals/Signatures";
+import { MissionCardSignature, TierLadderSignature, TierGapTrail, GuildConstellation } from "../visuals/Signatures";
 
 type PageProps = { parity: "recto" | "verso"; pageNumber: number; totalPages: number };
 
@@ -225,9 +225,11 @@ export const HowTiersPage: React.FC<PageProps> = ({ parity, pageNumber, totalPag
 
     <TierLadderSignature tiers={TIERS} accent={INK_ACCENT} markerAt={1} />
 
-    <p style={{ fontFamily: FONTS.SANS, fontSize: 11, lineHeight: 1.5, color: COLORS.INK, margin: "20px 0 0", maxWidth: "6.2in", borderLeft: `2.5px solid ${BRIGHT}`, paddingLeft: 14 }}>
+    <p style={{ fontFamily: FONTS.SANS, fontSize: 11, lineHeight: 1.5, color: COLORS.INK, margin: "18px 0 16px", maxWidth: "6.2in", borderLeft: `2.5px solid ${BRIGHT}`, paddingLeft: 14 }}>
       {HOW.tiers.note}
     </p>
+
+    <TierGapTrail tiers={TIERS} />
 
     <Rail>{HOW.tiers.source}</Rail>
   </BodyPage>
