@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "vite --port 5184",
     "build": "tsc --noEmit && vite build",
-    "build:embed": "tsc --noEmit && vite build --base=/system-card/ --outDir ../apps/desktop/dist/system-card --emptyOutDir",
+    "build:embed": "tsc --noEmit && vite build --base=/system-card/ --outDir ../apps/desktop/public/system-card --emptyOutDir",
     "preview": "vite preview --port 5184",
     "pdf": "node scripts/validate-parity.mjs && node scripts/export-pdf.mjs"
   },
