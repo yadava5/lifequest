@@ -24,7 +24,7 @@ import {
   ProofMobilePage,
   ProofNoPurplePage,
 } from "./pages/ProofPages";
-import { BuildStackPage, BuildClosingPage } from "./pages/BuildPages";
+import { BuildStackPage, BuildTryItPage } from "./pages/BuildPages";
 
 /**
  * Top-level composer. Iterates `manifest.PAGES` in order and dispatches each
@@ -61,7 +61,7 @@ const BODY_COMPONENTS: Record<
   "proof-mobile": ProofMobilePage,
   "proof-nopurple": ProofNoPurplePage,
   "build-stack": BuildStackPage,
-  "build-closing": BuildClosingPage,
+  "build-tryit": BuildTryItPage,
 };
 
 const PageSwitch: React.FC<{ spec: PageSpec; totalPages: number }> = ({ spec, totalPages }) => {
