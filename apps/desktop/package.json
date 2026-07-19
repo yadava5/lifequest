@@ -8,6 +8,9 @@
     "build": "tsc && vite build",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "preview": "vite preview",
+    "e2e": "playwright test",
+    "e2e:ui": "playwright test --ui",
+    "e2e:install": "playwright install chromium",
     "tauri": "tauri"
   },
   "dependencies": {
@@ -42,6 +45,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@playwright/test": "^1.61.1",
     "@tanstack/eslint-plugin-query": "^5.91.2",
     "@tauri-apps/cli": "^2.9.4",
     "@types/canvas-confetti": "^1.9.0",
