@@ -63,7 +63,7 @@ export const MASTHEAD = {
 export const ABSTRACT = {
   greeting: "Welcome.",
   body:
-    "LifeQuest turns real-world routines into missions for people navigating job loss or retirement. Finish a quest and the page pays out — confetti, coins, a tier that climbs. Coins buy real rewards; a guild keeps you company. Under the dawn-warm surface: a Tauri + React client and a NestJS + Fastify + Prisma API on Vercel serverless, argon2-hashed accounts, and a coin ledger whose tiers only ever go up.",
+    "Looking for work is a demoralizing, isolating grind — and the days you most need momentum are the ones it leaks away. LifeQuest is a concept for fixing that: it turns the daily search — applications, follow-ups, upskilling, and rest — into missions that pay you back, so people keep going without burning out. Finish a quest and the page pays out — confetti, coins, a tier that climbs. This System Card is the pitch and the proof: a warm idea, and a working prototype on a real full-stack backend.",
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -80,11 +80,11 @@ export const CHAPTERS = [
 
 export const TOC = {
   chapterTaglines: {
-    WHY: "re-entry is a lonely climb",
+    WHY: "the job search is a lonely climb",
     HOW: "missions → coins → tiers → a guild",
     INSIDE: "serverless Nest · a monotonic ledger",
     PROOF: "it persists — and it’s zero-purple",
-    BUILD: "one codebase · desktop + web",
+    BUILD: "a concept · and a working prototype",
   } as Record<string, string>,
   chapterGlyphs: {
     WHY: "◔",
@@ -94,8 +94,8 @@ export const TOC = {
     BUILD: "▲",
   } as Record<string, string>,
   audience: [
-    { key: "Between jobs", val: "the layoff season — momentum, rebuilt one win." },
-    { key: "Newly retired", val: "a reason to show up, minus the grind." },
+    { key: "Job-seekers", val: "the long search — momentum, rebuilt one win." },
+    { key: "Adopters", val: "nonprofits, campuses, libraries who could carry it." },
     { key: "Engineers", val: "the serverless Nest graph and the coin ledger." },
   ],
   readingPaths: [
@@ -118,7 +118,7 @@ export const TOC = {
   ],
   colophon: ["© 2026 · Ayush Yadav", "LifeQuest · System Card Vol. 01", "Licensed MIT"],
   teaser:
-    "A printed tour of a routine tracker that plays like a game — the why, the loop, and the receipts. Read it with the live demo open.",
+    "A printed pitch for a concept that helps job-seekers keep momentum — the why, the loop, and the working prototype. Read it with the live demo open.",
 } as const;
 
 // ---------------------------------------------------------------------------
@@ -133,13 +133,13 @@ export const TIERS = [
   { name: "LUMINARY", at: 4000, blurb: "A beacon for the whole guild." },
 ] as const;
 
-/** Seeded demo quests. source · apps/desktop/src/lib/demoClient.ts:40-80 */
+/** Seeded demo quests. source · apps/desktop/src/lib/demoClient.ts:40-81 */
 export const DEMO_QUESTS = [
   { title: "Reconnect with a mentor", type: "COMMUNITY", reward: 80 },
-  { title: "Quantify a portfolio project", type: "TASK", reward: 120 },
-  { title: "Neighborhood walk and reflect", type: "WELLNESS", reward: 40 },
-  { title: "Attend a local meetup", type: "COMMUNITY", reward: 100 },
-  { title: "Ship a daily check-in", type: "TASK", reward: 30 },
+  { title: "Send three applications", type: "TASK", reward: 120 },
+  { title: "Take a real break", type: "WELLNESS", reward: 40 },
+  { title: "Attend a networking event", type: "COMMUNITY", reward: 100 },
+  { title: "Thirty minutes of upskilling", type: "TASK", reward: 30 },
 ] as const;
 
 /** Seeded demo reward vault. source · apps/desktop/src/lib/demoClient.ts:83-88 */
@@ -155,23 +155,23 @@ export const DEMO_REWARDS = [
 // ---------------------------------------------------------------------------
 
 export const WHY = {
-  divider: { subtitle: "re-entry after a layoff or retirement is a climb taken alone" },
+  divider: { subtitle: "the daily job search is a demoralizing climb, taken alone" },
 
   reentry: {
-    eyebrow: "§01 · THE SEASON",
-    headline: "Re-entry is a lonely climb.",
+    eyebrow: "§01 · THE GRIND",
+    headline: "The job search is a lonely climb.",
     pullQuote:
-      "The seasons between jobs and after them are the hardest to keep momentum in — and the easiest to spend alone.",
+      "The search is hardest exactly when momentum matters most — and the easiest stretch to spend entirely alone.",
     body: [
-      "LifeQuest is built for two specific seasons of life: the months after a layoff, and the open calendar of retirement. Both hand you time and take away the scaffolding — the standup, the commute, the colleagues — that used to carry a day.",
-      "So the app makes those two audiences first-class. Every quest is tagged for who it serves, and a guild sits behind you so no one levels up alone.",
+      "LifeQuest is a concept for the people worn down by a long job search — the ones whose momentum leaks away between rejections, until they burn out or quietly give up. It gamifies the daily search: applications, follow-ups, upskilling, and rest, each framed as a mission that pays back.",
+      "The app tags every quest by audience — the schema ships LAID_OFF, RETIRED, and SHARED — so the same engine carries a laid-off professional or anyone rebuilding a daily routine. A guild sits behind them so no one climbs alone.",
     ],
     coda:
       "The goal was never another to-do list. It was a reason to take the next step — and someone to notice you took it.",
     audiences: [
-      { label: "LAID_OFF", quote: "rebuild momentum, one small win." },
-      { label: "RETIRED", quote: "a reason to show up, minus the grind." },
-      { label: "SHARED", quote: "quests that fit either season." },
+      { label: "LAID_OFF", quote: "the layoff search — momentum, one application at a time." },
+      { label: "RETIRED", quote: "an encore search, minus the grind." },
+      { label: "SHARED", quote: "any daily routine, tagged for either." },
     ],
     source: "source · README.md:5 · apps/api/prisma/schema.prisma:127-131 (enum Audience)",
   },
@@ -233,7 +233,7 @@ export const HOW = {
     lede:
       "The whole game is one three-beat loop, tuned so the payoff lands the instant you finish — then points you at the next mission.",
     steps: [
-      { n: "01", label: "Pick a mission", detail: "Task · Community · Wellness — tuned to your season.", accentKey: "02_HOW" },
+      { n: "01", label: "Pick a mission", detail: "Task · Community · Wellness — tuned to the search.", accentKey: "02_HOW" },
       { n: "02", label: "Log the win", detail: "Complete it — coins land, confetti fires.", accentKey: "04_PROOF" },
       { n: "03", label: "Claim the reward", detail: "Trade momentum for something real. Then again.", accentKey: "03_INSIDE" },
     ],
@@ -290,12 +290,12 @@ export const HOW = {
     eyebrow: "§02 · THE GUILD",
     headline: "No one levels up alone.",
     body: [
-      "The lonely part of re-entry is the fix the game takes most seriously. A guild tab sits alongside the quest log — meetups to show up to, and shared wins from people in the same season.",
+      "The loneliest part of a job search is the fix the game takes most seriously. A guild tab sits alongside the quest log — meetups to show up to, and shared wins from people in the same climb.",
       "It is the community surface, not a leaderboard: the top tier’s blurb is literally “a beacon for the whole guild.” You climb for yourself, but never by yourself.",
     ],
     facts: [
       { k: "THE TAB", v: "“Guild” in the primary nav → /community" },
-      { k: "MEETUPS", v: "local events, tagged by season, with RSVPs" },
+      { k: "MEETUPS", v: "local events, tagged by audience, with RSVPs" },
       { k: "SHARED", v: "wins and redemptions others can see" },
       { k: "THE PITCH", v: "“no one levels up alone”" },
     ],
@@ -419,9 +419,9 @@ export const PROOF = {
     eyebrow: "§04 · IN YOUR HAND",
     headline: "A tab bar that travels.",
     body:
-      "LifeQuest is desktop-first, but the web build is genuinely mobile. Below the large breakpoint the sidebar collapses into a sticky bottom tab bar — the six primary destinations, one thumb-reach away.",
-    tabs: ["Home", "Quests", "Rewards", "Guild", "Forge", "Settings"],
-    note: "The bar is mobile-only (lg:hidden); on desktop the same six live in the sidebar.",
+      "LifeQuest is desktop-first, but the web build is genuinely mobile. Below the large breakpoint the sidebar collapses into a sticky bottom tab bar — the five primary destinations, one thumb-reach away.",
+    tabs: ["Home", "Quests", "Rewards", "Guild", "Settings"],
+    note: "The bar is mobile-only (lg:hidden); on desktop the same five live in the sidebar.",
     source: "source · apps/desktop/src/layouts/AppLayout.tsx:195-216 (nav · Primary mobile)",
   },
 
@@ -488,31 +488,44 @@ export const BUILD = {
     source: "source · apps/*/package.json · Cargo.toml · root package.json (workspaces)",
   },
 
-  closing: {
-    eyebrow: "END",
-    headline: "Play it.",
+  // Page 27 — the Try-It page: send the reader to the live product, and frame
+  // the whole thing honestly as a concept + working prototype (how society helps).
+  tryit: {
+    eyebrow: "TRY IT",
+    headline: "Play the prototype.",
     tagline:
-      "Open the live demo, complete the hero mission, and watch the page pay you back — coins, confetti, a tier that climbs.",
-    liveLabel: "LIVE DEMO",
+      "Open the live demo, complete the hero mission, and watch the page pay you back — coins, confetti, a tier that climbs. No signup, no wall.",
+    qrTarget: "https://lifequest-sigma-fawn.vercel.app",
     liveUrl: "lifequest-sigma-fawn.vercel.app",
+    qrCaption: "scan to open the live app",
+    demoNote:
+      "One-click seeded demo — a real account is waiting, no signup. Or open it in any browser and click straight through the in-browser demo.",
     repoLabel: "SOURCE",
     repoUrl: "github.com/yadava5/lifequest",
-    leftArrowLabel: "open it",
-    rightArrowLabel: "complete a mission",
+    concept: {
+      label: "A CONCEPT, NOT A FINISHED PRODUCT",
+      body:
+        "LifeQuest is an idea offered to society — a working prototype, not a funded product. Reaching the job-seekers who need it most needs a partner or funder to host it and seed rewards that fit real budgets.",
+      adoptersLabel: "WHO COULD CARRY IT",
+      adopters: [
+        "Workforce nonprofits & job clubs",
+        "University career centers",
+        "Public libraries",
+        "Workforce & unemployment offices",
+      ],
+    },
     microNote: "missions · coins · tiers · a guild",
   },
 } as const;
 
 // ---------------------------------------------------------------------------
-// Back cover
+// Back cover — a pure closing that mirrors the cover: full-bleed dawn art, a
+// short closing line, colophon. No QR, no CTA (the Try-It page owns those now).
 // ---------------------------------------------------------------------------
 
 export const BACK_COVER = {
-  qrTarget: "https://lifequest-sigma-fawn.vercel.app",
-  qrCaption: "scan to open the live demo",
-  spaceNote:
-    "One-click seeded demo — no signup. A real account is waiting; complete the hero mission and the page pays out.",
   colophon: ["LifeQuest", "System Card · Vol. 01", "Ayush Yadav · 2026"],
+  closingStatement: "An idea for helping people find work — offered to whoever will carry it.",
   closingLine: "— Small wins, made to count.",
 } as const;
 
