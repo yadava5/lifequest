@@ -1,13 +1,14 @@
 {
   "framework": "vite",
   "installCommand": "npm install",
-  "buildCommand": "npm run build:packages && npm run -w apps/api prisma:generate && npm run -w apps/api build && npm run -w apps/desktop build",
+  "buildCommand": "npm run build:packages && npm run -w apps/api prisma:generate && npm run -w apps/api build && npm run -w apps/desktop build && (cd booklet && PUPPETEER_SKIP_DOWNLOAD=1 PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=1 npm install --no-audit --no-fund && npm run build:embed)",
   "outputDirectory": "apps/desktop/dist",
   "functions": {
     "api/index.ts": { "maxDuration": 30 }
   },
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api" },
-    { "source": "/((?!api).*)", "destination": "/index.html" }
+    { "source": "/system-card", "destination": "/system-card/index.html" },
+    { "source": "/((?!api|system-card).*)", "destination": "/index.html" }
   ]
 }
