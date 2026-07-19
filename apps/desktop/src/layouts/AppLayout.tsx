@@ -6,7 +6,6 @@ import {
   Sun,
   House,
   Files,
-  PuzzlePiece,
   UsersThree,
   Target,
   GearSix,
@@ -25,7 +24,6 @@ const navItems = [
   { label: 'Quest Log', short: 'Quests', to: '/quests', icon: Files },
   { label: 'Reward Vault', short: 'Rewards', to: '/rewards', icon: Target },
   { label: 'Guild', short: 'Guild', to: '/community', icon: UsersThree },
-  { label: 'Resume Forge', short: 'Forge', to: '/resume', icon: PuzzlePiece },
   { label: 'Settings', short: 'Settings', to: '/settings', icon: GearSix },
 ];
 
