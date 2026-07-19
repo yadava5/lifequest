@@ -82,7 +82,7 @@ export const RewardsScreen = () => {
           )}
           {available.map((reward, i) => {
             const affordable = coins >= reward.cost;
-            const isRedeeming = activeRewardId === reward.id && redeemReward.isLoading;
+            const isRedeeming = activeRewardId === reward.id && redeemReward.isPending;
             const progress = Math.min(100, Math.round((coins / reward.cost) * 100));
             return (
               <motion.div
