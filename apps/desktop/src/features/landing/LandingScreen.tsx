@@ -31,6 +31,9 @@ import { Button } from '@/components/ui/button';
 import { celebrate } from '@/lib/celebrate';
 import { useTheme } from '@/features/theme/ThemeProvider';
 import { cn } from '@/lib/utils';
+import { DawnBackdrop } from './DawnBackdrop';
+import { SummitSignature } from './SummitSignature';
+import { CoinBurst, CountUp, GlowCard, Magnetic, ScrambleText } from './interactions';
 
 /* -------------------------------------------------------------------------- */
 /*  Motion — every reveal is reduced-motion safe: when the user prefers less   */
@@ -135,7 +138,11 @@ const MissionCard = () => {
         </span>
       </div>
 
-      <div className="rounded-2xl border border-border/70 bg-card/80 p-5 text-left shadow-sm backdrop-blur-sm">
+      <GlowCard
+        glow="coral"
+        tilt
+        className="rounded-2xl border border-border/70 bg-card/80 p-5 text-left shadow-sm backdrop-blur-sm"
+      >
         <div className="flex items-center justify-between">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-teal/25 bg-teal/10 px-2.5 py-1 font-mono text-[0.62rem] uppercase tracking-widest text-teal">
             <FlagBanner size={12} weight="fill" /> wellness · daily
@@ -179,7 +186,7 @@ const MissionCard = () => {
             </>
           )}
         </Button>
-      </div>
+      </GlowCard>
 
       <p className="mt-3 text-center font-mono text-[0.62rem] uppercase tracking-widest text-muted-foreground">
         {done
@@ -215,6 +222,7 @@ const TierLadder = () => {
   const [coins, setCoins] = useState(1450);
   const [lifetime, setLifetime] = useState(1450);
   const [held, setHeld] = useState(false);
+  const [fire, setFire] = useState(0);
   const holdRef = useRef<number | null>(null);
 
   const flashHold = () => {
@@ -229,6 +237,7 @@ const TierLadder = () => {
   const complete = () => {
     setCoins((c) => c + 120);
     setLifetime((l) => Math.min(l + 120, 4600));
+    setFire((f) => f + 1);
   };
   const redeem = () => {
     if (coins < 200) return;
@@ -248,13 +257,14 @@ const TierLadder = () => {
     <div className="feature-frame rounded-2xl p-5 sm:p-7">
       {/* two counters — the whole invariant in two numbers */}
       <div className="grid grid-cols-2 gap-3">
-        <div className="rounded-xl border border-gold/25 bg-gold/[0.07] px-4 py-3">
+        <div className="relative rounded-xl border border-gold/25 bg-gold/[0.07] px-4 py-3">
+          <CoinBurst fire={fire} />
           <p className="font-mono text-[0.58rem] uppercase tracking-widest text-muted-foreground">
             Spendable coins
           </p>
           <p className="mt-1 flex items-baseline gap-1.5 font-display text-2xl font-bold tabular-nums">
             <Coins size={18} weight="fill" className="text-gold" />
-            <span aria-live="polite">{coins.toLocaleString()}</span>
+            <CountUp value={coins} aria-live="polite" />
           </p>
           <p className="mt-0.5 font-mono text-[0.56rem] uppercase tracking-widest text-gold/80">
             up on earn · down on spend
@@ -266,7 +276,7 @@ const TierLadder = () => {
           </p>
           <p className="mt-1 flex items-baseline gap-1.5 font-display text-2xl font-bold tabular-nums text-foreground">
             <Mountains size={18} weight="fill" className="text-teal" />
-            <span aria-live="polite">{lifetime.toLocaleString()}</span>
+            <CountUp value={lifetime} aria-live="polite" />
           </p>
           <p className="mt-0.5 font-mono text-[0.56rem] uppercase tracking-widest text-teal/80">
             only ever climbs
@@ -287,13 +297,18 @@ const TierLadder = () => {
             const reached = lifetime >= t.at;
             const isCurrent = i === idx;
             return (
-              <div key={t.name} className="flex w-1/4 flex-col items-center text-center">
+              <div
+                key={t.name}
+                tabIndex={0}
+                aria-label={`${t.name} — ${t.at.toLocaleString()} lifetime coins`}
+                className="group/rung flex w-1/4 cursor-default flex-col items-center text-center outline-none"
+              >
                 <span
                   className={cn(
-                    'grid h-6 w-6 place-items-center rounded-full border-2 transition-colors duration-500',
+                    'grid h-6 w-6 place-items-center rounded-full border-2 transition-all duration-300 group-hover/rung:scale-125 group-focus/rung:scale-125',
                     reached
-                      ? 'border-coral bg-coral text-primary-foreground'
-                      : 'border-border bg-card text-muted-foreground',
+                      ? 'border-coral bg-coral text-primary-foreground group-hover/rung:shadow-glow group-focus/rung:shadow-glow'
+                      : 'border-border bg-card text-muted-foreground group-hover/rung:border-gold group-hover/rung:text-gold group-focus/rung:border-gold group-focus/rung:text-gold',
                     isCurrent && held && 'ring-4 ring-teal/40',
                   )}
                 >
@@ -305,14 +320,16 @@ const TierLadder = () => {
                 </span>
                 <span
                   className={cn(
-                    'mt-2 font-mono text-[0.56rem] uppercase tracking-widest',
-                    isCurrent ? 'font-semibold text-coral' : 'text-muted-foreground',
+                    'mt-2 font-mono text-[0.56rem] uppercase tracking-widest transition-colors',
+                    isCurrent
+                      ? 'font-semibold text-coral'
+                      : 'text-muted-foreground group-hover/rung:text-foreground group-focus/rung:text-foreground',
                   )}
                 >
                   {t.name}
                 </span>
-                <span className="font-mono text-[0.52rem] tabular-nums text-muted-foreground/70">
-                  {t.at.toLocaleString()}
+                <span className="font-mono text-[0.52rem] tabular-nums text-muted-foreground/60 transition-colors group-hover/rung:text-gold group-focus/rung:text-gold">
+                  <CountUp value={t.at} /> ◎
                 </span>
               </div>
             );
@@ -442,6 +459,7 @@ const PROOF = [
     icon: Database,
     tone: 'text-teal bg-teal/10 border-teal/25',
     glow: 'hover:shadow-glow-teal',
+    glowTone: 'teal',
     title: 'It persists',
     body: 'Complete a mission, reload the page — it’s still there. Redeem a reward — the coins are gone for real. An independent live audit (2026-07) verified backend persistence end to end.',
   },
@@ -449,6 +467,7 @@ const PROOF = [
     icon: Lightning,
     tone: 'text-coral bg-coral/10 border-coral/25',
     glow: 'hover:shadow-glow',
+    glowTone: 'coral',
     title: 'It plays',
     body: 'The hero card up top isn’t a screenshot. Press Complete and it pays out the same confetti and coins as the live game — before you sign up for anything.',
   },
@@ -456,6 +475,7 @@ const PROOF = [
     icon: DeviceMobile,
     tone: 'text-sky bg-sky/10 border-sky/25',
     glow: 'hover:shadow-glow-sky',
+    glowTone: 'sky',
     title: 'It travels',
     body: 'Desktop-first, genuinely mobile. On a phone the sidebar folds into a sticky six-tab bar — Home, Quests, Rewards, Guild, Forge, Settings — one thumb-reach away.',
   },
@@ -463,6 +483,7 @@ const PROOF = [
     icon: Palette,
     tone: 'text-gold bg-gold/10 border-gold/25',
     glow: 'hover:shadow-glow-gold',
+    glowTone: 'gold',
     title: 'It holds its colors',
     body: 'One warm identity, held by rule: coral, honey, aqua, sky. No gradients, no purple — right down to the confetti burst.',
   },
@@ -481,7 +502,7 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
 
   return (
     <div className="relative min-h-screen">
-      <div className="haze" aria-hidden />
+      <DawnBackdrop />
 
       {/* trail progress — how far along the expedition you’ve scrolled */}
       <motion.div
@@ -534,7 +555,7 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
             className="mt-6 font-display text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl"
           >
             Routines are boring.
-            <span className="block text-coral">Missions aren’t.</span>
+            <ScrambleText text="Missions aren’t." className="block text-coral" />
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 18 }}
@@ -552,10 +573,12 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
             transition={{ duration: 0.55, delay: 0.24, ease: EASE }}
             className="mt-9 flex flex-wrap items-center justify-center gap-3 lg:justify-start"
           >
-            <Button size="lg" className="gap-2" onClick={onEnterDemo} disabled={demoBusy}>
-              <Lightning size={18} weight="fill" />
-              {demoBusy ? 'Opening…' : 'Enter the live demo'}
-            </Button>
+            <Magnetic>
+              <Button size="lg" className="gap-2" onClick={onEnterDemo} disabled={demoBusy}>
+                <Lightning size={18} weight="fill" />
+                {demoBusy ? 'Opening…' : 'Enter the live demo'}
+              </Button>
+            </Magnetic>
             <Button size="lg" variant="outline" className="gap-2" onClick={onSignIn}>
               Create an account <ArrowRight size={16} />
             </Button>
@@ -783,7 +806,7 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
                       <span className="text-sm font-medium">{v.name}</span>
                     </span>
                     <span className="shrink-0 font-mono text-xs font-semibold text-gold">
-                      {v.cost} ◎
+                      <CountUp value={v.cost} /> ◎
                     </span>
                   </div>
                 </Reveal>
@@ -908,7 +931,9 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
         <div className="mt-12 grid gap-4 sm:grid-cols-2">
           {PROOF.map((p, i) => (
             <Reveal key={p.title} delay={0.06 * i}>
-              <div
+              <GlowCard
+                glow={p.glowTone}
+                tilt
                 className={cn(
                   'h-full rounded-2xl border border-border/70 bg-card/50 p-6 backdrop-blur-sm transition',
                   p.glow,
@@ -919,7 +944,7 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
                 </span>
                 <h3 className="mt-4 font-display text-lg font-semibold">{p.title}</h3>
                 <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{p.body}</p>
-              </div>
+              </GlowCard>
             </Reveal>
           ))}
         </div>
@@ -942,12 +967,10 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
       <section className="border-t border-border/50 bg-card/30">
         <div className="mx-auto w-full max-w-4xl px-6 py-24 text-center">
           <Reveal>
-            <span className="mx-auto grid h-11 w-11 place-items-center rounded-full border border-coral/25 bg-coral/10 font-mono text-lg text-coral">
-              ▲
-            </span>
+            <SummitSignature />
           </Reveal>
           <Reveal delay={0.05}>
-            <h2 className="mt-6 font-display text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
+            <h2 className="mt-10 font-display text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
               Start your expedition.
             </h2>
           </Reveal>
@@ -959,10 +982,12 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
           </Reveal>
           <Reveal delay={0.15}>
             <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-              <Button size="lg" className="gap-2" onClick={onEnterDemo} disabled={demoBusy}>
-                <Lightning size={18} weight="fill" />
-                {demoBusy ? 'Opening…' : 'Enter the live demo'}
-              </Button>
+              <Magnetic>
+                <Button size="lg" className="gap-2" onClick={onEnterDemo} disabled={demoBusy}>
+                  <Lightning size={18} weight="fill" />
+                  {demoBusy ? 'Opening…' : 'Enter the live demo'}
+                </Button>
+              </Magnetic>
               <Button size="lg" variant="outline" className="gap-2" onClick={onSignIn}>
                 Create an account <ArrowRight size={16} />
               </Button>
