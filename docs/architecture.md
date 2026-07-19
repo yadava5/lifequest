@@ -8,16 +8,15 @@
 
 ## 1. Product Scope & Goals
 
-- **Experience**: Reimagine LifeQuest as a **macOS‑first desktop app** with a large‑screen layout (no more faux mobile shell). Focus on laid-off professionals and retirees rebuilding routines through quests, rewards, resume guidance, and community.
+- **Experience**: Reimagine LifeQuest as a **macOS‑first desktop app** with a large‑screen layout (no more faux mobile shell). Focus on people navigating job loss or retirement, rebuilding daily routines through quests, rewards, and community.
 - **Feature Parity Targets**
   1. Auth (email/password onboarding + demo profile)
   2. Home dashboard (coins, tiering, quest highlights)
   3. Quest log (filter + completion)
   4. Rewards catalog & redemption history
-  5. Resume boost workspace
-  6. Community meetups + shared stories
-  7. Settings (profile edits, audience toggle, progress reset)
-  8. Health monitoring/smoke test parity with the legacy backend
+  5. Community meetups + shared stories
+  6. Settings (profile edits, audience toggle, progress reset)
+  7. Health monitoring/smoke test parity with the legacy backend
 - **Desktop Focus**: Optimised for keyboard/mouse, resizable panels, native menus, and macOS notifications. Electron is replaced by a lighter, high-performance runtime.
 
 ## 2. High-Level Architecture
@@ -61,10 +60,10 @@
 1. **apps/desktop** (Tauri)
    - `src/main.ts` Rust commands (secure storage, notifications)
    - `src/App.tsx` React shell (multi-pane layout)
-   - Feature modules: Home, Quests, Rewards, Resume, Community, Settings
+   - Feature modules: Home, Quests, Rewards, Community, Settings
    - Hooks: `useSession`, `useQuestActions`, `useMeetups`
 2. **apps/api**
-   - Nest modules: `AuthModule`, `UsersModule`, `QuestsModule`, `RewardsModule`, `MeetupsModule`, `ResumeModule`, `HealthModule`
+   - Nest modules: `AuthModule`, `UsersModule`, `QuestsModule`, `RewardsModule`, `MeetupsModule`, `HealthModule`
    - Prisma service + repositories
    - Background worker (BullMQ) for quest reset, meetup fetch
 3. **packages/**
@@ -82,9 +81,8 @@
 | `Reward` | id, name, description, cost, fulfillmentType |
 | `Redemption` | id, userId, rewardId, createdAt, status |
 | `Meetup` | id, title, location, startsAt, audience, RSVP link |
-| `ResumePrompt` | id, title, content, category |
 
-Prisma migrations will codify these with auditing columns (`createdAt`, `updatedAt`). Seeds will preload demo quests, rewards, prompts, and meetups.
+Prisma migrations will codify these with auditing columns (`createdAt`, `updatedAt`). Seeds will preload demo quests, rewards, and meetups.
 
 ## 6. Deployment & Dev Workflow
 
