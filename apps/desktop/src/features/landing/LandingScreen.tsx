@@ -407,7 +407,7 @@ const LOOP = [
     n: '01',
     icon: Compass,
     title: 'Pick a mission',
-    body: 'Three quest lines — Task, Community, Wellness — tuned to your season of life.',
+    body: 'Applications, follow-ups, upskilling, rest — quest lines tuned to the search.',
     tone: 'text-coral bg-coral/10 border-coral/25',
   },
   {
@@ -477,7 +477,7 @@ const PROOF = [
     glow: 'hover:shadow-glow-sky',
     glowTone: 'sky',
     title: 'It travels',
-    body: 'Desktop-first, genuinely mobile. On a phone the sidebar folds into a sticky six-tab bar — Home, Quests, Rewards, Guild, Forge, Settings — one thumb-reach away.',
+    body: 'Desktop-first, genuinely mobile. On a phone the sidebar folds into a sticky five-tab bar — Home, Quests, Rewards, Guild, Settings — one thumb-reach away.',
   },
   {
     icon: Palette,
@@ -486,6 +486,34 @@ const PROOF = [
     glowTone: 'gold',
     title: 'It holds its colors',
     body: 'One warm identity, held by rule: coral, honey, aqua, sky. No gradients, no purple — right down to the confetti burst.',
+  },
+] as const;
+
+/* -------------------------------------------------------------------------- */
+/*  How to give it to society — who could adopt this, and what scaling needs.  */
+/*  Framed as a concept with a working prototype, not a shipped/funded product.*/
+/* -------------------------------------------------------------------------- */
+
+const ADOPTERS = [
+  {
+    icon: Handshake,
+    name: 'Workforce nonprofits & job clubs',
+    body: 'Re-employment programs already gather people every week — a shared board keeps the group moving between sessions.',
+  },
+  {
+    icon: GraduationCap,
+    name: 'University career centers',
+    body: 'New-grad cohorts facing their first real search — turn one-off advising into a routine students actually keep.',
+  },
+  {
+    icon: BookOpen,
+    name: 'Public libraries',
+    body: 'The quiet default for job-seekers with no employer and no campus — a free, welcoming place to start the day.',
+  },
+  {
+    icon: Buildings,
+    name: 'Workforce & unemployment offices',
+    body: 'Public agencies see people at their lowest ebb — this gives them momentum and morale, not just another listings feed.',
   },
 ] as const;
 
@@ -546,7 +574,7 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
             transition={{ duration: 0.55, ease: EASE }}
             className="mx-auto flex w-fit items-center gap-2 rounded-full border border-coral/30 bg-coral/10 px-4 py-1.5 font-mono text-[0.65rem] uppercase tracking-[0.3em] text-coral lg:mx-0"
           >
-            <Compass size={14} weight="fill" /> a quest game for real life
+            <Compass size={14} weight="fill" /> a concept for the job hunt
           </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 18 }}
@@ -554,7 +582,7 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
             transition={{ duration: 0.55, delay: 0.08, ease: EASE }}
             className="mt-6 font-display text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl"
           >
-            Routines are boring.
+            The job hunt is a grind.
             <ScrambleText text="Missions aren’t." className="block text-coral" />
           </motion.h1>
           <motion.p
@@ -563,9 +591,10 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
             transition={{ duration: 0.55, delay: 0.16, ease: EASE }}
             className="serif mx-auto mt-5 max-w-xl text-2xl text-muted-foreground lg:mx-0"
           >
-            For the season between jobs — and the one after them. Turn the routines
-            that feel like chores into missions that pay you back, and rebuild
-            momentum one small win at a time.
+            Looking for work is a demoralizing, isolating grind — and the days you
+            most need momentum are the ones it quietly leaks away. LifeQuest turns
+            the daily search — applications, follow-ups, upskilling, and rest — into
+            missions that pay you back, so you keep going without burning out.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 18 }}
@@ -607,35 +636,36 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
       <section className="border-y border-border/50 bg-card/30">
         <div className="mx-auto w-full max-w-6xl px-6 py-20 sm:py-24">
           <Reveal>
-            <Waypoint glyph="◔" eyebrow="§01 · the season" tone="border-coral/25 bg-coral/10 text-coral" />
+            <Waypoint glyph="◔" eyebrow="§01 · the grind" tone="border-coral/25 bg-coral/10 text-coral" />
           </Reveal>
           <div className="mt-8 grid gap-12 lg:grid-cols-[1.2fr_1fr] lg:items-center">
             <div>
               <Reveal delay={0.05}>
                 <h2 className="font-display text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
-                  The season between jobs
+                  The job search
                   <span className="block text-muted-foreground">is a climb taken alone.</span>
                 </h2>
               </Reveal>
               <Reveal delay={0.1}>
                 <p className="serif mt-6 max-w-xl text-xl leading-relaxed text-muted-foreground">
-                  A layoff — or a retirement — hands you all the time in the world
-                  and quietly takes back the scaffolding that used to carry a day.
-                  No standup. No commute. No colleagues who notice.
+                  Being out of work hands you an empty calendar and quietly takes
+                  back the scaffolding that used to carry a day. No standup. No
+                  commute. No colleagues who notice you showed up.
                 </p>
               </Reveal>
               <Reveal delay={0.15}>
                 <p className="mt-4 max-w-xl leading-relaxed text-muted-foreground">
-                  The calendar goes blank, the days blur together, and the routines
-                  that should keep you steady start to feel like joyless chores.
-                  Momentum doesn’t crash — it just leaks out between the lines.
+                  So the applications blur together, the rejections pile up in
+                  silence, and the effort stops feeling like it counts. Motivation
+                  doesn’t crash — it leaks out between the lines until you burn out
+                  or quietly give up.
                 </p>
               </Reveal>
               <Reveal delay={0.2}>
                 <div className="mt-8 grid gap-3 sm:grid-cols-2">
                   {[
-                    { icon: PersonSimpleWalk, label: 'Between jobs', body: 'the layoff season — momentum, rebuilt one small win.' },
-                    { icon: Sun, label: 'Newly retired', body: 'a reason to show up, minus the grind.' },
+                    { icon: PersonSimpleWalk, label: 'Momentum leaks', body: 'weeks of effort, and the needle barely seems to move.' },
+                    { icon: Sun, label: 'No one notices', body: 'applications vanish into silence — no team, no witness.' },
                   ].map((a) => (
                     <div
                       key={a.label}
@@ -659,7 +689,7 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
                   a routine
                 </p>
                 <div className="mt-4 space-y-2.5">
-                  {['Go for a walk', 'Message an old colleague', 'Update the resume', 'Cook something real'].map(
+                  {['Send three applications', 'Follow up on last week’s', 'Thirty minutes upskilling', 'Take an actual break'].map(
                     (t) => (
                       <div
                         key={t}
@@ -688,7 +718,7 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
         <div className="mt-8 max-w-3xl">
           <Reveal delay={0.05}>
             <h2 className="font-display text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
-              So we made rebuilding momentum
+              So we made the daily search
               <span className="text-coral"> a game.</span>
             </h2>
           </Reveal>
@@ -861,14 +891,14 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
                   </p>
                   <h3 className="mt-2 font-display text-2xl font-bold">A guild at your back.</h3>
                   <p className="mt-2 max-w-2xl leading-relaxed text-muted-foreground">
-                    The lonely part of re-entry is the fix the game takes most seriously.
-                    A Guild tab sits beside the quest log — local meetups tagged by season,
-                    and shared wins from people in the same climb. You climb for yourself,
+                    The loneliest part of a job search is the fix the game takes most
+                    seriously. A Guild tab sits beside the quest log — local meetups and
+                    shared wins from people in the same climb. You climb for yourself,
                     but never by yourself.
                   </p>
                   <div className="mt-4 flex flex-wrap gap-2 font-mono text-[0.6rem] uppercase tracking-widest">
                     {[
-                      { icon: MapPinLine, t: 'meetups by season' },
+                      { icon: MapPinLine, t: 'meetups near you' },
                       { icon: Handshake, t: 'shared wins' },
                       { icon: Sparkle, t: '“a beacon for the whole guild”' },
                     ].map((c) => (
@@ -963,7 +993,61 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
         </Reveal>
       </section>
 
-      {/* ───────────────────────  §05 · TRY IT  ─────────────────────── */}
+      {/* ───────────────────  §05 · GIVE IT TO SOCIETY  ─────────────────── */}
+      <section className="border-y border-border/50 bg-card/30">
+        <div className="mx-auto w-full max-w-6xl px-6 py-20 sm:py-24">
+          <Reveal>
+            <Waypoint glyph="❖" eyebrow="§05 · how society helps" tone="border-sky/25 bg-sky/10 text-sky" />
+          </Reveal>
+          <Reveal delay={0.05}>
+            <h2 className="mt-8 max-w-3xl font-display text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
+              A tool for job-seekers only matters
+              <span className="text-coral"> if it reaches the people who need it.</span>
+            </h2>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <p className="serif mt-6 max-w-2xl text-xl leading-relaxed text-muted-foreground">
+              The people worn down most by a long search are rarely the ones who can
+              pay for another subscription. So the honest home for LifeQuest isn’t an
+              app store — it’s the places that already stand beside job-seekers, for free.
+            </p>
+          </Reveal>
+
+          <div className="mt-12 grid gap-4 sm:grid-cols-2">
+            {ADOPTERS.map((a, i) => (
+              <Reveal key={a.name} delay={0.06 * i}>
+                <div className="feature-frame flex h-full items-start gap-4 rounded-2xl p-6">
+                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-sky/25 bg-sky/10 text-sky">
+                    <a.icon size={22} weight="fill" />
+                  </span>
+                  <div>
+                    <h3 className="font-display text-lg font-semibold">{a.name}</h3>
+                    <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{a.body}</p>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+
+          <Reveal delay={0.1}>
+            <div className="mt-8 flex items-start gap-3 rounded-2xl border border-coral/25 bg-coral/[0.06] p-5">
+              <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-coral/25 bg-coral/10 text-coral">
+                <Handshake size={16} weight="fill" />
+              </span>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                <span className="font-semibold text-foreground">Where it honestly stands.</span> LifeQuest is a
+                concept with a working prototype — the loop you just played is real, running on a real backend.
+                What it can’t do alone is scale. Reaching people at that scale needs a partner or funder — a
+                nonprofit, a campus, a library system, a public agency — to host it, seed rewards that fit real
+                budgets, and meet people where they already are. The whole thing is open source. This is an idea
+                offered to society, not a product being sold to it.
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ───────────────────────  TRY IT  ─────────────────────── */}
       <section className="border-t border-border/50 bg-card/30">
         <div className="mx-auto w-full max-w-4xl px-6 py-24 text-center">
           <Reveal>
@@ -971,13 +1055,14 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
           </Reveal>
           <Reveal delay={0.05}>
             <h2 className="mt-10 font-display text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
-              Start your expedition.
+              Play the prototype.
             </h2>
           </Reveal>
           <Reveal delay={0.1}>
             <p className="serif mx-auto mt-5 max-w-xl text-xl leading-relaxed text-muted-foreground">
               Open the live demo, complete the hero mission, and watch the page pay
-              you back — coins, confetti, a tier that climbs. No signup, no wall.
+              you back — coins, confetti, a tier that climbs. No signup, no wall. It’s
+              a concept, but it’s one you can actually play.
             </p>
           </Reveal>
           <Reveal delay={0.15}>
