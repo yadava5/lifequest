@@ -40,7 +40,7 @@ export type BodyKey =
   | "proof-mobile"
   | "proof-nopurple"
   | "build-stack"
-  | "build-closing";
+  | "build-tryit";
 
 export type PageSpec =
   | { num: 1; kind: "cover"; parity: "recto"; sectionKey: null }
@@ -86,7 +86,7 @@ export const PAGES: readonly PageSpec[] = [
   {
     num: 4, kind: "divider", parity: "verso", sectionKey: "01_WHY",
     chapterNum: "01", chapterTitle: "WHY",
-    subtitle: "re-entry after a layoff or retirement is a climb taken alone",
+    subtitle: "the daily job search is a demoralizing climb, taken alone",
     artSlot: "/art/div-01-why.svg",
     chapterIndex: 1, chapterTotal: 5,
   },
@@ -140,7 +140,7 @@ export const PAGES: readonly PageSpec[] = [
   { num: 24, kind: "spread", parity: "verso", sectionKey: "05_BUILD", half: "left" },
   { num: 25, kind: "spread", parity: "recto", sectionKey: "05_BUILD", half: "right" },
   { num: 26, kind: "body", parity: "verso", sectionKey: "05_BUILD", body: "build-stack" },
-  { num: 27, kind: "body", parity: "recto", sectionKey: "05_BUILD", body: "build-closing" },
+  { num: 27, kind: "body", parity: "recto", sectionKey: "05_BUILD", body: "build-tryit" },
 
   { num: 28, kind: "back-cover", parity: "verso", sectionKey: null },
 ] as const;
