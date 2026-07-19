@@ -50,7 +50,6 @@ const DESTINATIONS = [
   { desktop: 'Quest Log', mobile: 'Quests', path: '/quests', heading: 'Track your missions' },
   { desktop: 'Reward Vault', mobile: 'Rewards', path: '/rewards', heading: 'Spend your hard-won coins' },
   { desktop: 'Guild', mobile: 'Guild', path: '/community', heading: 'Rally your crew' },
-  { desktop: 'Resume Forge', mobile: 'Forge', path: '/resume', heading: 'Sharpen your story' },
   { desktop: 'Settings', mobile: 'Settings', path: '/settings', heading: 'Account preferences' },
 ] as const;
 
@@ -185,7 +184,7 @@ test.describe('LifeQuest — mobile layout', () => {
     await enterDemo(page);
     const nav = page.locator('nav[aria-label="Primary mobile"]');
     await expect(nav).toBeVisible();
-    for (const label of ['Home', 'Quests', 'Rewards', 'Guild', 'Forge', 'Settings']) {
+    for (const label of ['Home', 'Quests', 'Rewards', 'Guild', 'Settings']) {
       await expect(nav.getByRole('link', { name: label, exact: true })).toBeVisible();
     }
   });
