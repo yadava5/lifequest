@@ -30,7 +30,7 @@ export const QuestsScreen = () => {
   const active = [...inProgress, ...pending];
   const pct = quests.length ? Math.round((completed.length / quests.length) * 100) : 0;
 
-  const busy = startQuest.isLoading || completeQuest.isLoading;
+  const busy = startQuest.isPending || completeQuest.isPending;
 
   const handleStart = (q: QuestProgress) => {
     const id = q.quest.id ?? q.questId;
@@ -80,7 +80,7 @@ export const QuestsScreen = () => {
           <div className="flex gap-2">
             {q.status === 'PENDING' && (
               <Button size="sm" variant="outline" disabled={busy} onClick={() => handleStart(q)}>
-                {startQuest.isLoading ? 'Starting…' : 'Accept'}
+                {startQuest.isPending ? 'Starting…' : 'Accept'}
               </Button>
             )}
             {q.status !== 'COMPLETED' && (
