@@ -26,6 +26,22 @@ type RequestOptions = {
 
 const defaultFetch: FetchLike = (input, init) => fetch(input, init);
 
+/**
+ * Error thrown for any non-2xx API response. Carries the HTTP `status` so
+ * callers can reliably distinguish an expired/invalid session (401) from a
+ * transient server or network fault — without brittle message-substring
+ * matching. `message` still holds the server's human-readable reason, so
+ * existing `error.message` consumers keep working unchanged.
+ */
+export class ApiError extends Error {
+  readonly status: number;
+  constructor(message: string, status: number) {
+    super(message);
+    this.name = 'ApiError';
+    this.status = status;
+  }
+}
+
 export const createApiClient = (config: ClientConfig) => {
   const fetchImpl = config.fetchFn ?? defaultFetch;
 
@@ -57,7 +73,7 @@ export const createApiClient = (config: ClientConfig) => {
       } catch {
         // ignore parse errors
       }
-      throw new Error(message || 'Request failed');
+      throw new ApiError(message || 'Request failed', response.status);
     }
 
     if (response.status === 204) {
