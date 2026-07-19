@@ -1,13 +1,14 @@
 import React from "react";
-import { QRCodeSVG } from "qrcode.react";
-import { COLORS, FONTS } from "../theme";
+import { COLORS, FONTS, PAGE } from "../theme";
 import { BACK_COVER } from "../content";
 import { TrailField } from "../visuals/TrailField";
 
 /**
- * Back cover (page 28). Continues the front cover's dawn-map (reseeded so it
- * reads as a wraparound), then lands the reader on the live product: a QR to
- * the deployed demo on a paper card, plus the one-click seeded-demo note.
+ * Back cover (page 28) — a PURE CLOSING that mirrors the front cover: the same
+ * full-bleed dawn-map (reseeded so it reads as a wraparound), a quiet closing
+ * line, and the colophon. No QR, no CTA, no live URL — the Try-It page (27)
+ * owns those now. This page just closes the book, the way a real book's last
+ * page does: a bookend to the cover.
  */
 export const BackCoverPage: React.FC = () => (
   <section
@@ -22,111 +23,109 @@ export const BackCoverPage: React.FC = () => (
   >
     <TrailField widthIn={8.75} heightIn={11.25} variant="back" />
 
-    {/* Colophon — upper-left */}
+    {/* Masthead — top-left, mirrors the cover */}
     <div
       style={{
         position: "absolute",
         top: "0.7in",
         left: "0.7in",
         fontFamily: FONTS.MONO,
-        fontSize: 8.5,
-        fontWeight: 500,
-        letterSpacing: "0.16em",
+        fontSize: 9,
+        fontWeight: 600,
+        letterSpacing: "0.22em",
         textTransform: "uppercase",
         color: COLORS.INK_MUTED,
-        lineHeight: 1.6,
       }}
     >
-      {BACK_COVER.colophon.map((line, i) => (
-        <React.Fragment key={i}>
-          {line}
-          <br />
-        </React.Fragment>
-      ))}
+      LifeQuest · System Card
     </div>
 
-    {/* QR block — center-lower, on a paper card for scannability */}
+    {/* Vertical margin callout — right edge, mirrors the cover */}
+    <div
+      style={{
+        position: "absolute",
+        right: "0.4in",
+        bottom: `${PAGE.margin.bottom}in`,
+        writingMode: "vertical-rl",
+        fontFamily: FONTS.MONO,
+        fontSize: 8.5,
+        fontWeight: 500,
+        letterSpacing: "0.22em",
+        textTransform: "uppercase",
+        color: COLORS.INK_SUBTLE,
+      }}
+    >
+      an idea, offered to society
+    </div>
+
+    {/* Scrim behind the closing block */}
     <div
       style={{
         position: "absolute",
         left: 0,
         right: 0,
-        bottom: "2.2in",
+        bottom: 0,
+        height: "4.2in",
+        background: `linear-gradient(to top, ${COLORS.PAPER} 14%, rgba(253,251,247,0.85) 48%, rgba(253,251,247,0) 100%)`,
+        pointerEvents: "none",
+      }}
+    />
+
+    {/* Closing block — lower-left, mirrors the cover's title block */}
+    <div
+      style={{
+        position: "absolute",
+        left: "0.7in",
+        bottom: "0.95in",
+        right: "0.7in",
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
         gap: 14,
       }}
     >
       <div
         style={{
-          background: COLORS.PAPER,
-          borderRadius: 14,
-          padding: 18,
-          border: `1pt solid ${COLORS.HAIRLINE}`,
-          boxShadow: `0 12px 34px -18px ${COLORS.INK_SUBTLE}`,
+          fontFamily: FONTS.SERIF,
+          fontStyle: "italic",
+          fontSize: 30,
+          lineHeight: 1.22,
+          color: COLORS.INK,
+          maxWidth: "5.7in",
         }}
       >
-        <QRCodeSVG value={BACK_COVER.qrTarget} size={150} level="M" marginSize={0} fgColor={COLORS.INK} bgColor={COLORS.PAPER} />
+        {BACK_COVER.closingStatement}
       </div>
       <div
         style={{
+          fontFamily: FONTS.SERIF,
+          fontStyle: "italic",
+          fontSize: 16,
+          color: COLORS.CORAL_DEEP,
+        }}
+      >
+        {BACK_COVER.closingLine}
+      </div>
+      <div
+        style={{
+          marginTop: 6,
+          display: "flex",
+          alignItems: "center",
+          gap: 14,
           fontFamily: FONTS.MONO,
           fontSize: 9,
-          fontWeight: 600,
+          fontWeight: 500,
           letterSpacing: "0.16em",
           textTransform: "uppercase",
           color: COLORS.INK,
         }}
       >
-        {BACK_COVER.qrCaption}
+        {BACK_COVER.colophon.map((line, i) => (
+          <React.Fragment key={i}>
+            {i > 0 && <span style={{ width: 20, height: 1, background: COLORS.HAIRLINE_STRONG }} />}
+            <span style={{ color: i === 0 ? COLORS.INK : COLORS.INK_SUBTLE }}>{line}</span>
+          </React.Fragment>
+        ))}
       </div>
-      <div
-        style={{
-          fontFamily: FONTS.SANS,
-          fontSize: 15,
-          fontWeight: 600,
-          letterSpacing: "-0.01em",
-          color: COLORS.CORAL_DEEP,
-        }}
-      >
-        {BACK_COVER.qrTarget.replace("https://", "")}
-      </div>
-    </div>
-
-    {/* Seeded-demo note */}
-    <div
-      style={{
-        position: "absolute",
-        left: "0.9in",
-        right: "0.9in",
-        bottom: "1.35in",
-        textAlign: "center",
-        fontFamily: FONTS.MONO,
-        fontSize: 8.5,
-        fontWeight: 500,
-        letterSpacing: "0.04em",
-        color: COLORS.INK_MUTED,
-        lineHeight: 1.5,
-      }}
-    >
-      {BACK_COVER.spaceNote}
-    </div>
-
-    {/* Closing italic line — bottom-right */}
-    <div
-      style={{
-        position: "absolute",
-        bottom: "0.7in",
-        right: "0.7in",
-        fontFamily: FONTS.SERIF,
-        fontStyle: "italic",
-        fontSize: 14,
-        color: COLORS.INK_MUTED,
-        textAlign: "right",
-      }}
-    >
-      {BACK_COVER.closingLine}
     </div>
   </section>
 );
