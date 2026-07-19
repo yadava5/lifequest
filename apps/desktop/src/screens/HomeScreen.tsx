@@ -50,7 +50,7 @@ export const HomeScreen = () => {
   const activeQuest = inProgress ?? nextQuest ?? quests[0];
   const openMissions = quests.filter((q) => q.status !== 'COMPLETED').slice(0, 4);
 
-  const busy = startQuest.isLoading || completeQuest.isLoading;
+  const busy = startQuest.isPending || completeQuest.isPending;
 
   const todaysRituals = (user.ritualsToday ?? []).filter(
     (e) => new Date(e.createdAt).toDateString() === new Date().toDateString(),
@@ -133,7 +133,7 @@ export const HomeScreen = () => {
               <Lightning size={18} weight="fill" />
               {busy ? 'Logging win…' : 'Log today’s win'}
             </Button>
-            <Button size="lg" variant="outline" className="gap-2" onClick={handleStartQuest} disabled={!nextQuest || startQuest.isLoading}>
+            <Button size="lg" variant="outline" className="gap-2" onClick={handleStartQuest} disabled={!nextQuest || startQuest.isPending}>
               Start a quest <ArrowRight size={16} />
             </Button>
           </div>
@@ -212,7 +212,7 @@ export const HomeScreen = () => {
           <div className="mt-4 space-y-2.5">
             {rituals.map((ritual) => {
               const isLogged = loggedRituals.has(ritual);
-              const isProcessing = activeRitual === ritual && logRitual.isLoading;
+              const isProcessing = activeRitual === ritual && logRitual.isPending;
               return (
                 <button
                   key={ritual}
