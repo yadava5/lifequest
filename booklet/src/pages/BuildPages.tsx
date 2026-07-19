@@ -1,9 +1,12 @@
 import React from "react";
+import { QRCodeSVG } from "qrcode.react";
 import { BodyPage } from "../templates/BodyPage";
 import { Page } from "../primitives/Page";
-import { COLORS, FONTS, SECTION_INK } from "../theme";
+import { COLORS, FONTS, PAGE, SECTION_INK } from "../theme";
 import { BUILD } from "../content";
 import { SourceNote } from "../primitives/SourceNote";
+
+const LIVE_HEIGHT = `calc(${PAGE.trimH}in - ${PAGE.margin.top}in - ${PAGE.margin.bottom}in)`;
 
 type PageProps = { parity: "recto" | "verso"; pageNumber: number; totalPages: number };
 
@@ -44,15 +47,50 @@ export const BuildStackPage: React.FC<PageProps> = ({ parity, pageNumber, totalP
       ))}
     </div>
 
+    {/* At-a-glance stat cluster — the monorepo shape in four numbers. */}
+    <div style={{ marginTop: 24 }}>
+      <div style={{ fontFamily: FONTS.MONO, fontSize: 8.5, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: COLORS.INK_MUTED, marginBottom: 10 }}>
+        at a glance
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 10 }}>
+        {[
+          { big: "1", label: "TypeScript monorepo", accent: COLORS.STONE_DEEP },
+          { big: "2", label: "apps · one build, two targets", accent: COLORS.CORAL_DEEP },
+          { big: "2", label: "shared packages · schemas + client", accent: COLORS.TEAL_DEEP },
+          { big: "1", label: "Vercel fn · the whole API", accent: COLORS.GOLD_DEEP },
+        ].map((s) => (
+          <div
+            key={s.label}
+            style={{
+              border: `0.75pt solid ${COLORS.HAIRLINE}`,
+              borderTop: `2.5px solid ${s.accent}`,
+              borderRadius: 7,
+              background: COLORS.PAPER_ELEVATED,
+              padding: "11px 12px",
+              display: "flex",
+              flexDirection: "column",
+              gap: 3,
+            }}
+          >
+            <span style={{ fontFamily: FONTS.MONO, fontSize: 24, fontWeight: 700, letterSpacing: "-0.02em", color: s.accent, lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>{s.big}</span>
+            <span style={{ fontFamily: FONTS.SANS, fontSize: 9.5, color: COLORS.INK_MUTED, lineHeight: 1.3 }}>{s.label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+
     <div style={{ position: "absolute", left: "0.75in", bottom: "1.05in" }}>
       <SourceNote>{BUILD.stack.source}</SourceNote>
     </div>
   </BodyPage>
 );
 
-/** Page 27 — play it (closing). */
-export const BuildClosingPage: React.FC<PageProps> = ({ parity, pageNumber, totalPages }) => {
-  const { closing } = BUILD;
+const ADOPTER_ACCENTS = [COLORS.SKY_DEEP, COLORS.TEAL_DEEP, COLORS.GOLD_DEEP, COLORS.CORAL_DEEP];
+
+/** Page 27 — the Try-It page: QR to the live app + the concept framing. */
+export const BuildTryItPage: React.FC<PageProps> = ({ parity, pageNumber, totalPages }) => {
+  const { tryit } = BUILD;
+  const { concept } = tryit;
   return (
     <Page
       parity={parity}
@@ -61,9 +99,7 @@ export const BuildClosingPage: React.FC<PageProps> = ({ parity, pageNumber, tota
       sectionLabel="BUILD"
       sectionColor={INK_ACCENT}
     >
-      <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
-        <div style={{ flex: 1 }} />
-
+      <div style={{ display: "flex", flexDirection: "column", minHeight: LIVE_HEIGHT }}>
         <div
           style={{
             fontFamily: FONTS.MONO,
@@ -71,53 +107,112 @@ export const BuildClosingPage: React.FC<PageProps> = ({ parity, pageNumber, tota
             fontWeight: 600,
             letterSpacing: "0.16em",
             textTransform: "uppercase",
-            color: INK_ACCENT,
-            marginBottom: 14,
+            color: COLORS.CORAL_DEEP,
+            marginBottom: 12,
           }}
         >
-          {closing.eyebrow}
+          {tryit.eyebrow}
         </div>
 
         <h1
           style={{
             fontFamily: FONTS.SANS,
-            fontSize: 84,
+            fontSize: 58,
             fontWeight: 700,
             letterSpacing: "-0.03em",
-            lineHeight: 0.95,
+            lineHeight: 0.98,
             color: COLORS.INK,
-            margin: "0 0 18px",
+            margin: "0 0 14px",
           }}
         >
-          {closing.headline}
+          {tryit.headline}
         </h1>
 
         <p
           style={{
             fontFamily: FONTS.SERIF,
             fontStyle: "italic",
-            fontSize: 20,
+            fontSize: 18,
             lineHeight: 1.35,
             color: COLORS.INK_MUTED,
-            margin: "0 0 34px",
-            maxWidth: "6in",
+            margin: "0 0 22px",
+            maxWidth: "6.2in",
           }}
         >
-          {closing.tagline}
+          {tryit.tagline}
         </p>
 
-        {/* Two link blocks */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, maxWidth: "6.4in" }}>
-          <LinkBlock label={closing.liveLabel} url={closing.liveUrl} arrow={closing.leftArrowLabel} accent={COLORS.CORAL_DEEP} />
-          <LinkBlock label={closing.repoLabel} url={closing.repoUrl} arrow={closing.rightArrowLabel} accent={COLORS.SKY_DEEP} />
+        {/* QR + live link band */}
+        <div style={{ display: "grid", gridTemplateColumns: "auto 1fr", columnGap: 22, alignItems: "center" }}>
+          <div
+            style={{
+              background: COLORS.PAPER,
+              borderRadius: 14,
+              padding: 13,
+              border: `1pt solid ${COLORS.HAIRLINE_STRONG}`,
+              boxShadow: `0 12px 34px -18px ${COLORS.INK_SUBTLE}`,
+            }}
+          >
+            <QRCodeSVG value={tryit.qrTarget} size={120} level="M" marginSize={0} fgColor={COLORS.INK} bgColor={COLORS.PAPER} />
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+            <div style={{ fontFamily: FONTS.MONO, fontSize: 9, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: COLORS.CORAL_DEEP }}>
+              {tryit.qrCaption}
+            </div>
+            <div style={{ fontFamily: FONTS.SANS, fontSize: 17, fontWeight: 700, letterSpacing: "-0.01em", color: COLORS.INK }}>
+              {tryit.liveUrl}
+            </div>
+            <div style={{ fontFamily: FONTS.SERIF, fontStyle: "italic", fontSize: 12.5, color: COLORS.INK_MUTED, lineHeight: 1.35, maxWidth: "3.4in" }}>
+              {tryit.demoNote}
+            </div>
+            <div style={{ fontFamily: FONTS.MONO, fontSize: 9, color: COLORS.INK_MUTED, display: "flex", alignItems: "center", gap: 7, marginTop: 2 }}>
+              <span style={{ fontWeight: 700, letterSpacing: "0.1em", color: COLORS.SKY_DEEP }}>{tryit.repoLabel}</span>
+              <span style={{ color: COLORS.SKY_DEEP }}>→</span>
+              <span>{tryit.repoUrl}</span>
+            </div>
+          </div>
         </div>
 
-        <div style={{ flex: 1 }} />
+        {/* Concept / how-society-helps block */}
+        <div style={{ marginTop: 22, borderTop: `1pt solid ${COLORS.INK}`, paddingTop: 15 }}>
+          <div style={{ fontFamily: FONTS.MONO, fontSize: 9, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: INK_ACCENT, marginBottom: 8 }}>
+            {concept.label}
+          </div>
+          <p style={{ fontFamily: FONTS.SANS, fontSize: 11, lineHeight: 1.5, color: COLORS.INK, margin: "0 0 14px", maxWidth: "6.4in" }}>
+            {concept.body}
+          </p>
+          <div style={{ fontFamily: FONTS.MONO, fontSize: 8.5, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: COLORS.INK_MUTED, marginBottom: 8 }}>
+            {concept.adoptersLabel}
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+            {concept.adopters.map((a, i) => (
+              <div
+                key={a}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 9,
+                  border: `0.75pt solid ${COLORS.HAIRLINE}`,
+                  borderLeft: `3px solid ${ADOPTER_ACCENTS[i % ADOPTER_ACCENTS.length]}`,
+                  borderRadius: 7,
+                  background: COLORS.PAPER_ELEVATED,
+                  padding: "9px 12px",
+                }}
+              >
+                <span style={{ fontFamily: FONTS.SANS, fontSize: 11, fontWeight: 600, color: COLORS.INK }}>{a}</span>
+              </div>
+            ))}
+          </div>
+        </div>
 
+        <div style={{ flex: 1, minHeight: 10 }} />
+
+        {/* Footer rule — mirrors the book's closing footers */}
         <div
           style={{
-            borderTop: `1pt solid ${COLORS.INK}`,
-            paddingTop: 14,
+            borderTop: `0.75pt solid ${COLORS.HAIRLINE_STRONG}`,
+            paddingTop: 12,
             display: "flex",
             justifyContent: "space-between",
             alignItems: "baseline",
@@ -129,35 +224,10 @@ export const BuildClosingPage: React.FC<PageProps> = ({ parity, pageNumber, tota
             color: COLORS.INK_MUTED,
           }}
         >
-          <span>{closing.microNote}</span>
+          <span>{tryit.microNote}</span>
           <span style={{ color: INK_ACCENT }}>LifeQuest · Vol. 01</span>
         </div>
       </div>
     </Page>
   );
 };
-
-const LinkBlock: React.FC<{ label: string; url: string; arrow: string; accent: string }> = ({ label, url, arrow, accent }) => (
-  <div
-    style={{
-      border: `0.75pt solid ${COLORS.HAIRLINE}`,
-      borderTop: `3px solid ${accent}`,
-      borderRadius: 8,
-      background: COLORS.PAPER_ELEVATED,
-      padding: "14px 16px",
-      display: "flex",
-      flexDirection: "column",
-      gap: 8,
-    }}
-  >
-    <span style={{ fontFamily: FONTS.MONO, fontSize: 8.5, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: accent }}>
-      {label}
-    </span>
-    <span style={{ fontFamily: FONTS.SANS, fontSize: 14, fontWeight: 700, letterSpacing: "-0.01em", color: COLORS.INK, wordBreak: "break-word" }}>
-      {url}
-    </span>
-    <span style={{ fontFamily: FONTS.MONO, fontSize: 9, color: COLORS.INK_MUTED, display: "flex", alignItems: "center", gap: 6 }}>
-      <span style={{ color: accent }}>→</span> {arrow}
-    </span>
-  </div>
-);
