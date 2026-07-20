@@ -178,7 +178,13 @@ export const AppLayout = () => {
           </p>
           <div className="flex items-center gap-2">
             <ThemeToggle className="lg:hidden" />
-            <Button variant="outline" size="sm" onClick={logout} className="hidden lg:inline-flex">
+            {/* The desktop sidebar already carries its own Sign out button
+                (below the nav list) — mirror ThemeToggle's pattern above and
+                show this one on mobile only, where the sidebar is hidden.
+                It was previously `hidden lg:inline-flex` (desktop-only),
+                which both duplicated the sidebar's control on desktop AND
+                left mobile with no sign-out affordance anywhere in the UI. */}
+            <Button variant="outline" size="sm" onClick={logout} className="lg:hidden">
               Sign out
             </Button>
           </div>
