@@ -84,6 +84,21 @@ export const InsideArchPage: React.FC<PageProps> = ({ parity, pageNumber, totalP
       </div>
     </div>
 
+    {/* why one function — boot once, reuse warm, serve the whole /api */}
+    <div style={{ marginTop: 20, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 0, borderTop: `1pt solid ${BRIGHT}`, borderBottom: `0.5pt solid ${COLORS.HAIRLINE}` }}>
+      {[
+        { v: "boot once", k: "at module scope", n: "the Nest + Fastify graph builds a single time" },
+        { v: "reused", k: "warm invocations", n: "later requests skip the rebuild entirely" },
+        { v: "one /api", k: "a single Vercel fn", n: "the whole backend behind one handler" },
+      ].map((x, i) => (
+        <div key={x.k} style={{ padding: "11px 14px", borderLeft: i === 0 ? "none" : `0.5pt solid ${COLORS.HAIRLINE}`, display: "flex", flexDirection: "column", gap: 4 }}>
+          <span style={{ fontFamily: FONTS.MONO, fontSize: 14, fontWeight: 700, color: INK_ACCENT, letterSpacing: "-0.01em", lineHeight: 1 }}>{x.v}</span>
+          <span style={{ fontFamily: FONTS.MONO, fontSize: 8, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: COLORS.INK_MUTED }}>{x.k}</span>
+          <span style={{ fontFamily: FONTS.SERIF, fontStyle: "italic", fontSize: 9.5, lineHeight: 1.25, color: COLORS.INK_SUBTLE }}>{x.n}</span>
+        </div>
+      ))}
+    </div>
+
     <Rail>{INSIDE.architecture.source}</Rail>
   </BodyPage>
 );
@@ -171,7 +186,29 @@ export const InsideTenancyPage: React.FC<PageProps> = ({ parity, pageNumber, tot
       })}
     </div>
 
-    <p style={{ fontFamily: FONTS.SERIF, fontStyle: "italic", fontSize: 11.5, color: COLORS.INK_MUTED, margin: "18px 0 0", maxWidth: "6.2in", borderTop: `0.5pt solid ${COLORS.HAIRLINE}`, paddingTop: 12 }}>
+    {/* what a toy skips — the three details that make it a real product */}
+    <div style={{ marginTop: 18, borderTop: `1pt solid ${BRIGHT}`, paddingTop: 14 }}>
+      <div style={{ fontFamily: FONTS.MONO, fontSize: 8.5, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: INK_ACCENT, marginBottom: 10 }}>
+        what a toy skips
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
+        {[
+          { was: "plaintext passwords", now: "argon2 hashing", c: COLORS.TEAL_DEEP },
+          { was: "one shared table", now: "per-app schema", c: COLORS.SKY_DEEP },
+          { was: "a demo anyone can brick", now: "frozen identity", c: COLORS.CORAL_DEEP },
+        ].map((x) => (
+          <div key={x.now} style={{ border: `0.75pt solid ${COLORS.HAIRLINE}`, borderLeft: `2.5px solid ${x.c}`, borderRadius: 7, background: COLORS.PAPER_ELEVATED, padding: "10px 13px", display: "flex", flexDirection: "column", gap: 5 }}>
+            <span style={{ fontFamily: FONTS.MONO, fontSize: 8.5, color: COLORS.INK_SUBTLE, textDecoration: "line-through" }}>{x.was}</span>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+              <span style={{ color: x.c, fontSize: 12 }}>→</span>
+              <span style={{ fontFamily: FONTS.SANS, fontSize: 11.5, fontWeight: 700, letterSpacing: "-0.01em", color: COLORS.INK }}>{x.now}</span>
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <p style={{ fontFamily: FONTS.SERIF, fontStyle: "italic", fontSize: 11.5, color: COLORS.INK_MUTED, margin: "14px 0 0", maxWidth: "6.2in" }}>
       {INSIDE.tenancy.honest}
     </p>
 
