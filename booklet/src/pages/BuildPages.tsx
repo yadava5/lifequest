@@ -79,6 +79,34 @@ export const BuildStackPage: React.FC<PageProps> = ({ parity, pageNumber, totalP
       </div>
     </div>
 
+    {/* one dist/, two targets — the shape the journey spread walks through */}
+    <div style={{ marginTop: 20, borderTop: `1pt solid ${COLORS.INK}`, paddingTop: 14 }}>
+      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 10 }}>
+        <span style={{ fontFamily: FONTS.MONO, fontSize: 8.5, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: INK_ACCENT }}>one dist/, two targets</span>
+        <span style={{ fontFamily: FONTS.SERIF, fontStyle: "italic", fontSize: 11, color: COLORS.INK_SUBTLE }}>the journey · pp. 24–25 →</span>
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "1.15fr 24px 0.9fr 24px 1.35fr", alignItems: "center", columnGap: 6 }}>
+        <div style={{ border: `0.75pt solid ${COLORS.HAIRLINE}`, borderLeft: `2.5px solid ${COLORS.CORAL_DEEP}`, borderRadius: 7, background: COLORS.PAPER_ELEVATED, padding: "10px 12px" }}>
+          <div style={{ fontFamily: FONTS.SANS, fontSize: 11, fontWeight: 700, color: COLORS.INK }}>one codebase</div>
+          <div style={{ fontFamily: FONTS.MONO, fontSize: 8, color: COLORS.INK_MUTED, marginTop: 2 }}>React 19 · Vite 7</div>
+        </div>
+        <span style={{ textAlign: "center", color: COLORS.HAIRLINE_STRONG, fontSize: 14 }}>→</span>
+        <div style={{ border: `0.75pt solid ${INK_ACCENT}`, borderRadius: 7, background: COLORS.STONE_TINT, padding: "10px 12px", textAlign: "center" }}>
+          <div style={{ fontFamily: FONTS.MONO, fontSize: 11, fontWeight: 700, color: INK_ACCENT }}>dist/</div>
+          <div style={{ fontFamily: FONTS.MONO, fontSize: 8, color: COLORS.INK_MUTED, marginTop: 2 }}>tsc + vite</div>
+        </div>
+        <span style={{ textAlign: "center", color: COLORS.HAIRLINE_STRONG, fontSize: 14 }}>→</span>
+        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+          <div style={{ border: `0.75pt solid ${COLORS.HAIRLINE}`, borderLeft: `2.5px solid ${COLORS.TEAL_DEEP}`, borderRadius: 6, background: COLORS.PAPER_ELEVATED, padding: "7px 11px", fontFamily: FONTS.SANS, fontSize: 10.5, fontWeight: 600, color: COLORS.INK }}>
+            Tauri window <span style={{ fontFamily: FONTS.MONO, fontSize: 8, fontWeight: 400, color: COLORS.INK_MUTED }}>· desktop</span>
+          </div>
+          <div style={{ border: `0.75pt solid ${COLORS.HAIRLINE}`, borderLeft: `2.5px solid ${COLORS.SKY_DEEP}`, borderRadius: 6, background: COLORS.PAPER_ELEVATED, padding: "7px 11px", fontFamily: FONTS.SANS, fontSize: 10.5, fontWeight: 600, color: COLORS.INK }}>
+            Vercel web <span style={{ fontFamily: FONTS.MONO, fontSize: 8, fontWeight: 400, color: COLORS.INK_MUTED }}>· any browser</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div style={{ position: "absolute", left: "0.75in", bottom: "1.05in" }}>
       <SourceNote>{BUILD.stack.source}</SourceNote>
     </div>
@@ -201,6 +229,26 @@ export const BuildTryItPage: React.FC<PageProps> = ({ parity, pageNumber, totalP
                 }}
               >
                 <span style={{ fontFamily: FONTS.SANS, fontSize: 11, fontWeight: 600, color: COLORS.INK }}>{a}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* what's waiting in the demo — the loop, in four words */}
+        <div style={{ marginTop: 20 }}>
+          <div style={{ fontFamily: FONTS.MONO, fontSize: 8.5, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: COLORS.CORAL_DEEP, marginBottom: 8 }}>
+            what's waiting in the demo
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 8 }}>
+            {[
+              { k: "missions", n: "a seeded day of quests to complete", c: COLORS.CORAL_DEEP },
+              { k: "coins", n: "a reward burst on every finish", c: COLORS.GOLD_DEEP },
+              { k: "tiers", n: "a rank bar that climbs as you go", c: COLORS.TEAL_DEEP },
+              { k: "a guild", n: "meetups and shared wins alongside", c: COLORS.SKY_DEEP },
+            ].map((x) => (
+              <div key={x.k} style={{ border: `0.75pt solid ${COLORS.HAIRLINE}`, borderTop: `2.5px solid ${x.c}`, borderRadius: 7, background: COLORS.PAPER_ELEVATED, padding: "10px 11px", display: "flex", flexDirection: "column", gap: 4 }}>
+                <span style={{ fontFamily: FONTS.SANS, fontSize: 12, fontWeight: 700, letterSpacing: "-0.01em", color: COLORS.INK }}>{x.k}</span>
+                <span style={{ fontFamily: FONTS.SERIF, fontStyle: "italic", fontSize: 9.5, lineHeight: 1.25, color: COLORS.INK_MUTED }}>{x.n}</span>
               </div>
             ))}
           </div>
