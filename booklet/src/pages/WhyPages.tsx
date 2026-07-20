@@ -1,7 +1,7 @@
 import React from "react";
 import { BodyPage } from "../templates/BodyPage";
 import { COLORS, FONTS, TYPE, SECTION, SECTION_INK } from "../theme";
-import { WHY } from "../content";
+import { WHY, HOW, DEMO_QUESTS } from "../content";
 import { PullQuote } from "../primitives/PullQuote";
 import { SourceNote } from "../primitives/SourceNote";
 
@@ -100,9 +100,35 @@ export const WhyReentryPage: React.FC<PageProps> = ({ parity, pageNumber, totalP
       {WHY.reentry.coda}
     </p>
 
+    {/* what "the daily search, as missions" actually looks like — the seeded set */}
+    <div style={{ marginTop: 20 }}>
+      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 10 }}>
+        <span style={{ fontFamily: FONTS.MONO, fontSize: 8.5, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: INK_ACCENT }}>
+          the search, as missions
+        </span>
+        <span style={{ fontFamily: FONTS.MONO, fontSize: 7.5, color: COLORS.INK_SUBTLE }}>the seeded day · demoClient.ts</span>
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 8 }}>
+        {DEMO_QUESTS.map((q) => (
+          <div key={q.title} style={{ border: `0.75pt solid ${COLORS.HAIRLINE}`, borderTop: `2.5px solid ${questColor(q.type)}`, borderRadius: 6, background: COLORS.PAPER_ELEVATED, padding: "9px 10px", display: "flex", flexDirection: "column", gap: 5 }}>
+            <span style={{ fontFamily: FONTS.MONO, fontSize: 6.5, fontWeight: 700, letterSpacing: "0.08em", color: questColor(q.type) }}>{q.type}</span>
+            <span style={{ fontFamily: FONTS.SANS, fontSize: 9, fontWeight: 600, lineHeight: 1.25, color: COLORS.INK, flex: 1 }}>{q.title}</span>
+            <span style={{ fontFamily: FONTS.MONO, fontSize: 10, fontWeight: 700, color: COLORS.GOLD_DEEP }}>+{q.reward}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+
     <Rail>{WHY.reentry.source}</Rail>
   </BodyPage>
 );
+
+/** Quest-type accent — TASK/COMMUNITY/WELLNESS map to the dawn palette. */
+function questColor(type: string): string {
+  if (type === "COMMUNITY") return COLORS.SKY_DEEP;
+  if (type === "WELLNESS") return COLORS.TEAL_DEEP;
+  return COLORS.CORAL_DEEP; // TASK
+}
 
 /** Page 06 — routines are boring, missions aren't. */
 export const WhyChorePage: React.FC<PageProps> = ({ parity, pageNumber, totalPages }) => (
@@ -149,6 +175,23 @@ export const WhyChorePage: React.FC<PageProps> = ({ parity, pageNumber, totalPag
     >
       {WHY.chore.gate}
     </p>
+
+    {/* the framing, made concrete — a plain chore becomes a mission card */}
+    <div style={{ marginTop: 20, display: "grid", gridTemplateColumns: "1fr 34px 1.4fr", alignItems: "center", columnGap: 14 }}>
+      <div style={{ border: `0.75pt dashed ${COLORS.HAIRLINE_STRONG}`, borderRadius: 8, background: COLORS.PAPER_WARM, padding: "14px 16px" }}>
+        <div style={{ fontFamily: FONTS.MONO, fontSize: 7.5, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: COLORS.INK_SUBTLE, marginBottom: 6 }}>the chore</div>
+        <div style={{ fontFamily: FONTS.SANS, fontSize: 12, color: COLORS.INK_MUTED }}>☐ Take a walk</div>
+      </div>
+      <span style={{ textAlign: "center", color: BRIGHT, fontSize: 20 }}>→</span>
+      <div style={{ border: `0.75pt solid ${COLORS.HAIRLINE}`, borderLeft: `3px solid ${COLORS.TEAL_DEEP}`, borderRadius: 8, background: COLORS.TEAL_TINT, padding: "13px 16px" }}>
+        <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 4 }}>
+          <span style={{ fontFamily: FONTS.MONO, fontSize: 7.5, fontWeight: 700, letterSpacing: "0.1em", color: COLORS.TEAL_DEEP }}>{HOW.mission.card.type}</span>
+          <span style={{ fontFamily: FONTS.MONO, fontSize: 13, fontWeight: 700, color: COLORS.GOLD_DEEP }}>{HOW.mission.card.reward}</span>
+        </div>
+        <div style={{ fontFamily: FONTS.SANS, fontSize: 12, fontWeight: 700, letterSpacing: "-0.01em", color: COLORS.INK, lineHeight: 1.25 }}>{HOW.mission.card.title}</div>
+        <div style={{ fontFamily: FONTS.SERIF, fontStyle: "italic", fontSize: 10.5, color: COLORS.INK_MUTED, marginTop: 3 }}>{HOW.mission.card.desc}</div>
+      </div>
+    </div>
 
     <Rail>{WHY.chore.source}</Rail>
   </BodyPage>
@@ -239,17 +282,27 @@ export const WhyLoopPage: React.FC<PageProps> = ({ parity, pageNumber, totalPage
       ))}
     </div>
 
-    <p
-      style={{
-        fontFamily: FONTS.SERIF,
-        fontStyle: "italic",
-        fontSize: 15,
-        color: COLORS.INK_MUTED,
-        margin: "24px 0 0",
-      }}
-    >
-      {WHY.loop.handoff}
-    </p>
+    {/* the loop, previewed — the three beats §02 opens on */}
+    <div style={{ marginTop: 20, borderTop: `1pt solid ${BRIGHT}`, paddingTop: 14 }}>
+      <div style={{ fontFamily: FONTS.MONO, fontSize: 8.5, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: INK_ACCENT, marginBottom: 10 }}>
+        the loop, in three beats
+      </div>
+      <div style={{ display: "flex", alignItems: "stretch", gap: 8 }}>
+        {HOW.loop.steps.map((s, i) => (
+          <React.Fragment key={s.n}>
+            <div style={{ flex: 1, border: `0.75pt solid ${COLORS.HAIRLINE}`, borderLeft: `2.5px solid ${SECTION[s.accentKey as keyof typeof SECTION]}`, borderRadius: 7, background: COLORS.PAPER_ELEVATED, padding: "10px 12px", display: "flex", flexDirection: "column", gap: 3 }}>
+              <span style={{ fontFamily: FONTS.MONO, fontSize: 8, fontWeight: 700, color: SECTION_INK[s.accentKey as keyof typeof SECTION_INK] }}>{s.n}</span>
+              <span style={{ fontFamily: FONTS.SANS, fontSize: 11.5, fontWeight: 700, letterSpacing: "-0.01em", color: COLORS.INK }}>{s.label}</span>
+              <span style={{ fontFamily: FONTS.SERIF, fontStyle: "italic", fontSize: 10, lineHeight: 1.25, color: COLORS.INK_MUTED }}>{s.detail}</span>
+            </div>
+            {i < HOW.loop.steps.length - 1 && <span style={{ alignSelf: "center", color: COLORS.HAIRLINE_STRONG, fontSize: 14 }}>→</span>}
+          </React.Fragment>
+        ))}
+      </div>
+      <p style={{ fontFamily: FONTS.SERIF, fontStyle: "italic", fontSize: 13, color: COLORS.INK_MUTED, margin: "12px 0 0" }}>
+        {WHY.loop.handoff}
+      </p>
+    </div>
 
     <Rail>{WHY.loop.source}</Rail>
   </BodyPage>
