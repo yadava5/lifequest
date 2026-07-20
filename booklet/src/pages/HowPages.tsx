@@ -98,6 +98,24 @@ export const HowLoopPage: React.FC<PageProps> = ({ parity, pageNumber, totalPage
       {HOW.loop.orderNote}
     </p>
 
+    {/* what step 1 offers — the three lines a day balances across */}
+    <div style={{ marginTop: 18 }}>
+      <div style={{ fontFamily: FONTS.MONO, fontSize: 8.5, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: INK_ACCENT, marginBottom: 10 }}>
+        three lines to pick from
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 10 }}>
+        {HOW.mission.types.map((t) => {
+          const col = t.k === "COMMUNITY" ? COLORS.SKY_DEEP : t.k === "WELLNESS" ? COLORS.TEAL_DEEP : COLORS.CORAL_DEEP;
+          return (
+            <div key={t.k} style={{ border: `0.75pt solid ${COLORS.HAIRLINE}`, borderTop: `2.5px solid ${col}`, borderRadius: 7, background: COLORS.PAPER_ELEVATED, padding: "11px 13px", display: "flex", flexDirection: "column", gap: 5 }}>
+              <span style={{ fontFamily: FONTS.MONO, fontSize: 9, fontWeight: 700, letterSpacing: "0.08em", color: col }}>{t.k}</span>
+              <span style={{ fontFamily: FONTS.SERIF, fontStyle: "italic", fontSize: 11.5, lineHeight: 1.3, color: COLORS.INK_MUTED }}>{t.v}</span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+
     <Rail>{HOW.loop.source}</Rail>
   </BodyPage>
 );
@@ -200,9 +218,32 @@ export const HowCoinsPage: React.FC<PageProps> = ({ parity, pageNumber, totalPag
       </div>
     </div>
 
-    <p style={{ fontFamily: FONTS.SERIF, fontStyle: "italic", fontSize: 14, color: COLORS.INK_MUTED, margin: "20px 0 0", maxWidth: "6in" }}>
+    <p style={{ fontFamily: FONTS.SERIF, fontStyle: "italic", fontSize: 14, color: COLORS.INK_MUTED, margin: "18px 0 0", maxWidth: "6in" }}>
       {HOW.coins.vaultNote}
     </p>
+
+    {/* the coin flow — earn from quests, bank the start bonus, spend in the vault */}
+    <div style={{ marginTop: 18, borderTop: `1pt solid ${BRIGHT}`, paddingTop: 14 }}>
+      <div style={{ fontFamily: FONTS.MONO, fontSize: 8.5, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: INK_ACCENT, marginBottom: 10 }}>
+        the coin flow · earn → bank → spend
+      </div>
+      <div style={{ display: "flex", alignItems: "stretch", gap: 10 }}>
+        {[
+          { k: "EARN", v: "+30 → +120", n: "each quest pays a coin reward" },
+          { k: "BANK", v: "800", n: "granted at signup; grows on completion" },
+          { k: "SPEND", v: "150 → 500", n: "real-world boosts in the vault" },
+        ].map((x, i) => (
+          <React.Fragment key={x.k}>
+            <div style={{ flex: 1, border: `0.75pt solid ${COLORS.HAIRLINE}`, borderLeft: `2.5px solid ${COLORS.GOLD_DEEP}`, borderRadius: 7, background: COLORS.PAPER_ELEVATED, padding: "10px 13px", display: "flex", flexDirection: "column", gap: 3 }}>
+              <span style={{ fontFamily: FONTS.MONO, fontSize: 8, fontWeight: 700, letterSpacing: "0.08em", color: COLORS.GOLD_DEEP }}>{x.k}</span>
+              <span style={{ fontFamily: FONTS.MONO, fontSize: 16, fontWeight: 700, color: COLORS.INK, letterSpacing: "-0.01em", lineHeight: 1 }}>{x.v}</span>
+              <span style={{ fontFamily: FONTS.SERIF, fontStyle: "italic", fontSize: 9.5, lineHeight: 1.25, color: COLORS.INK_MUTED }}>{x.n}</span>
+            </div>
+            {i < 2 && <span style={{ alignSelf: "center", color: COLORS.HAIRLINE_STRONG, fontSize: 15 }}>→</span>}
+          </React.Fragment>
+        ))}
+      </div>
+    </div>
 
     <Rail>{HOW.coins.source}</Rail>
   </BodyPage>
@@ -265,7 +306,22 @@ export const HowGuildPage: React.FC<PageProps> = ({ parity, pageNumber, totalPag
       <GuildConstellation accent={SECTION_INK["01_WHY"]} />
     </div>
 
-    <p style={{ fontFamily: FONTS.SERIF, fontStyle: "italic", fontSize: 11.5, color: COLORS.INK_MUTED, margin: "18px 0 0", maxWidth: "6.2in", borderTop: `0.5pt solid ${COLORS.HAIRLINE}`, paddingTop: 12 }}>
+    {/* what the guild is — and isn't: community, not competition */}
+    <div style={{ marginTop: 18, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 0, borderTop: `1pt solid ${SECTION["01_WHY"]}`, borderBottom: `0.5pt solid ${COLORS.HAIRLINE}` }}>
+      {[
+        { tag: "IT IS", v: "meetups", n: "local events, tagged by audience, with RSVPs" },
+        { tag: "IT IS", v: "shared wins", n: "completions others in the same climb can see" },
+        { tag: "IT ISN’T", v: "a leaderboard", n: "you climb for yourself, never by yourself" },
+      ].map((x, i) => (
+        <div key={x.v} style={{ padding: "11px 14px", borderLeft: i === 0 ? "none" : `0.5pt solid ${COLORS.HAIRLINE}`, display: "flex", flexDirection: "column", gap: 4 }}>
+          <span style={{ fontFamily: FONTS.MONO, fontSize: 7.5, fontWeight: 700, letterSpacing: "0.1em", color: i === 2 ? COLORS.CORAL_DEEP : SECTION_INK["01_WHY"] }}>{x.tag}</span>
+          <span style={{ fontFamily: FONTS.SANS, fontSize: 13, fontWeight: 700, letterSpacing: "-0.01em", color: COLORS.INK }}>{x.v}</span>
+          <span style={{ fontFamily: FONTS.SERIF, fontStyle: "italic", fontSize: 9.5, lineHeight: 1.25, color: COLORS.INK_MUTED }}>{x.n}</span>
+        </div>
+      ))}
+    </div>
+
+    <p style={{ fontFamily: FONTS.SERIF, fontStyle: "italic", fontSize: 11.5, color: COLORS.INK_MUTED, margin: "14px 0 0", maxWidth: "6.2in" }}>
       {HOW.guild.honest}
     </p>
 
