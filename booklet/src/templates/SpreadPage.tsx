@@ -22,6 +22,16 @@ export type SpreadPageProps = {
   sectionColor: string;
 };
 
+/** Per-stage detail — what each ship stage is, and where it runs. Derived from
+ *  BUILD.pipeline sub-copy + the INSIDE chapter; nothing invented. */
+const STAGE_DETAIL: Record<string, { does: string; where: string }> = {
+  CODE: { does: "One Vite + React 19 codebase — the single source of truth for both targets.", where: "React 19 · Vite 7" },
+  SHELL: { does: "A Tauri 2 (Rust) shell wraps that code for the native desktop window.", where: "Tauri 2 · Rust" },
+  BUILD: { does: "tsc + vite compile it once into a single dist/ — the hinge both targets share.", where: "one dist/" },
+  WEB: { does: "Vercel serves that same dist/ as the SPA, live in any browser.", where: "Vercel · the SPA" },
+  API: { does: "The NestJS app rides alongside as one serverless function under /api.", where: "Nest fn · serverless" },
+};
+
 export const SpreadPage: React.FC<SpreadPageProps> = ({
   half,
   parity,
@@ -78,20 +88,21 @@ export const SpreadPage: React.FC<SpreadPageProps> = ({
           </p>
         </div>
 
-        <div aria-hidden style={{ flexGrow: 0.7, flexShrink: 1, flexBasis: 0, minHeight: 0 }} />
-        <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+        {/* Ribbon fills the live area; the connectors grow to distribute the
+            three stage cards evenly from the header down to the foot note. */}
+        <div style={{ flexGrow: 1, display: "flex", flexDirection: "column", paddingTop: 20, paddingBottom: "1.55in" }}>
           {stages.map((s, i) => {
             const accent = SECTION[s.accentKey as SectionKey];
             const bridge = s.label === "BUILD";
+            const d = STAGE_DETAIL[s.label];
             return (
               <React.Fragment key={s.label}>
-                <StageCard n={s.n} label={s.label} detail={s.detail} accent={accent} bridge={bridge} />
+                <StageCard n={s.n} label={s.label} detail={s.detail} accent={accent} bridge={bridge} does={d?.does} where={d?.where} />
                 {i < stages.length - 1 && <Connector />}
               </React.Fragment>
             );
           })}
         </div>
-        <div aria-hidden style={{ flexGrow: 1.05, flexShrink: 1, flexBasis: 0, minHeight: 0 }} />
       </div>
 
       {/* Foot — the one-build line (left) or ship targets (right) */}
@@ -172,11 +183,13 @@ const StageCard: React.FC<{
   detail: string;
   accent: string;
   bridge: boolean;
-}> = ({ n, label, detail, accent, bridge }) => (
+  does?: string;
+  where?: string;
+}> = ({ n, label, detail, accent, bridge, does, where }) => (
   <div
     style={{
       display: "flex",
-      alignItems: "center",
+      alignItems: "flex-start",
       gap: 14,
       border: `0.5pt solid ${bridge ? accent : COLORS.HAIRLINE}`,
       borderLeft: `3px solid ${accent}`,
@@ -204,36 +217,43 @@ const StageCard: React.FC<{
       {n}
     </div>
     <div style={{ flex: 1 }}>
-      <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
-        <span style={{ fontFamily: FONTS.SANS, fontSize: 17, fontWeight: 700, letterSpacing: "-0.01em", color: COLORS.INK }}>
-          {label}
-        </span>
-        {bridge && (
-          <span
-            style={{
-              fontFamily: FONTS.MONO,
-              fontSize: 7.5,
-              fontWeight: 700,
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: COLORS.STONE_DEEP,
-            }}
-          >
-            the hinge
+      <div style={{ display: "flex", alignItems: "baseline", gap: 8, justifyContent: "space-between" }}>
+        <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
+          <span style={{ fontFamily: FONTS.SANS, fontSize: 17, fontWeight: 700, letterSpacing: "-0.01em", color: COLORS.INK }}>
+            {label}
           </span>
+          {bridge && (
+            <span
+              style={{
+                fontFamily: FONTS.MONO,
+                fontSize: 7.5,
+                fontWeight: 700,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+                color: COLORS.STONE_DEEP,
+              }}
+            >
+              the hinge
+            </span>
+          )}
+        </div>
+        {where && (
+          <span style={{ fontFamily: FONTS.MONO, fontSize: 7.5, letterSpacing: "0.04em", color: COLORS.INK_SUBTLE, whiteSpace: "nowrap" }}>{where}</span>
         )}
       </div>
       <div style={{ fontFamily: FONTS.MONO, fontSize: 9, color: COLORS.INK_MUTED, marginTop: 2 }}>{detail}</div>
+      {does && (
+        <div style={{ fontFamily: FONTS.SERIF, fontStyle: "italic", fontSize: 11.5, lineHeight: 1.35, color: COLORS.INK, marginTop: 7 }}>{does}</div>
+      )}
     </div>
   </div>
 );
 
+/** A vertical link between stage cards that GROWS to fill the slack, so the
+ *  three cards distribute evenly down the page instead of clustering. */
 const Connector: React.FC = () => (
-  <div style={{ display: "flex", justifyContent: "center", alignItems: "center", padding: "10px 0", gap: 8 }}>
-    <span style={{ width: 1.5, height: 14, background: COLORS.HAIRLINE_STRONG }} aria-hidden />
-    <span style={{ color: COLORS.HAIRLINE_STRONG, fontSize: 15 }} aria-hidden>
-      ↓
-    </span>
-    <span style={{ width: 1.5, height: 14, background: COLORS.HAIRLINE_STRONG }} aria-hidden />
+  <div style={{ flexGrow: 1, minHeight: 26, position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }} aria-hidden>
+    <span style={{ position: "absolute", top: 4, bottom: 4, width: 1.5, background: COLORS.HAIRLINE_STRONG }} />
+    <span style={{ position: "relative", background: COLORS.PAPER, color: COLORS.HAIRLINE_STRONG, fontSize: 15, lineHeight: 1, padding: "3px 0" }}>↓</span>
   </div>
 );
