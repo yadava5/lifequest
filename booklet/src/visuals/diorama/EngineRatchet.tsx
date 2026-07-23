@@ -46,7 +46,11 @@ export const EngineRatchet: React.FC = () => {
         <IsoCube origin={[-9, -9, 9]} size={[18, 18, 9]} strokeWidth={1} />
         <IsoCube origin={[-9, -9, 18]} size={[18, 18, 9]} strokeWidth={1} />
       </g>
-      <text x={62} y={70} fontFamily="ui-monospace, monospace" fontSize={5.5} letterSpacing="1" fill={LINE} opacity={0.6}>
+      {/* label sits right of the stack with a short leader — centered it was
+          overprinted by the cubes (stack spans x≈31-85, y≈35-111) */}
+      <circle cx={85} cy={78} r={1.2} fill={LINE} opacity={0.6} />
+      <line x1={85} y1={78} x2={91} y2={85} stroke={LINE} strokeWidth={0.5} strokeDasharray="3 2" opacity={0.5} />
+      <text x={93} y={88} fontFamily="ui-monospace, monospace" fontSize={5.5} letterSpacing="1" fill={LINE} opacity={0.6}>
         api/index.ts
       </text>
 
