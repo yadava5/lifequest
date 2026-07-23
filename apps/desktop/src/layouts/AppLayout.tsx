@@ -14,6 +14,7 @@ import {
 } from 'phosphor-react';
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/features/theme/ThemeProvider';
+import { LifeQuestLogo } from '@/components/LifeQuestLogo';
 import { Button } from '@/components/ui/button';
 import { Toaster } from '@/components/ui/Toaster';
 import { useJourneyStore } from '@/store/journeyStore';
@@ -114,8 +115,8 @@ export const AppLayout = () => {
       <aside className="hidden w-72 flex-col border-r border-border/70 bg-card/50 backdrop-blur-xl lg:flex">
         <div className="flex items-center justify-between px-6 py-5">
           <div>
-            <p className="font-display text-xl font-bold tracking-tight text-foreground">Life<span className="text-coral">Quest</span></p>
-            <p className="font-mono text-[0.6rem] uppercase tracking-[0.3em] text-muted-foreground">
+            <LifeQuestLogo className="h-7" />
+            <p className="mt-1 font-mono text-[0.6rem] uppercase tracking-[0.3em] text-muted-foreground">
               routines → missions
             </p>
           </div>
@@ -180,7 +181,7 @@ export const AppLayout = () => {
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="flex items-center justify-between border-b border-border/60 bg-card/30 px-4 py-4 backdrop-blur-xl lg:px-8">
           <div className="lg:hidden">
-            <p className="font-display text-lg font-bold text-foreground">Life<span className="text-coral">Quest</span></p>
+            <LifeQuestLogo className="h-6" />
           </div>
           <p className="hidden font-mono text-[0.65rem] uppercase tracking-[0.35em] text-muted-foreground lg:block">
             Your journey, one mission at a time
