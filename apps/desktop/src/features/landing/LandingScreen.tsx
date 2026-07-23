@@ -28,6 +28,7 @@ import {
   UsersThree,
 } from 'phosphor-react';
 import { Button } from '@/components/ui/button';
+import { LifeQuestLogo } from '@/components/LifeQuestLogo';
 import { celebrate } from '@/lib/celebrate';
 import { useTheme } from '@/features/theme/ThemeProvider';
 import { cn } from '@/lib/utils';
@@ -541,9 +542,7 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
 
       {/* Nav */}
       <header className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-6">
-        <p className="font-display text-xl font-bold tracking-tight text-foreground">
-          Life<span className="text-coral">Quest</span>
-        </p>
+        <LifeQuestLogo className="h-7 sm:h-8" />
         <div className="flex items-center gap-2">
           <a
             href="/system-card/"
