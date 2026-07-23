@@ -37,10 +37,17 @@ export const QuestsScreen = () => {
     if (id) startQuest.mutate(id);
   };
   const handleComplete = async (q: QuestProgress) => {
+    if (q.status === 'COMPLETED') return;
     const id = q.quest.id ?? q.questId;
     if (!id) return;
-    await completeQuest.mutateAsync(id);
-    celebrate();
+    try {
+      await completeQuest.mutateAsync(id);
+      celebrate();
+    } catch {
+      // A friendly toast is surfaced by the mutation's onError (e.g. a 409 if
+      // the quest was already completed) — swallow so it never bubbles up as an
+      // uncaught page error, and skip the celebration.
+    }
   };
 
   const stats = [
