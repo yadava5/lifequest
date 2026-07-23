@@ -1,5 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { ApiError } from '@lifequest/client';
 import { useJourneyStore } from '@/store/journeyStore';
+import { useToastStore } from '@/store/toastStore';
 import { apiClient } from '@/lib/apiClient';
 import type { QuestProgress } from '@lifequest/schemas';
 
@@ -41,6 +43,7 @@ export const useQuestMutations = () => {
       if (context?.previousUser) {
         setUser(context.previousUser);
       }
+      useToastStore.getState().pushToast('Could not start that mission. Try again.', 'error');
     },
     onSuccess: () => {
       pushEvent('Quest started', 'quest');
@@ -71,10 +74,23 @@ export const useQuestMutations = () => {
       });
       return { previousUser };
     },
-    onError: (_error, _questId, context) => {
+    onError: (error, _questId, context) => {
       if (context?.previousUser) {
         setUser(context.previousUser);
       }
+      // A 409 means the quest was already completed (e.g. a stale button or a
+      // double tap). That's a benign race, not a failure — surface a calm
+      // notice instead of letting the ApiError bubble up as a page error. The
+      // onSettled refetch below re-syncs the button state either way.
+      const alreadyDone = error instanceof ApiError && error.status === 409;
+      useToastStore
+        .getState()
+        .pushToast(
+          alreadyDone
+            ? 'That mission is already complete.'
+            : 'Could not complete the mission. Try again.',
+          alreadyDone ? 'warning' : 'error',
+        );
     },
     onSuccess: () => {
       pushEvent('Quest completed', 'quest');
