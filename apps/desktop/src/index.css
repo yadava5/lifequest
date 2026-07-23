@@ -188,3 +188,85 @@
     animation: none;
   }
 }
+
+/* LifeQuest logo — a calm, on-brand hover flourish for the quest-ring wordmark
+ * (see components/LifeQuestLogo.tsx). On hover/focus the ¾ ring fills gold — a
+ * quest completing — the arrow nudges on to the next quest, and the two
+ * sparkles twinkle. Fully CSS-driven, so it also fires on keyboard focus; under
+ * prefers-reduced-motion it disables entirely and the mark rests, unmoving. */
+.lq-logo {
+  display: inline-flex;
+}
+.lq-logo svg {
+  display: block;
+  overflow: visible;
+}
+.lq-ring-sweep {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 0.72s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lq-arrow {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lq-spark {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.lq-logo:hover .lq-ring-sweep,
+.lq-logo:focus-visible .lq-ring-sweep,
+.lq-logo:focus-within .lq-ring-sweep {
+  stroke-dashoffset: 0;
+}
+.lq-logo:hover .lq-arrow,
+.lq-logo:focus-visible .lq-arrow,
+.lq-logo:focus-within .lq-arrow {
+  transform: translate(1.7px, 1.7px);
+}
+.lq-logo:hover .lq-spark,
+.lq-logo:focus-visible .lq-spark,
+.lq-logo:focus-within .lq-spark {
+  animation: lq-twinkle 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lq-logo:hover .lq-spark-amber,
+.lq-logo:focus-visible .lq-spark-amber,
+.lq-logo:focus-within .lq-spark-amber {
+  animation-delay: 0.12s;
+}
+@keyframes lq-twinkle {
+  0% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  45% {
+    transform: scale(1.42) rotate(18deg);
+    opacity: 0.82;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lq-ring-sweep,
+  .lq-arrow {
+    transition: none;
+  }
+  .lq-logo:hover .lq-ring-sweep,
+  .lq-logo:focus-visible .lq-ring-sweep,
+  .lq-logo:focus-within .lq-ring-sweep {
+    stroke-dashoffset: 1;
+  }
+  .lq-logo:hover .lq-arrow,
+  .lq-logo:focus-visible .lq-arrow,
+  .lq-logo:focus-within .lq-arrow {
+    transform: none;
+  }
+  .lq-logo:hover .lq-spark,
+  .lq-logo:focus-visible .lq-spark,
+  .lq-logo:focus-within .lq-spark {
+    animation: none;
+  }
+}
