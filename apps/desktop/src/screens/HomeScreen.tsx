@@ -257,7 +257,7 @@ export const HomeScreen = () => {
       </section>
 
       {/* Active mission + rituals */}
-      <section className="grid gap-6 lg:grid-cols-3">
+      <section className="grid gap-6 lg:grid-cols-3 [&>*]:min-w-0">
         <motion.div
           custom={4}
           variants={fade}
@@ -370,7 +370,7 @@ export const HomeScreen = () => {
       </section>
 
       {/* Open missions + recent activity */}
-      <section className="grid gap-6 lg:grid-cols-3">
+      <section className="grid gap-6 lg:grid-cols-3 [&>*]:min-w-0">
         <motion.div custom={6} variants={fade} initial="hidden" animate="show" className="lg:col-span-2">
           <div className="mb-3 flex items-center justify-between">
             <h2 className="font-display text-lg font-semibold">Open missions</h2>
