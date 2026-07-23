@@ -26,8 +26,10 @@ export const SummitFlag: React.FC = () => (
       <circle cx={108} cy={70} r={2.4} fill="currentColor" />
     </g>
 
-    {/* Coin stack — the receipts — at the base */}
-    <g style={{ color: ACCENT }} transform="translate(108 232)">
+    {/* Coin stack — the receipts — BELOW the mountain base (base line y=210),
+        so no coin ellipse pokes through the mountain's edge. The ◎ face sits
+        on the top coin instead of floating onto the mountain. */}
+    <g style={{ color: ACCENT }} transform="translate(108 248)">
       {[0, 1, 2, 3].map((i) => (
         <ellipse key={i} cx={0} cy={-i * 9} rx={22} ry={7} fill="currentColor" fillOpacity={i === 3 ? 0.28 : 0.16} stroke="currentColor" strokeWidth={1.2} />
       ))}
@@ -35,7 +37,7 @@ export const SummitFlag: React.FC = () => (
         ◎
       </text>
     </g>
-    <text x={108} y={262} textAnchor="middle" fontFamily="ui-monospace, monospace" fontSize={5.5} letterSpacing="1" fill={LINE} opacity={0.6}>
+    <text x={108} y={269} textAnchor="middle" fontFamily="ui-monospace, monospace" fontSize={5.5} letterSpacing="1" fill={LINE} opacity={0.6}>
       earned · persisted
     </text>
   </SceneFrame>
