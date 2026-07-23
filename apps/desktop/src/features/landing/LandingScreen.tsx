@@ -547,6 +547,8 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
         <div className="flex items-center gap-2">
           <a
             href="/system-card/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="hidden items-center gap-1.5 rounded-full border border-border px-3.5 py-2 font-mono text-[0.62rem] uppercase tracking-widest text-muted-foreground transition hover:border-coral/40 hover:text-coral sm:inline-flex"
           >
             <BookOpen size={13} weight="fill" /> System Card
@@ -1081,6 +1083,8 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
           <Reveal delay={0.2}>
             <a
               href="/system-card/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="mt-6 inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.25em] text-coral transition hover:gap-3"
             >
               <BookOpen size={15} weight="fill" /> Read the System Card <ArrowRight size={14} />
@@ -1096,7 +1100,7 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
 
       <footer className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-3 border-t border-border/60 px-6 py-8 text-center font-mono text-[0.65rem] uppercase tracking-widest text-muted-foreground sm:flex-row sm:text-left">
         <span>LifeQuest · routines → missions · by Ayush Yadav</span>
-        <a href="/system-card/" className="inline-flex items-center gap-1.5 transition hover:text-coral">
+        <a href="/system-card/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 transition hover:text-coral">
           <BookOpen size={13} weight="fill" /> System Card · Vol. 01
         </a>
       </footer>
