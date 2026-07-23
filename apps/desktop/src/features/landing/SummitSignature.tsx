@@ -77,16 +77,18 @@ export const SummitSignature = () => {
           </linearGradient>
         </defs>
 
-        {/* rising sun behind the summit */}
+        {/* rising sun behind the summit — kept inside the 0–512 viewBox so its
+            geometry never spills past the mobile viewport (was cx=452 r=150,
+            whose right edge reached x=602 and overflowed at 375px, LQ-3). */}
         <motion.circle
-          cx="452"
-          cy="118"
-          r="150"
+          cx="408"
+          cy="128"
+          r="102"
           fill="url(#lq-sun)"
           initial={reduced ? false : { opacity: 0, scale: 0.9 }}
           animate={inView ? { opacity: 1, scale: 1 } : undefined}
           transition={{ duration: 1.4, ease: EASE }}
-          style={{ transformOrigin: '452px 118px' }}
+          style={{ transformOrigin: '408px 128px' }}
         />
 
         {/* back range + front ridge */}
@@ -229,7 +231,7 @@ export const SummitSignature = () => {
           <span className="text-coral">→</span> Trailblazer{' '}
           <span className="text-coral">→</span> Luminary
         </p>
-        <p className="font-mono text-[0.58rem] uppercase tracking-[0.3em] text-coral/80">
+        <p className="font-mono text-[0.58rem] uppercase tracking-[0.3em] text-coral">
           {reduced ? 'summit reached' : 'plant the flag ↑'}
         </p>
       </div>
