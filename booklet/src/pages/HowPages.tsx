@@ -163,6 +163,33 @@ export const HowMissionPage: React.FC<PageProps> = ({ parity, pageNumber, totalP
       </div>
     </div>
 
+    {/* the card, field by field — every visible part of the hero card is a
+        column on the Quest model (or its per-user QuestProgress row) */}
+    <div style={{ marginTop: 20, borderTop: `1pt solid ${BRIGHT}`, paddingTop: 12 }}>
+      <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 9 }}>
+        <span style={{ fontFamily: FONTS.MONO, fontSize: 8.5, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: INK_ACCENT }}>
+          the card, field by field
+        </span>
+        <span style={{ fontFamily: FONTS.MONO, fontSize: 7.5, color: COLORS.INK_SUBTLE }}>schema.prisma:32-42 · model Quest</span>
+      </div>
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        {[
+          { part: "type chip", field: "type · audience", n: "QuestType + Audience enums — which line it feeds, who it’s for" },
+          { part: "title", field: "title (unique)", n: "one canonical mission per name" },
+          { part: "italic line", field: "description", n: "the how, in one sentence" },
+          { part: "progress bar", field: "QuestProgress", n: "a per-user row; Complete flips its status to COMPLETED" },
+          { part: "+60 ◎", field: "reward (Int)", n: "coins paid into the ledger on completion" },
+          { part: "Complete", field: "the mutation", n: "same flow as in-app — coins land, confetti fires (order: p.20)" },
+        ].map((r, i) => (
+          <div key={r.part} style={{ display: "grid", gridTemplateColumns: "1.15in 1.45in 1fr", columnGap: 14, alignItems: "baseline", padding: "5.5px 0", borderTop: i === 0 ? "none" : `0.5pt solid ${COLORS.HAIRLINE}` }}>
+            <span style={{ fontFamily: FONTS.SANS, fontSize: 10.5, fontWeight: 700, letterSpacing: "-0.01em", color: COLORS.INK }}>{r.part}</span>
+            <span style={{ fontFamily: FONTS.MONO, fontSize: 9, fontWeight: 700, color: COLORS.TEAL_DEEP }}>{r.field}</span>
+            <span style={{ fontFamily: FONTS.SERIF, fontStyle: "italic", fontSize: 10.5, lineHeight: 1.3, color: COLORS.INK_MUTED }}>{r.n}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+
     <Rail>{HOW.mission.source}</Rail>
   </BodyPage>
 );
