@@ -33,9 +33,11 @@ export const TrailheadDawn: React.FC = () => (
     {/* Horizon */}
     <line x1={10} y1={140} x2={206} y2={140} stroke={LINE} strokeWidth={0.8} strokeOpacity={0.4} />
 
-    {/* Switchback trail — climbing from the cairn (bottom) toward the summit */}
+    {/* Switchback trail — climbing from the cairn (bottom) toward the summit.
+        Starts at the cairn's TOP stone (y=233), not inside the stack, so no
+        segment slices through the stones. */}
     <path
-      d="M 96 258 C 96 236 150 232 150 210 C 150 190 78 190 78 168 C 78 150 132 150 138 132"
+      d="M 96 233 C 96 218 150 224 150 208 C 150 189 78 190 78 168 C 78 150 132 150 138 132"
       fill="none"
       stroke={LINE}
       strokeWidth={1.3}
@@ -43,8 +45,17 @@ export const TrailheadDawn: React.FC = () => (
       strokeDasharray="4 4"
       strokeLinecap="round"
     />
-    {/* First (lit) trail segment, in accent */}
-    <path d="M 96 258 C 96 244 118 240 130 236" fill="none" stroke={ACCENT} strokeWidth={2} strokeLinecap="round" />
+    {/* First (lit) trail segment, in accent — same curve as the dashed trail's
+        first leg, drawn solid for its first ~36 units so it stays exactly ON
+        the path instead of cutting its own line across the cairn. */}
+    <path
+      d="M 96 233 C 96 218 150 224 150 208"
+      fill="none"
+      stroke={ACCENT}
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeDasharray="36 500"
+    />
 
     {/* Summit marker at trail's end */}
     <g>
