@@ -51,13 +51,18 @@ function mulberry32(a: number): () => number {
 }
 
 // The front route + its waypoints, hand-placed so the climb reads intentional.
+// The trailhead sits at y≈846 — ABOVE the cover's title-block scrim — so the
+// cairn, the lit first leg, and every waypoint stay fully readable; nothing
+// half-drowns behind the title (the old y=1016 start left a ghost node and a
+// stray coral stroke poking out of the scrim).
 const TRAIL =
-  "M 612 1016 C 560 902 706 846 644 744 C 592 656 430 668 470 548 C 502 456 646 476 604 366 C 574 286 476 306 456 212";
+  "M 650 834 C 622 794 668 772 644 744 C 592 656 430 668 470 548 C 502 456 646 476 604 366 C 574 286 476 306 456 212";
+/** First curve of TRAIL — re-stroked solid (partial) as the lit first leg. */
+const TRAIL_FIRST_LEG = "M 650 834 C 622 794 668 772 644 744";
 
 type WP = { x: number; y: number; r: number; c: string };
 const WAYPOINTS: WP[] = [
-  { x: 612, y: 1010, r: 13, c: COLORS.SKY },
-  { x: 650, y: 838, r: 13, c: COLORS.SKY },
+  { x: 644, y: 744, r: 13, c: COLORS.SKY },
   { x: 505, y: 648, r: 14, c: COLORS.TEAL },
   { x: 604, y: 470, r: 14, c: COLORS.TEAL },
   { x: 512, y: 392, r: 15, c: COLORS.GOLD },
@@ -146,11 +151,12 @@ export const TrailField: React.FC<TrailFieldProps> = ({ widthIn, heightIn, varia
       <g opacity={routeOpacity} transform={routeTransform}>
         {/* dashed trail */}
         <path d={TRAIL} fill="none" stroke={COLORS.INK} strokeWidth={2.4} strokeOpacity={0.42} strokeDasharray="7 8" strokeLinecap="round" />
-        {/* lit first leg (coral-warm) */}
-        <path d="M 612 1016 C 588 968 636 940 648 902" fill="none" stroke={COLORS.CORAL} strokeWidth={3} strokeOpacity={0.8} strokeLinecap="round" />
+        {/* lit first leg (coral-warm) — the first ~64 units of the trail's own
+            first curve, so the lit stretch lies exactly on the route */}
+        <path d={TRAIL_FIRST_LEG} fill="none" stroke={COLORS.CORAL} strokeWidth={3} strokeOpacity={0.8} strokeLinecap="round" strokeDasharray="64 999" />
 
         {/* cairn at the trailhead */}
-        <g transform="translate(612 1016)">
+        <g transform="translate(650 846)">
           <ellipse cx={0} cy={16} rx={20} ry={7} fill={COLORS.INK} fillOpacity={0.08} stroke={COLORS.INK} strokeWidth={1.6} strokeOpacity={0.5} />
           <ellipse cx={0} cy={5} rx={15} ry={6} fill={COLORS.INK} fillOpacity={0.06} stroke={COLORS.INK} strokeWidth={1.6} strokeOpacity={0.5} />
           <ellipse cx={0} cy={-4} rx={10} ry={5} fill={COLORS.SKY} fillOpacity={0.4} stroke={COLORS.SKY} strokeWidth={1.6} />
