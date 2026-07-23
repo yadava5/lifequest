@@ -15,6 +15,7 @@ import {
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/features/theme/ThemeProvider';
 import { Button } from '@/components/ui/button';
+import { Toaster } from '@/components/ui/Toaster';
 import { useJourneyStore } from '@/store/journeyStore';
 import { useLogout } from '@/features/auth/AuthGate';
 import { tierProgress } from '@/lib/tiers';
@@ -103,7 +104,11 @@ export const AppLayout = () => {
   const logout = useLogout();
 
   return (
-    <div className="relative flex min-h-screen text-foreground">
+    // App shell is exactly one viewport tall (h-dvh), so <main> is the scroll
+    // container and the mobile bottom nav stays truly pinned at the bottom.
+    // With `min-h-screen` the body scrolled instead, which let tall page content
+    // overlap the sticky nav and swallow taps on its links (e.g. Settings).
+    <div className="relative flex h-dvh text-foreground">
       <div className="haze" aria-hidden />
 
       <aside className="hidden w-72 flex-col border-r border-border/70 bg-card/50 backdrop-blur-xl lg:flex">
@@ -184,7 +189,9 @@ export const AppLayout = () => {
                 It was previously `hidden lg:inline-flex` (desktop-only),
                 which both duplicated the sidebar's control on desktop AND
                 left mobile with no sign-out affordance anywhere in the UI. */}
-            <Button variant="outline" size="sm" onClick={logout} className="lg:hidden">
+            {/* Mobile-only: keep the tap target ≥44px (h-11) — `size="sm"` alone
+                is 36px tall, which fails the 44px touch-target guideline. */}
+            <Button variant="outline" size="sm" onClick={logout} className="h-11 px-4 lg:hidden">
               Sign out
             </Button>
           </div>
@@ -219,6 +226,8 @@ export const AppLayout = () => {
           })}
         </nav>
       </div>
+
+      <Toaster />
     </div>
   );
 };
