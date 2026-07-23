@@ -173,7 +173,11 @@ export const AppLayout = () => {
         </div>
       </aside>
 
-      <div className="flex flex-1 flex-col">
+      {/* min-w-0 lets this flex column shrink to the viewport; without it the
+          default min-width:auto on a flex item lets <main> grow to its content's
+          min-content width and spill ~24px past a 375px screen (horizontal
+          scroll). overflow-x-hidden on <main> is the belt-and-suspenders. */}
+      <div className="flex min-w-0 flex-1 flex-col">
         <header className="flex items-center justify-between border-b border-border/60 bg-card/30 px-4 py-4 backdrop-blur-xl lg:px-8">
           <div className="lg:hidden">
             <p className="font-display text-lg font-bold text-foreground">Life<span className="text-coral">Quest</span></p>
@@ -197,7 +201,7 @@ export const AppLayout = () => {
           </div>
         </header>
 
-        <main className="flex-1 overflow-y-auto px-4 py-6 lg:px-10">
+        <main className="min-w-0 flex-1 overflow-x-hidden overflow-y-auto px-4 py-6 lg:px-10">
           <div className="mx-auto max-w-6xl space-y-6">
             <Outlet />
           </div>
