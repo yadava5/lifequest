@@ -266,7 +266,7 @@ const TierLadder = () => {
             <Coins size={18} weight="fill" className="text-gold" />
             <CountUp value={coins} aria-live="polite" />
           </p>
-          <p className="mt-0.5 font-mono text-[0.56rem] uppercase tracking-widest text-gold/80">
+          <p className="mt-0.5 font-mono text-[0.56rem] uppercase tracking-widest text-gold">
             up on earn · down on spend
           </p>
         </div>
@@ -278,7 +278,7 @@ const TierLadder = () => {
             <Mountains size={18} weight="fill" className="text-teal" />
             <CountUp value={lifetime} aria-live="polite" />
           </p>
-          <p className="mt-0.5 font-mono text-[0.56rem] uppercase tracking-widest text-teal/80">
+          <p className="mt-0.5 font-mono text-[0.56rem] uppercase tracking-widest text-teal">
             only ever climbs
           </p>
         </div>
@@ -328,7 +328,7 @@ const TierLadder = () => {
                 >
                   {t.name}
                 </span>
-                <span className="font-mono text-[0.52rem] tabular-nums text-muted-foreground/60 transition-colors group-hover/rung:text-gold group-focus/rung:text-gold">
+                <span className="font-mono text-[0.52rem] tabular-nums text-muted-foreground transition-colors group-hover/rung:text-gold group-focus/rung:text-gold">
                   <CountUp value={t.at} /> ◎
                 </span>
               </div>
@@ -697,13 +697,13 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
                         key={t}
                         className="flex items-center gap-3 rounded-lg border border-border/50 bg-card/40 px-3 py-2.5"
                       >
-                        <Circle size={15} className="shrink-0 text-muted-foreground/50" />
-                        <span className="text-sm text-muted-foreground/80">{t}</span>
+                        <Circle size={15} className="shrink-0 text-muted-foreground/70" />
+                        <span className="text-sm text-muted-foreground">{t}</span>
                       </div>
                     ),
                   )}
                 </div>
-                <p className="mt-4 text-center font-mono text-[0.58rem] uppercase tracking-widest text-muted-foreground/70">
+                <p className="mt-4 text-center font-mono text-[0.58rem] uppercase tracking-widest text-muted-foreground">
                   no reward · no streak · no witness
                 </p>
               </div>
@@ -795,7 +795,7 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
               ))}
             </div>
             <Reveal delay={0.1}>
-              <p className="mt-4 max-w-3xl text-sm leading-relaxed text-muted-foreground/90">
+              <p className="mt-4 max-w-3xl text-sm leading-relaxed text-muted-foreground">
                 <span className="font-semibold text-foreground">Order matters.</span> In the
                 live app the server awards the coins first — the write resolves — then the
                 confetti fires, then a refetch ticks your tier up. The celebration only ever
