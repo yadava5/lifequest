@@ -267,12 +267,16 @@ export const ScrambleText = ({
   const wrapRef = useRef<HTMLSpanElement>(null);
   const inView = useInView(wrapRef, { once: true, margin: '-60px' });
   const chars = [...text];
+  const randGlyph = () => SCRAMBLE[Math.floor(Math.random() * SCRAMBLE.length)];
   const [shown, setShown] = useState<string[]>(() =>
-    reduced ? chars : chars.map((c) => (c === ' ' ? ' ' : '')),
+    // Start from stable-width glyphs (not blanks) so the headline never flashes
+    // an empty/collapsed layout before decoding.
+    reduced ? chars : chars.map((c) => (c === ' ' ? ' ' : randGlyph())),
   );
 
-  // decode-in: each glyph flickers through a few random symbols, then locks,
-  // staggered left-to-right.
+  // decode-in: each glyph flickers through a random symbol, then locks
+  // left-to-right. Settles in ~0.5s (≈ chars + 3 frames × 28ms) so the headline
+  // reads clearly almost immediately — no lingering ~1s of garbled text.
   useEffect(() => {
     if (reduced || !inView) return;
     let frame = 0;
@@ -282,17 +286,15 @@ export const ScrambleText = ({
       setShown(
         chars.map((c, i) => {
           if (c === ' ') return ' ';
-          const lockAt = i * 2 + 4;
-          if (frame >= lockAt) return c;
-          if (frame < i * 2) return '';
-          return SCRAMBLE[Math.floor(Math.random() * SCRAMBLE.length)];
+          const lockAt = i + 3;
+          return frame >= lockAt ? c : randGlyph();
         }),
       );
-      if (frame >= total * 2 + 4) {
+      if (frame >= total + 3) {
         window.clearInterval(id);
         setShown(chars);
       }
-    }, 45);
+    }, 28);
     return () => window.clearInterval(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView, reduced]);
