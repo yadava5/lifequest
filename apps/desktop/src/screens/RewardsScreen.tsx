@@ -60,7 +60,7 @@ export const RewardsScreen = () => {
             <span className="font-mono text-[0.6rem] uppercase tracking-widest text-muted-foreground">balance</span>
           </div>
         </div>
-        <Sparkle size={200} weight="thin" className="pointer-events-none absolute -right-8 -top-8 text-gold/10 animate-float" />
+        <Sparkle size={200} weight="thin" className="pointer-events-none absolute right-0 -top-8 text-gold/10 animate-float sm:-right-8" />
       </div>
 
       {flash && (
