@@ -63,11 +63,12 @@ export const QuestLoop: React.FC = () => (
       );
     })}
 
-    {/* Coin burst at LOG (right node) */}
+    {/* Coin burst at LOG (right node) — pushed up-and-out so its rays clear
+        the ring, the arc-end dot at pt(14°), and the LOG node itself. */}
     {(() => {
       const p = pt(30);
       return (
-        <g style={{ color: COLORS.GOLD }} transform={`translate(${(p.x + 26).toFixed(1)} ${(p.y - 22).toFixed(1)})`}>
+        <g style={{ color: COLORS.GOLD }} transform={`translate(${(p.x + 30).toFixed(1)} ${(p.y - 30).toFixed(1)})`}>
           <circle r={9} fill="currentColor" fillOpacity={0.2} stroke="currentColor" strokeWidth={1.4} />
           <text x={0} y={3} textAnchor="middle" fontFamily="ui-monospace, monospace" fontSize={8} fontWeight={700} fill="currentColor">
             ◎
