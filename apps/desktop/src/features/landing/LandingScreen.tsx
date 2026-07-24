@@ -462,7 +462,7 @@ const PROOF = [
     glow: 'hover:shadow-glow-teal',
     glowTone: 'teal',
     title: 'It persists',
-    body: 'Complete a mission, reload the page — it’s still there. Redeem a reward — the coins are gone for real. An independent live audit (2026-07) verified backend persistence end to end.',
+    body: 'Run against its live API, completing a mission or spending coins is a durable Postgres write — reload and it’s still there. The public demo runs on in-browser fixtures; see the honest note below.',
   },
   {
     icon: Lightning,
@@ -592,10 +592,9 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
             transition={{ duration: 0.55, delay: 0.16, ease: EASE }}
             className="serif mx-auto mt-5 max-w-xl text-2xl text-muted-foreground lg:mx-0"
           >
-            Looking for work is a demoralizing, isolating grind — and the days you
-            most need momentum are the ones it quietly leaks away. LifeQuest turns
-            the daily search — applications, follow-ups, upskilling, and rest — into
-            missions that pay you back, so you keep going without burning out.
+            LifeQuest turns the daily search — applications, follow-ups,
+            upskilling, and rest — into missions that pay you back, so you keep
+            going without burning out.
           </motion.p>
           <motion.div
             initial={{ opacity: 0, y: 18 }}
@@ -637,14 +636,14 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
       <section className="border-y border-border/50 bg-card/30">
         <div className="mx-auto w-full max-w-6xl px-6 py-20 sm:py-24">
           <Reveal>
-            <Waypoint glyph="◔" eyebrow="§01 · the grind" tone="border-coral/25 bg-coral/10 text-coral" />
+            <Waypoint glyph="◔" eyebrow="§01 · the problem" tone="border-coral/25 bg-coral/10 text-coral" />
           </Reveal>
           <div className="mt-8 grid gap-12 lg:grid-cols-[1.2fr_1fr] lg:items-center">
             <div>
               <Reveal delay={0.05}>
                 <h2 className="font-display text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
                   The job search
-                  <span className="block text-muted-foreground">is a climb taken alone.</span>
+                  <span className="block text-muted-foreground">is a climb with no scaffolding.</span>
                 </h2>
               </Reveal>
               <Reveal delay={0.1}>
@@ -657,9 +656,7 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
               <Reveal delay={0.15}>
                 <p className="mt-4 max-w-xl leading-relaxed text-muted-foreground">
                   So the applications blur together, the rejections pile up in
-                  silence, and the effort stops feeling like it counts. Motivation
-                  doesn’t crash — it leaks out between the lines until you burn out
-                  or quietly give up.
+                  silence, and the effort stops feeling like it counts.
                 </p>
               </Reveal>
               <Reveal delay={0.2}>
@@ -985,10 +982,8 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
             <ShieldNote />
             <p className="text-sm leading-relaxed text-muted-foreground">
               <span className="font-semibold text-foreground">One honest note.</span> This public
-              demo runs on in-browser fixtures that re-seed on reload, so you can click through with
-              no backend at all. Point the same app at the live API with a single environment
-              variable and the durable persistence above switches on — identical app code, no
-              change. Read the full accounting in the System Card.
+              demo runs on in-browser fixtures that re-seed on reload — point the same app at the
+              live API and the durable persistence above switches on.
             </p>
           </div>
         </Reveal>
@@ -1037,11 +1032,9 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
               </span>
               <p className="text-sm leading-relaxed text-muted-foreground">
                 <span className="font-semibold text-foreground">Where it honestly stands.</span> LifeQuest is a
-                concept with a working prototype — the loop you just played is real, running on a real backend.
-                What it can’t do alone is scale. Reaching people at that scale needs a partner or funder — a
-                nonprofit, a campus, a library system, a public agency — to host it, seed rewards that fit real
-                budgets, and meet people where they already are. The whole thing is open source. This is an idea
-                offered to society, not a product being sold to it.
+                concept with a working prototype. What it can’t do on its own is scale — that takes a partner
+                or funder: a nonprofit, a campus, a library system, a public agency. The whole thing is open
+                source — an idea offered to society, not a product being sold to it.
               </p>
             </div>
           </Reveal>
@@ -1051,11 +1044,8 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
       {/* ───────────────────────  TRY IT  ─────────────────────── */}
       <section className="border-t border-border/50 bg-card/30">
         <div className="mx-auto w-full max-w-4xl px-6 py-24 text-center">
-          <Reveal>
-            <SummitSignature />
-          </Reveal>
           <Reveal delay={0.05}>
-            <h2 className="mt-10 font-display text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
+            <h2 className="font-display text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
               Play the prototype.
             </h2>
           </Reveal>
@@ -1103,6 +1093,10 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
           <BookOpen size={13} weight="fill" /> System Card · Vol. 01
         </a>
       </footer>
+
+      {/* Signature panorama — the page's last image: a full-bleed dawn ridge
+          below the footer meta, bleeding off the bottom edge. */}
+      <SummitSignature />
     </div>
   );
 };
