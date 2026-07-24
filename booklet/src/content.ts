@@ -41,8 +41,8 @@ export const BRAND = {
   subtitle: "Routines are boring — missions aren’t.",
   author: "Ayush Yadav",
   year: "2026",
-  liveUrl: "lifequest-sigma-fawn.vercel.app",
-  qrTarget: "https://lifequest-sigma-fawn.vercel.app",
+  liveUrl: "getlifequest.vercel.app",
+  qrTarget: "https://getlifequest.vercel.app",
 } as const;
 
 export const MASTHEAD = {
@@ -467,7 +467,7 @@ export const BUILD = {
     ],
     registry:
       "The same dist/ powers the native Tauri window and the Vercel web deploy — desktop-first, web-real, one build.",
-    liveUrl: "lifequest-sigma-fawn.vercel.app",
+    liveUrl: "getlifequest.vercel.app",
     repoUrl: "github.com/yadava5/lifequest",
     source: "source · apps/desktop/package.json · src-tauri/tauri.conf.json · vercel.json",
   },
@@ -495,8 +495,8 @@ export const BUILD = {
     headline: "Play the prototype.",
     tagline:
       "Open the live demo, complete the hero mission, and watch the page pay you back — coins, confetti, a tier that climbs. No signup, no wall.",
-    qrTarget: "https://lifequest-sigma-fawn.vercel.app",
-    liveUrl: "lifequest-sigma-fawn.vercel.app",
+    qrTarget: "https://getlifequest.vercel.app",
+    liveUrl: "getlifequest.vercel.app",
     qrCaption: "scan to open the live app",
     demoNote:
       "One-click seeded demo — a real account is waiting, no signup. Or open it in any browser and click straight through the in-browser demo.",
