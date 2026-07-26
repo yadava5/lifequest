@@ -1,39 +1,80 @@
 # LifeQuest
 
-[![CI](https://github.com/yadava5/lifequest/actions/workflows/ci.yml/badge.svg)](https://github.com/yadava5/lifequest/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+**Turn real-world routines into a game — built for people rebuilding after job loss or retirement.**
 
-LifeQuest is a desktop-first rebuild of a map-based quest game that turns real-world routines into missions for people navigating job loss or retirement. Players complete local quests (daily check-ins, meetups, career fairs, skill-building), earn Quest Coins, and redeem them for practical rewards while the platform tracks progress and supports job re-entry and community connection.
+[![CI](https://github.com/yadava5/lifequest/actions/workflows/ci.yml/badge.svg)](https://github.com/yadava5/lifequest/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Tauri 2](https://img.shields.io/badge/Tauri-2-24C8DB.svg)](https://tauri.app/)
+[![React 19](https://img.shields.io/badge/React-19-61DAFB.svg)](https://react.dev/)
+[![NestJS 11](https://img.shields.io/badge/NestJS-11-E0234E.svg)](https://nestjs.com/)
+[![Prisma 6](https://img.shields.io/badge/Prisma-6-2D3748.svg)](https://www.prisma.io/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6.svg)](https://www.typescriptlang.org/)
 
-This repository is the primary monorepo for the new desktop rebuild (Tauri + React) and NestJS API. The original CRA + Express + Electron prototype is preserved under `legacy/`.
+**[Live app →](https://getlifequest.vercel.app)** · **[System Card →](https://getlifequest.vercel.app/system-card)**
 
-> **Live:** https://lifequest-sigma-fawn.vercel.app · one-click seeded demo (no signup)
->
-> **2026 status — full-stack live.** The desktop-first Tauri + React client also runs on the web, backed by a NestJS + Fastify + Prisma API on Vercel serverless over a real Postgres. Real accounts (argon2-hashed), persisted quests/coins/redemptions. Identity is the "dawn expedition" palette — coral / honey / lagoon-aqua, no gradients, no purple. The landing hero is a *playable* mission card: complete it and the page pays out coins + confetti before you ever sign up. Independently audited live (2026-07): ship-ready — zero functional bugs, zero console errors, backend persistence verified end to end.
+---
 
-## Repository layout
+LifeQuest is a gamified routine and goal tracker with a social-good mission: it turns everyday tasks into quests for people navigating a hard transition — a layoff, a career change, or retirement. Players complete local quests (daily check-ins, meetups, career fairs, skill-building), earn **Quest Coins**, and redeem them for practical rewards, while the platform tracks progress and nudges toward job re-entry and community connection.
+
+The landing hero is a *playable* mission card: finish it and the page pays out coins and confetti before you ever create an account. Try it live at **[getlifequest.vercel.app](https://getlifequest.vercel.app)** — a one-click seeded demo, no signup required.
+
+## Features
+
+- **Playable onboarding** — complete a real quest on the landing page and earn coins before signing up.
+- **Quests & missions** — daily check-ins, community meetups, career fairs, and skill-building tasks.
+- **Quest Coins economy** — earn coins for completed quests and redeem them for practical rewards.
+- **Progress tracking** — persisted quests, coins, and redemptions backed by a real Postgres database.
+- **Real accounts** — email/password auth with argon2-hashed credentials and JWT sessions.
+- **Desktop-first, web-ready** — one React client ships as both a native Tauri desktop app and a hosted web app.
+- **Cohesive identity** — a warm "dawn expedition" palette (coral, honey, lagoon-aqua) with intentional, gradient-free visual design.
+
+## Architecture
+
+LifeQuest is a TypeScript monorepo (npm workspaces) with a shared schema layer that keeps the client and API in sync.
+
+```
+Tauri 2 + React 19 client  ──►  NestJS 11 + Fastify API  ──►  Postgres (Prisma 6)
+      (desktop + web)              (Vercel serverless)          (persisted state)
+                     └──── @lifequest/schemas (shared Zod types) ────┘
+```
+
+### Tech stack
+
+| Layer        | Technology                                                                 |
+| ------------ | -------------------------------------------------------------------------- |
+| **Client**   | Tauri 2, React 19, Vite 7, TanStack Query, React Router, Tailwind CSS, Framer Motion |
+| **API**      | NestJS 11, Fastify, Prisma 6, argon2, Zod, Pino                            |
+| **Database** | PostgreSQL                                                                  |
+| **Shared**   | `@lifequest/schemas` (Zod schemas + types), `@lifequest/client` (typed API helpers) |
+| **Tooling**  | TypeScript, ESLint, Prettier, Vitest, Playwright, Docker Compose            |
+| **Hosting**  | Vercel (web build + serverless API function)                               |
+
+### Repository layout
 
 ```
 lifequest/
 ├── apps/
 │   ├── api/           # NestJS + Fastify API (Postgres + Prisma)
-│   └── desktop/       # Tauri 2 + Vite + React desktop client
+│   └── desktop/       # Tauri 2 + Vite + React client (desktop + web)
 ├── packages/
-│   ├── client/        # API client helpers (shared)
+│   ├── client/        # Typed API client helpers (shared)
 │   └── schemas/       # Zod schemas + shared types
-├── docs/              # Architecture, development, assets
-├── legacy/            # CRA + Express + Electron prototype
+├── docs/              # Architecture, development, deployment, assets
+├── legacy/            # Original CRA + Express + Electron prototype
 └── docker-compose.dev.yml  # Postgres + Redis for local dev
 ```
 
-## Quick start (new stack)
+## Quick start
 
-### 1) Start data services
+**Prerequisites:** Node.js 20+, npm 11+, and Docker (for local Postgres).
+
+### 1. Start data services
 
 ```bash
 docker compose -f docker-compose.dev.yml up -d
 ```
 
-### 2) API (apps/api)
+### 2. API (`apps/api`)
 
 ```bash
 cd apps/api
@@ -44,44 +85,39 @@ npm run prisma:seed
 npm run dev
 ```
 
-The API runs on `http://localhost:4000` by default.
+The API runs on `http://localhost:4000`.
 
-### 3) Desktop (apps/desktop)
+### 3. Client (`apps/desktop`)
 
 ```bash
 cd apps/desktop
 npm install
-npm run dev
-# For the native desktop shell:
-# npm run tauri dev
+npm run dev            # web dev server (Vite)
+# npm run tauri dev    # native desktop shell
 ```
 
-If you are using npm workspaces, you can run installs from the repo root instead of per-app. See `docs/development.md` for a workspace-first setup.
+Prefer a workspace-first setup? You can install once from the repo root instead of per app — see [`docs/development.md`](docs/development.md).
 
 ## Documentation
 
-- `docs/README.md` - documentation index
-- `docs/development.md` - local setup and workflows
-- `docs/architecture.md` - architecture plan for the rebuild
-- `docs/legacy.md` - legacy prototype overview and how to run it
-- `docs/assets/` - concept and presentation files
+- [`docs/README.md`](docs/README.md) — documentation index
+- [`docs/development.md`](docs/development.md) — local setup and workflows
+- [`docs/architecture.md`](docs/architecture.md) — architecture and design decisions
+- [`docs/deployment.md`](docs/deployment.md) — deploying to Vercel
+- [`docs/legacy.md`](docs/legacy.md) — the legacy prototype
 
 ## Deployment
 
-See `docs/deployment.md` for hosting the API on Render and the web build on Vercel without changing local workflows.
+The live app runs as a single Vercel project: the Vite web build is served as static assets, and the NestJS API runs as a serverless function (`api/index.ts`) over a hosted Postgres. See [`docs/deployment.md`](docs/deployment.md) and [`apps/api/DEPLOY.md`](apps/api/DEPLOY.md) for the full runbook.
 
 ## Legacy prototype
 
-The original web + Electron prototype lives in `legacy/`. See `legacy/README.md` and `docs/legacy.md` for how to run it and what it contains.
+The original CRA + Express + Electron prototype is preserved under [`legacy/`](legacy/) for reference and parity checks. See [`legacy/README.md`](legacy/README.md) and [`docs/legacy.md`](docs/legacy.md).
 
-## Status
+## Author
 
-This repo is a prototype under active development toward the desktop-first rebuild described in `docs/architecture.md`. The legacy prototype is preserved for reference and parity checks.
-
-## AI assistance
-
-Some code and documentation were drafted with AI assistance and reviewed by the author. To the best of our knowledge, no proprietary third-party code is included. If you believe any content conflicts with a license, please open an issue.
+**Ayush Yadav** — sole author and maintainer · [github.com/yadava5](https://github.com/yadava5)
 
 ## License
 
-MIT. See `LICENSE`.
+Released under the [MIT License](LICENSE).

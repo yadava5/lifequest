@@ -1,9 +1,10 @@
-# LifeQuest API — live deployment
+# LifeQuest API — serverless deployment runbook
 
-The web SPA (`apps/desktop`) ships today at its Vercel URL in **demo mode**
-(zero backend, in-browser fixtures). To light up the *real* backend —
-persisted quests, coins, redemptions, real login — deploy this NestJS API
-and point the SPA at it with a single env var. No app-code change is needed.
+The production app runs the NestJS API as a Vercel serverless function backed by
+a real Postgres — persisted quests, coins, redemptions, and argon2 logins. This
+runbook documents how that function is wired and how to stand up an equivalent
+deployment (a fresh Vercel project, or a standalone API pointed at by the SPA via
+a single env var). No app-code change is needed.
 
 ## What's already proven
 
