@@ -1,5 +1,30 @@
 # LifeQuest Desktop Rebuild – Architecture Plan
 
+> **This is a PLAN. Some of what follows is not built.** The title always said
+> so and the tables did not, which is the gap this banner closes — a reader
+> skimming §2's stack table has no way to tell an installed dependency from an
+> intended one.
+>
+> Checked against `apps/api/package.json` and `apps/desktop/package.json` on
+> 2026-08-02, these rows are **intent, not current state**:
+>
+> | claimed | actual |
+> |---|---|
+> | tRPC layer via `@trpc/server` | not a dependency of either app |
+> | Backend testing: Jest + Supertest, contracts via Pactum | none of `jest`, `ts-jest`, `supertest`, `pactum` installed |
+> | Desktop testing: Vitest + React Testing Library | neither installed on the desktop app |
+> | CI matrix incl. desktop tests and Playwright E2E | `ci.yml` has two jobs, neither runs a test |
+>
+> What IS shipped and correct here: NestJS 11 on Fastify, Prisma + Postgres,
+> argon2, pino, Zod schemas in `packages/`, and the Playwright spec at
+> `apps/desktop/e2e/lifequest.spec.ts`.
+>
+> **The testing situation, plainly:** `apps/api` declares Vitest and has **zero
+> test files**; its `test` script is `vitest --passWithNoTests`, so it exits 0
+> without asserting anything. The CI badge on the README is therefore green on
+> lint and typecheck alone. That is worth knowing before reading any row below
+> that mentions testing.
+
 ## 0. Repository context
 
 - Primary stack: `apps/desktop`, `apps/api`, and shared `packages/*`.

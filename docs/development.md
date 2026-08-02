@@ -70,6 +70,12 @@ Vite defaults to `http://localhost:5173`.
 
 ## Tests
 
+> **The API suite is empty.** `apps/api` has no test files and its script is
+> `vitest --passWithNoTests`, so the command below exits 0 without running
+> anything. It is here so the entry point exists when tests are written — not
+> as a signal that the project is tested. Real coverage today is the Playwright
+> spec at `apps/desktop/e2e/lifequest.spec.ts`.
+
 ```bash
 cd apps/api
 npm run test
