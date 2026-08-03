@@ -98,6 +98,34 @@ npm run dev            # web dev server (Vite)
 
 Prefer a workspace-first setup? You can install once from the repo root instead of per app — see [`docs/development.md`](docs/development.md).
 
+## Testing
+
+```bash
+npm test -w packages/schemas    # 16 contract tests
+```
+
+`packages/schemas` is the API/client contract, and it now has **16 tests**. Until
+recently the only test script in the repository was `vitest --passWithNoTests`
+over zero test files — a green check that asserted nothing, which is worse than a
+missing one because it occupies the slot where evidence goes.
+
+Schemas were chosen as the starting point rather than picked arbitrarily. They
+are pure, they need no database or running server, and they are exactly the kind
+of code that breaks *silently*: a widened enum does not throw, it starts
+accepting data the rest of the system assumed it would never see.
+
+The load-bearing example is an asymmetry nothing in the source states.
+`audienceEnum` carries three values — `LAID_OFF`, `RETIRED`, `SHARED` — while
+signup and profile updates accept only two. `SHARED` describes a quest visible to
+everyone; it was never something a person signs up as. The two enums sit fifty
+lines apart with no comment between them, so anyone tidying up the apparent
+duplication would let users register as `SHARED`, and TypeScript would not object.
+There is now a test that fails if they do.
+
+Supply-chain checks run on every push: CodeQL, full-history secret scanning, and
+[OpenSSF Scorecard](https://scorecard.dev/viewer/?uri=github.com/yadava5/lifequest),
+which a third party computes and publishes rather than this repository asserting it.
+
 ## Documentation
 
 - [`docs/README.md`](docs/README.md) — documentation index
