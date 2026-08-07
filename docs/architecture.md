@@ -6,14 +6,25 @@
 > intended one.
 >
 > Checked against `apps/api/package.json` and `apps/desktop/package.json` on
-> 2026-08-02, these rows are **intent, not current state**:
+> 2026-08-02, and re-checked against the source tree itself on 2026-08-07,
+> these rows are **intent, not current state**:
 >
 > | claimed | actual |
 > |---|---|
 > | tRPC layer via `@trpc/server` | not a dependency of either app |
 > | Backend testing: Jest + Supertest, contracts via Pactum | none of `jest`, `ts-jest`, `supertest`, `pactum` installed |
 > | Desktop testing: Vitest + React Testing Library | neither installed on the desktop app |
-> | CI matrix incl. desktop tests and Playwright E2E | `ci.yml` has two jobs, neither runs a test |
+> | CI matrix incl. desktop tests and Playwright E2E | `ci.yml` has two jobs; the API job runs `packages/schemas`' 16 contract tests, and nothing runs desktop tests or Playwright |
+> | §2 Auth: Lucia (Nest adapter) + JWT in secure cookies | no `lucia`, no JWT, no cookies. `auth/auth.service.ts` hashes with argon2; `auth/session.service.ts` issues opaque 7-day session rows in Postgres, sent as a Bearer token and checked by `common/guards/session.guard.ts` |
+> | §2 Background jobs: BullMQ + Redis | neither `bullmq` nor `ioredis` is installed and nothing schedules jobs; Redis exists only as a container in `docker-compose.dev.yml` |
+> | §2 Telemetry: OpenTelemetry (OTLP exporter) | not installed |
+> | §2 Tooling: Turborepo + Husky pre-commit hooks | no `turbo.json` and no `.husky/`; this is plain npm workspaces driven by root `package.json` scripts |
+> | §3 `packages/ui` | `packages/` holds only `client` and `schemas` |
+> | §6 Playwright E2E "drives Tauri build" | the spec is web-only: `apps/desktop/playwright.config.ts` serves the SPA with `vite preview` and drives Chromium. It never packages Tauri |
+> | §6 Release: API as a Docker image on Fly.io/Render | the API ships as a Vercel serverless function (`api/index.ts`; see `vercel.json`) |
+> | §6 Monitoring: health endpoint `/healthz` | the route is `@Controller('health')` under the global `api` prefix, so it is **`/api/health`** — it runs `SELECT 1` and returns `{"status":"ok"}` |
+> | §6 Monitoring: smoke test targeting the new stack | `apps/api` declares `"smoke": "tsx tests/smoke.ts"`, but `apps/api/tests/` is empty — the script has no target |
+> | §6 Monitoring: Sentry for desktop crash/error reporting | not installed |
 >
 > What IS shipped and correct here: NestJS 11 on Fastify, Prisma + Postgres,
 > argon2, pino, Zod schemas in `packages/`, and the Playwright spec at
@@ -21,9 +32,11 @@
 >
 > **The testing situation, plainly:** `apps/api` declares Vitest and has **zero
 > test files**; its `test` script is `vitest --passWithNoTests`, so it exits 0
-> without asserting anything. The CI badge on the README is therefore green on
-> lint and typecheck alone. That is worth knowing before reading any row below
-> that mentions testing.
+> without asserting anything. The only real tests in the repository are the 16
+> contract tests in `packages/schemas`, which CI does now run — but the README
+> badge still says nothing about the API or the desktop app, both of which are
+> covered by lint and typecheck alone. That is worth knowing before reading any
+> row below that mentions testing.
 
 ## 0. Repository context
 
