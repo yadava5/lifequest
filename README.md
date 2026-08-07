@@ -18,6 +18,8 @@ LifeQuest is a gamified routine and goal tracker with a social-good mission: it 
 
 The landing hero is a *playable* mission card: finish it and the page pays out coins and confetti before you ever create an account. Try it live at **[getlifequest.vercel.app](https://getlifequest.vercel.app)** — a one-click seeded demo, no signup required.
 
+LifeQuest doesn't travel alone: five sibling projects share the portfolio at [yadava5.github.io/Portfolio-2.0](https://yadava5.github.io/Portfolio-2.0/).
+
 ## Features
 
 - **Playable onboarding** — complete a real quest on the landing page and earn coins before signing up.
