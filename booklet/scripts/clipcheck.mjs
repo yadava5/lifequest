@@ -12,6 +12,9 @@ const browser = await puppeteer.launch({ headless: "new", args: ["--no-sandbox",
 const page = await browser.newPage();
 await page.setViewport({ width: 840, height: 1080, deviceScaleFactor: 2 });
 await page.goto(URL, { waitUntil: "networkidle0", timeout: 60000 });
+// Neutralise the screen reader's fit-scale so every threshold below measures
+// true page pixels, not pixels shrunk through the leaf transform.
+await page.addStyleTag({ content: ".leaf-inner { transform: none !important; }" });
 await page.evaluate(async () => { await document.fonts.ready; });
 await new Promise((r) => setTimeout(r, 500));
 

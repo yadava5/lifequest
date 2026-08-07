@@ -2,13 +2,17 @@ import React from "react";
 import { COLORS, FONTS, PAGE } from "../theme";
 import { BRAND, MASTHEAD } from "../content";
 import { TrailField } from "../visuals/TrailField";
+import { QuestRing } from "../visuals/QuestRing";
 
 /**
  * Front cover (page 01). A full-bleed warm-parchment dawn-expedition map
- * (TrailField): a mission trail climbing through glowing waypoints toward a
- * coral summit — the whole product as one image. A waypoint legend seeds the
- * book's color language; the title block lands lower-left over a soft cream
- * scrim; a vertical mono callout runs the right edge.
+ * (TrailField): a mission trail switchbacking the full width of the page
+ * through glowing waypoints toward a coral summit — the whole product as one
+ * image. The quest-ring mark anchors the masthead top-left like a publisher's
+ * device; a waypoint legend seeds the book's color language top-right; the
+ * title block lands lower-left over a soft cream scrim; a vertical mono
+ * callout runs the right edge, painted AFTER the scrim so it cannot dissolve
+ * mid-word behind it.
  */
 export const CoverPage: React.FC = () => (
   <section
@@ -23,21 +27,30 @@ export const CoverPage: React.FC = () => (
   >
     <TrailField widthIn={8.75} heightIn={11.25} variant="front" />
 
-    {/* Masthead — top-left */}
+    {/* Masthead — top-left: the quest-ring device, then the series line */}
     <div
       style={{
         position: "absolute",
-        top: "0.7in",
+        top: "0.62in",
         left: "0.7in",
-        fontFamily: FONTS.MONO,
-        fontSize: 9,
-        fontWeight: 600,
-        letterSpacing: "0.22em",
-        textTransform: "uppercase",
-        color: COLORS.INK_MUTED,
+        display: "flex",
+        alignItems: "center",
+        gap: 11,
       }}
     >
-      {BRAND.name} · System Card
+      <QuestRing size={30} />
+      <span
+        style={{
+          fontFamily: FONTS.MONO,
+          fontSize: 9,
+          fontWeight: 600,
+          letterSpacing: "0.22em",
+          textTransform: "uppercase",
+          color: COLORS.INK_MUTED,
+        }}
+      >
+        {BRAND.name} · System Card
+      </span>
     </div>
 
     {/* Waypoint legend — top-right, seeds the color language. */}
@@ -80,24 +93,6 @@ export const CoverPage: React.FC = () => (
       ))}
     </div>
 
-    {/* Vertical margin callout — right edge */}
-    <div
-      style={{
-        position: "absolute",
-        right: "0.4in",
-        bottom: `${PAGE.margin.bottom}in`,
-        writingMode: "vertical-rl",
-        fontFamily: FONTS.MONO,
-        fontSize: 8.5,
-        fontWeight: 500,
-        letterSpacing: "0.22em",
-        textTransform: "uppercase",
-        color: COLORS.INK_SUBTLE,
-      }}
-    >
-      a quest game for real life
-    </div>
-
     {/* Scrim behind the title block */}
     <div
       style={{
@@ -110,6 +105,27 @@ export const CoverPage: React.FC = () => (
         pointerEvents: "none",
       }}
     />
+
+    {/* Vertical margin callout — right edge. Painted after the scrim (its
+        lower half sits inside the scrim zone), and in INK_MUTED: INK_SUBTLE
+        measured APCA Lc 45 on paper, below the Lc 60 dim-text floor;
+        INK_MUTED measures Lc 70. */}
+    <div
+      style={{
+        position: "absolute",
+        right: "0.4in",
+        bottom: `${PAGE.margin.bottom}in`,
+        writingMode: "vertical-rl",
+        fontFamily: FONTS.MONO,
+        fontSize: 8.5,
+        fontWeight: 500,
+        letterSpacing: "0.22em",
+        textTransform: "uppercase",
+        color: COLORS.INK_MUTED,
+      }}
+    >
+      a quest game for real life
+    </div>
 
     {/* Title block — lower-left */}
     <div

@@ -1,14 +1,19 @@
 import React from "react";
 import { COLORS, FONTS, PAGE } from "../theme";
-import { BACK_COVER, BRAND } from "../content";
+import { BACK_COVER } from "../content";
 import { TrailField } from "../visuals/TrailField";
+import { QuestRing } from "../visuals/QuestRing";
 
 /**
- * Back cover (page 28) — a PURE CLOSING that mirrors the front cover: the same
- * full-bleed dawn-map (reseeded so it reads as a wraparound), a quiet closing
- * line, and the colophon. No QR, no CTA, no live URL — the Try-It page (27)
- * owns those now. This page just closes the book, the way a real book's last
- * page does: a bookend to the cover.
+ * Back cover (page 28) — a CLOSING ANSWER to the front, not a mirror of it.
+ * The front asks (a dashed route, waypoints still glowing, only the first leg
+ * lit); this page answers: the same journey completed — one calm solid line in
+ * from the spine edge, every waypoint collected, the flag planted, and a
+ * dashed coral leg carrying on past the summit through the top bleed — the
+ * idea handed onward, which is what the closing statement says in words. The
+ * quest-ring mark sits above that statement as the book's closing device; the
+ * colophon carries the identity, so the front's masthead is not repeated.
+ * No QR, no CTA, no live URL — the Try-It page (27) owns those.
  */
 export const BackCoverPage: React.FC = () => (
   <section
@@ -23,41 +28,6 @@ export const BackCoverPage: React.FC = () => (
   >
     <TrailField widthIn={8.75} heightIn={11.25} variant="back" />
 
-    {/* Masthead — top-left, mirrors the cover */}
-    <div
-      style={{
-        position: "absolute",
-        top: "0.7in",
-        left: "0.7in",
-        fontFamily: FONTS.MONO,
-        fontSize: 9,
-        fontWeight: 600,
-        letterSpacing: "0.22em",
-        textTransform: "uppercase",
-        color: COLORS.INK_MUTED,
-      }}
-    >
-      {BRAND.name} · System Card
-    </div>
-
-    {/* Vertical margin callout — right edge, mirrors the cover */}
-    <div
-      style={{
-        position: "absolute",
-        right: "0.4in",
-        bottom: `${PAGE.margin.bottom}in`,
-        writingMode: "vertical-rl",
-        fontFamily: FONTS.MONO,
-        fontSize: 8.5,
-        fontWeight: 500,
-        letterSpacing: "0.22em",
-        textTransform: "uppercase",
-        color: COLORS.INK_SUBTLE,
-      }}
-    >
-      an idea, offered to society
-    </div>
-
     {/* Scrim behind the closing block */}
     <div
       style={{
@@ -71,7 +41,27 @@ export const BackCoverPage: React.FC = () => (
       }}
     />
 
-    {/* Closing block — lower-left, mirrors the cover's title block */}
+    {/* Vertical margin callout — right edge. Painted after the scrim so it
+        cannot dissolve mid-word, and in INK_MUTED (APCA Lc 70 on paper;
+        INK_SUBTLE measured Lc 45, below the Lc 60 dim-text floor). */}
+    <div
+      style={{
+        position: "absolute",
+        right: "0.4in",
+        bottom: `${PAGE.margin.bottom}in`,
+        writingMode: "vertical-rl",
+        fontFamily: FONTS.MONO,
+        fontSize: 8.5,
+        fontWeight: 500,
+        letterSpacing: "0.22em",
+        textTransform: "uppercase",
+        color: COLORS.INK_MUTED,
+      }}
+    >
+      an idea, offered to society
+    </div>
+
+    {/* Closing block — lower-left: device, statement, sign-off, colophon */}
     <div
       style={{
         position: "absolute",
@@ -83,6 +73,7 @@ export const BackCoverPage: React.FC = () => (
         gap: 14,
       }}
     >
+      <QuestRing size={52} />
       <div
         style={{
           fontFamily: FONTS.SERIF,
