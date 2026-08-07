@@ -1,0 +1,53 @@
+version: 2
+
+# One entry per lockfile that actually gets installed. Dependabot resolves an
+# npm ecosystem from the lockfile in `directory`, so pointing it at a folder
+# without its own lock produces nothing.
+#
+# Deliberately NOT covered:
+#   - `legacy/` and `legacy/backend/` — the archived CRA + Express + Electron
+#     prototype. Both have lockfiles, but nothing builds, deploys, or tests
+#     them (`.vercelignore` excludes the whole tree and CI never touches it),
+#     so update PRs there would be pure noise against dead code.
+#   - docker — the only Dockerfile in the repo is `legacy/backend/Dockerfile`,
+#     inside that same archived tree; `docker-compose.dev.yml` is local-dev
+#     scaffolding that never ships.
+
+updates:
+  # Root npm workspace: covers the root manifest plus apps/* and packages/*,
+  # all of which resolve through the single root package-lock.json.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      # One PR per weekly batch of patch/minor bumps keeps the review surface
+      # small; majors still arrive individually because they need a human.
+      minor-and-patch:
+        update-types:
+          - minor
+          - patch
+
+  # The System Card booklet is not a workspace — it has its own lockfile and is
+  # installed with `npm --prefix booklet ci` inside the production build chain
+  # (`build:system-card`), so a stale lock here breaks the deploy, not just dev.
+  - package-ecosystem: npm
+    directory: /booklet
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      minor-and-patch:
+        update-types:
+          - minor
+          - patch
+
+  # Workflow actions are SHA-pinned (Scorecard grades this), which means they
+  # can only be refreshed by something that rewrites the pin. That is exactly
+  # this.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
