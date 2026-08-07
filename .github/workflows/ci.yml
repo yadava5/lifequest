@@ -20,6 +20,7 @@ jobs:
       - run: npm install --workspaces --include-workspace-root --no-fund --no-audit
       - run: npm run build:packages
       - run: npm run lint:api
+      - run: npm test -w packages/schemas
       - run: npm run test:api
 
   desktop:
