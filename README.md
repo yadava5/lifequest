@@ -10,7 +10,7 @@
 [![Prisma 6](https://img.shields.io/badge/Prisma-6-2D3748.svg)](https://www.prisma.io/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6.svg)](https://www.typescriptlang.org/)
 
-**[Live app →](https://getlifequest.vercel.app)** · **[System Card →](https://getlifequest.vercel.app/system-card)**
+**[Live app](https://getlifequest.vercel.app)** · **[System Card](https://getlifequest.vercel.app/system-card)**
 
 ---
 

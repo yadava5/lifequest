@@ -1,6 +1,6 @@
 {
   "framework": "vite",
-  "installCommand": "npm install",
+  "installCommand": "npm ci",
   "buildCommand": "npm run build:packages && npm run -w apps/api prisma:generate && npm run -w apps/api build && npm run build:system-card && npm run -w apps/desktop build",
   "outputDirectory": "apps/desktop/dist",
   "functions": {
