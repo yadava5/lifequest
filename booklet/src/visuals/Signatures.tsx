@@ -123,10 +123,12 @@ export const TierLadderSignature: React.FC<{
             borderTop: i === 0 ? "none" : `0.5pt solid ${COLORS.HAIRLINE}`,
           }}
         >
-          {/* rung node on a rail */}
+          {/* rung node on a rail — the rail below a rung is the climb to the
+              NEXT rung, so it only earns the accent once that next rung is
+              reached; colouring it on the current rung overstated progress */}
           <div style={{ position: "relative", height: 22, display: "flex", justifyContent: "center" }}>
             {i < tiers.length - 1 && (
-              <span style={{ position: "absolute", top: 11, width: 2, height: 32, background: reached ? accent : COLORS.HAIRLINE_STRONG }} />
+              <span style={{ position: "absolute", top: 11, width: 2, height: 32, background: i < markerAt ? accent : COLORS.HAIRLINE_STRONG }} />
             )}
             <span
               style={{
@@ -273,7 +275,8 @@ export const RatchetDiagram: React.FC<{
       <div style={{ fontFamily: FONTS.MONO, fontSize: 11, fontWeight: 700, color: COLORS.INK }}>{down.field}</div>
       <svg viewBox="0 0 120 60" width="100%" style={{ display: "block" }}>
         <polyline points="6,44 30,26 54,38 78,18 102,40 114,30" fill="none" stroke={COLORS.STONE_DEEP} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-        <polygon points="30,26 30,44 54,38 54,20" fill={COLORS.STONE_DEEP} fillOpacity={0.08} stroke="none" />
+        {/* soft area under the line, matching the lifetime panel's idiom */}
+        <polygon points="6,44 30,26 54,38 78,18 102,40 114,30 114,54 6,54" fill={COLORS.STONE_DEEP} fillOpacity={0.08} stroke="none" />
       </svg>
       <div style={{ fontFamily: FONTS.MONO, fontSize: 8, letterSpacing: "0.06em", color: COLORS.INK_MUTED, textTransform: "uppercase" }}>{down.label}</div>
       <div style={{ fontFamily: FONTS.SERIF, fontStyle: "italic", fontSize: 10.5, color: COLORS.INK_MUTED }}>{down.note}</div>

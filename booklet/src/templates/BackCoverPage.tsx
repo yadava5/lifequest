@@ -1,6 +1,6 @@
 import React from "react";
 import { COLORS, FONTS, PAGE } from "../theme";
-import { BACK_COVER } from "../content";
+import { BACK_COVER, BRAND } from "../content";
 import { TrailField } from "../visuals/TrailField";
 
 /**
@@ -37,7 +37,7 @@ export const BackCoverPage: React.FC = () => (
         color: COLORS.INK_MUTED,
       }}
     >
-      LifeQuest · System Card
+      {BRAND.name} · System Card
     </div>
 
     {/* Vertical margin callout — right edge, mirrors the cover */}

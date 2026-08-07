@@ -1,7 +1,7 @@
 {
   "framework": "vite",
   "installCommand": "npm install",
-  "buildCommand": "npm run build:packages && npm run -w apps/api prisma:generate && npm run -w apps/api build && npm run -w apps/desktop build",
+  "buildCommand": "npm run build:packages && npm run -w apps/api prisma:generate && npm run -w apps/api build && npm run build:system-card && npm run -w apps/desktop build",
   "outputDirectory": "apps/desktop/dist",
   "functions": {
     "api/index.ts": { "maxDuration": 30 }

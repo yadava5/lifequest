@@ -486,7 +486,7 @@ const PROOF = [
     glow: 'hover:shadow-glow-gold',
     glowTone: 'gold',
     title: 'It holds its colors',
-    body: 'One warm identity, held by rule: coral, honey, aqua, sky. No gradients, no purple — right down to the confetti burst.',
+    body: 'One warm identity, held by rule: coral, honey, aqua, sky. No gradient branding, no purple — right down to the confetti burst.',
   },
 ] as const;
 
@@ -982,8 +982,8 @@ export const LandingScreen = ({ onEnterDemo, onSignIn, demoBusy }: Props) => {
             <ShieldNote />
             <p className="text-sm leading-relaxed text-muted-foreground">
               <span className="font-semibold text-foreground">One honest note.</span> This public
-              demo runs on in-browser fixtures that re-seed on reload — point the same app at the
-              live API and the durable persistence above switches on.
+              demo runs against the live API, and the demo account is shared — so your progress is
+              durable, and the next visitor sees it. Reset it any time from Settings.
             </p>
           </div>
         </Reveal>

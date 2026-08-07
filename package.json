@@ -30,6 +30,7 @@
     "build:desktop": "npm run -w apps/desktop build",
     "build:api": "npm run -w apps/api build",
     "build:packages": "npm run -w packages/schemas build && npm run -w packages/client build",
+    "build:system-card": "PUPPETEER_SKIP_DOWNLOAD=1 npm --prefix booklet ci --no-audit --no-fund && npm --prefix booklet run build:embed",
     "lint:desktop": "npm run -w apps/desktop lint",
     "lint:api": "npm run -w apps/api lint",
     "test:api": "npm run -w apps/api test"

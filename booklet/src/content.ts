@@ -8,12 +8,13 @@
  *
  *   · TIER LADDER — the booklet prints the ACTIVE ladder imported by the app
  *     (lib/tiers.ts: EXPLORER · ADVENTURER · TRAILBLAZER · LUMINARY). A second,
- *     dead lib/tier.ts ("Pathfinder") has no importer; the landing card's
- *     "to Pathfinder" label reads from that stale file, so we don't reproduce it.
+ *     dead lib/tier.ts ("Pathfinder") has no importer anywhere in the client and
+ *     nothing renders it — the landing card mirrors lib/tiers.ts by hand
+ *     (LandingScreen.tsx:208-213). We print the live ladder, not the stale file.
  *
  *   · CO-TENANT POSTGRES — `?schema=lifequest` is the DOCUMENTED deploy recipe
  *     for isolating LifeQuest's tables inside a shared Supabase
- *     (apps/api/DEPLOY.md:22). The committed local default connects to a
+ *     (apps/api/DEPLOY.md:23). The committed local default connects to a
  *     database named `lifequest`; the datasource declares no schema. We print
  *     it as the co-tenancy pattern it is, not as a wired default.
  *
@@ -22,12 +23,20 @@
  *     users.service.ts:47-59), not a blanket read-only lock; gameplay stays
  *     fully playable. We describe it exactly.
  *
- *   · PERSISTENCE — printed as DOCUMENTED (README.md:11 states persisted
- *     quests/coins/redemptions + an independent live audit, 2026-07) and shown
- *     as CODE (transactional Prisma writes). Honest seam: the public URL ships
- *     in demo mode — in-browser fixtures that re-seed on reload
- *     (DEPLOY.md:3, demoClient.ts:90); durable persistence engages when the SPA
- *     is pointed at the live API (apiClient.ts:14). Documented, not re-benchmarked.
+ *   · PERSISTENCE — printed as DOCUMENTED (README.md:26 states persisted
+ *     quests/coins/redemptions) and shown as CODE (transactional Prisma writes;
+ *     and /api/health runs `SELECT 1` against Postgres on every request —
+ *     health.controller.ts:11). Honest seam runs the other way from what an
+ *     earlier draft claimed: the DEPLOYED SPA talks to the live API. The shipped
+ *     bundle inlines VITE_API_URL="/api", so apiClient.ts:14 `isDemoMode` is
+ *     false in production; the zero-backend in-browser demo client is the
+ *     FALLBACK for when that var is unset, and demoClient.ts:90's "re-seeds on
+ *     reload" describes that fallback, not the public URL.
+ *
+ * PATHS — citations are repo-root relative. The landing page lives at
+ * apps/desktop/src/features/landing/LandingScreen.tsx (NOT src/screens/); the
+ * in-app screens are apps/desktop/src/screens/*.tsx; the deploy runbook is
+ * apps/api/DEPLOY.md; the serverless entry is api/index.ts at the repo root.
  */
 
 import type { SectionKey } from "./theme";
@@ -38,6 +47,11 @@ import type { SectionKey } from "./theme";
 
 export const BRAND = {
   name: "LifeQuest",
+  // Two-tone wordmark split — the cover tints the "Quest" in coral. Kept in
+  // content (not hardcoded in templates) so a rename can never strand an old
+  // brand string in the TSX.
+  wordmarkHead: "Life",
+  wordmarkTail: "Quest",
   subtitle: "Routines are boring — missions aren’t.",
   author: "Ayush Yadav",
   year: "2026",
@@ -145,8 +159,8 @@ export const DEMO_QUESTS = [
 /** Seeded demo reward vault. source · apps/desktop/src/lib/demoClient.ts:83-88 */
 export const DEMO_REWARDS = [
   { name: "Co-working day pass", cost: 200 },
-  { name: "Coffee-chat credits", cost: 150 },
   { name: "Wellness stipend", cost: 350 },
+  { name: "Coffee-chat credits", cost: 150 },
   { name: "Skill course voucher", cost: 500 },
 ] as const;
 
@@ -173,7 +187,7 @@ export const WHY = {
       { label: "RETIRED", quote: "an encore search, minus the grind." },
       { label: "SHARED", quote: "any daily routine, tagged for either." },
     ],
-    source: "source · README.md:5 · apps/api/prisma/schema.prisma:127-131 (enum Audience)",
+    source: "source · README.md:3, 17 · apps/api/prisma/schema.prisma:127-131 (enum Audience)",
   },
 
   chore: {
@@ -199,7 +213,7 @@ export const WHY = {
     ],
     gate:
       "The task did not change. The framing did — and framing is the whole product.",
-    source: "source · LandingScreen.tsx:212-213, 133-134 (“Missions, not chores”)",
+    source: "source · LandingScreen.tsx:586-587 (“The job hunt is a grind. / Missions aren’t.”)",
   },
 
   loop: {
@@ -216,7 +230,7 @@ export const WHY = {
       { from: "doing it alone", to: "a guild at your back" },
     ],
     handoff: "So: what does that loop actually look like? Turn the page.",
-    source: "source · LandingScreen.tsx:222-224 · STEPS 154-158",
+    source: "source · LandingScreen.tsx:406-428 (const LOOP)",
   },
 } as const;
 
@@ -239,7 +253,7 @@ export const HOW = {
     ],
     orderNote:
       "Exact order in the live app: the server awards coins first (the mutation resolves), then confetti fires, then a refetch ticks your tier up — so the celebration only ever follows a real write.",
-    source: "source · LandingScreen.tsx:154-158 · QuestsScreen.tsx:39-44 · lib/celebrate.ts",
+    source: "source · LandingScreen.tsx:410, 417, 424 · screens/QuestsScreen.tsx:39-45 · lib/celebrate.ts:8",
   },
 
   mission: {
@@ -261,7 +275,7 @@ export const HOW = {
       { k: "COMMUNITY", v: "reach one person; show up once." },
       { k: "WELLNESS", v: "move, rest, reflect — no output." },
     ],
-    source: "source · LandingScreen.tsx:83-84 · schema.prisma:133-137 (enum QuestType)",
+    source: "source · LandingScreen.tsx:147-158 (the hero card) · schema.prisma:133-137 (enum QuestType)",
   },
 
   coins: {
@@ -301,7 +315,7 @@ export const HOW = {
     ],
     honest:
       "Honest framing: the guild is the community layer (meetups + shared wins), surfaced under one tab — not a separate group entity in the schema.",
-    source: "source · LandingScreen.tsx:147-148 · AppLayout.tsx:27 · schema.prisma:76-86 (Meetup)",
+    source: "source · LandingScreen.tsx:888 · AppLayout.tsx:28 · schema.prisma:76-86 (Meetup)",
   },
 } as const;
 
@@ -329,7 +343,7 @@ export const INSIDE = {
       "Prisma connects to Supabase and SELECT 1 succeeds; the rhel serverless binary is prebuilt",
       "CORS is Bearer-only — no cookies, no wildcard-with-credentials",
     ],
-    source: "source · api/index.ts:10-39 · vercel.json (functions) · apps/api/DEPLOY.md:8-15",
+    source: "source · api/index.ts:10-39 · vercel.json (functions) · apps/api/DEPLOY.md:11-16",
   },
 
   monotonic: {
@@ -361,7 +375,7 @@ export const INSIDE = {
       {
         k: "CO-TENANT",
         v: "The deploy guide isolates every table inside ?schema=lifequest on a shared Supabase — co-tenant-ready Postgres, one schema per app.",
-        cite: "apps/api/DEPLOY.md:22",
+        cite: "apps/api/DEPLOY.md:23",
         tone: "sky",
       },
       {
@@ -389,14 +403,14 @@ export const PROOF = {
     hero: "end-to-end",
     heroLabel: "persistence · documented + code-verified",
     body:
-      "The claim is on the record: real accounts, and persisted quests, coins, and redemptions, with an independent live audit in 2026-07 reporting backend persistence verified end to end. Under it sits the mechanism — every award and every spend is a Prisma transaction against Postgres, so a completed quest and a redeemed reward are durable writes, not screen state.",
+      "The claim is on the record: real accounts, and persisted quests, coins, and redemptions. Under it sits the mechanism — every award and every spend is a Prisma transaction against Postgres, so a completed quest and a redeemed reward are durable writes, not screen state. And the database is checkable from outside: `/api/health` executes `SELECT 1` against Postgres on every request before it answers ok.",
     codePath: [
       { k: "COMPLETE", v: "$transaction → progress COMPLETED + coins/lifetime ++", cite: "quests.service.ts:62-84" },
       { k: "REDEEM", v: "$transaction → coins −cost + a Redemption row", cite: "rewards.service.ts:28-49" },
     ],
     honest:
-      "Honest seam: the public URL ships in demo mode — in-browser fixtures that re-seed on reload (a deliberate, backend-free clickthrough). Durable persistence engages the moment the SPA is pointed at the live API via one env var. Printed as documented, not re-benchmarked here.",
-    source: "source · README.md:11 · DEPLOY.md:3 · demoClient.ts:90 · apiClient.ts:14",
+      "Honest seam: the deployed SPA runs against the live API (VITE_API_URL=/api); the zero-backend in-browser demo client is the fallback when that var is unset. The public demo account is shared, so progress is durable and visible to the next visitor.",
+    source: "source · README.md:26 · health.controller.ts:11 · apiClient.ts:14 · quests.service.ts:62-84",
   },
 
   mission: {
@@ -412,7 +426,7 @@ export const PROOF = {
       { k: "SAME LOOP", v: "identical to the in-app Complete flow" },
     ],
     quote: "“go on. press it. this card is real.”",
-    source: "source · LandingScreen.tsx:32-33, 44 · QuestsScreen.tsx:39-44",
+    source: "source · LandingScreen.tsx:111, 151 · screens/QuestsScreen.tsx:39-45",
   },
 
   mobile: {
@@ -422,14 +436,14 @@ export const PROOF = {
       "LifeQuest is desktop-first, but the web build is genuinely mobile. Below the large breakpoint the sidebar collapses into a sticky bottom tab bar — the five primary destinations, one thumb-reach away.",
     tabs: ["Home", "Quests", "Rewards", "Guild", "Settings"],
     note: "The bar is mobile-only (lg:hidden); on desktop the same five live in the sidebar.",
-    source: "source · apps/desktop/src/layouts/AppLayout.tsx:195-216 (nav · Primary mobile)",
+    source: "source · apps/desktop/src/layouts/AppLayout.tsx:211-232 (nav · Primary mobile)",
   },
 
   nopurple: {
     eyebrow: "§04 · THE RULE",
     headline: "Zero purple. By rule.",
     lede:
-      "LifeQuest commits to a single, warm identity — the “dawn expedition” palette of coral, honey, aqua, and sky — and holds the line: no gradients, no purple. Not a preference; a stated rule.",
+      "LifeQuest commits to a single, warm identity — the “dawn expedition” palette of coral, honey, aqua, and sky — and holds the line: no gradient branding, no purple. Not a preference; a rule the end-to-end suite enforces on computed colour.",
     swatches: [
       { name: "coral", hue: "14°", role: "the quest / the summit" },
       { name: "honey", hue: "41°", role: "coins / rewards" },
@@ -438,7 +452,7 @@ export const PROOF = {
     ],
     note:
       "Every accent hue lands in 14–201° — nothing in the violet band (~260–320°). Even the confetti is coral/honey/aqua/sky/paper.",
-    source: "source · README.md:11 (“no purple”) · index.css:37-40 · lib/celebrate.ts:6",
+    source: "source · index.css:9, 37-40 · lib/celebrate.ts:6 · e2e/lifequest.spec.ts:479-501 (0-purple)",
   },
 } as const;
 

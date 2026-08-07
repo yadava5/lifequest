@@ -37,7 +37,7 @@ export const CoverPage: React.FC = () => (
         color: COLORS.INK_MUTED,
       }}
     >
-      LifeQuest · System Card
+      {BRAND.name} · System Card
     </div>
 
     {/* Waypoint legend — top-right, seeds the color language. */}
@@ -133,7 +133,8 @@ export const CoverPage: React.FC = () => (
           color: COLORS.INK,
         }}
       >
-        Life<span style={{ color: COLORS.CORAL_DEEP }}>Quest</span>
+        {BRAND.wordmarkHead}
+        <span style={{ color: COLORS.CORAL_DEEP }}>{BRAND.wordmarkTail}</span>
       </div>
       <div
         style={{

@@ -24,9 +24,9 @@ The landing hero is a *playable* mission card: finish it and the page pays out c
 - **Quests & missions** — daily check-ins, community meetups, career fairs, and skill-building tasks.
 - **Quest Coins economy** — earn coins for completed quests and redeem them for practical rewards.
 - **Progress tracking** — persisted quests, coins, and redemptions backed by a real Postgres database.
-- **Real accounts** — email/password auth with argon2-hashed credentials and JWT sessions.
+- **Real accounts** — email/password auth with argon2-hashed credentials and server-side Bearer sessions.
 - **Desktop-first, web-ready** — one React client ships as both a native Tauri desktop app and a hosted web app.
-- **Cohesive identity** — a warm "dawn expedition" palette (coral, honey, lagoon-aqua) with intentional, gradient-free visual design.
+- **Cohesive identity** — a warm "dawn expedition" palette (coral, honey, lagoon-aqua, powder-sky): no gradient branding, no purple. Not a preference; a rule the end-to-end suite enforces on computed colour.
 
 ## Architecture
 
