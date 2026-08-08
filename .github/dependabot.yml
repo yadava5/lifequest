@@ -18,11 +18,14 @@ updates:
   # all of which resolve through the single root package-lock.json.
   - package-ecosystem: npm
     directory: /
+    # Monthly, not weekly: this cadence governs VERSION updates only. Dependabot
+    # SECURITY updates are a separate mechanism unaffected by `schedule`, so
+    # vulnerability patches still arrive immediately.
     schedule:
-      interval: weekly
+      interval: monthly
     open-pull-requests-limit: 5
     groups:
-      # One PR per weekly batch of patch/minor bumps keeps the review surface
+      # One PR per monthly batch of patch/minor bumps keeps the review surface
       # small; majors still arrive individually because they need a human.
       minor-and-patch:
         update-types:
@@ -35,7 +38,7 @@ updates:
   - package-ecosystem: npm
     directory: /booklet
     schedule:
-      interval: weekly
+      interval: monthly
     open-pull-requests-limit: 5
     groups:
       minor-and-patch:
@@ -49,5 +52,24 @@ updates:
   - package-ecosystem: github-actions
     directory: /
     schedule:
-      interval: weekly
+      interval: monthly
     open-pull-requests-limit: 5
+    groups:
+      # The github/codeql-action sub-actions (init, analyze, autobuild,
+      # upload-sarif) are one action and MUST move in lockstep. Bumping one
+      # alone hard-fails CodeQL:
+      #   ##[error]Loaded a configuration file for version '4.36.2', but running version '4.37.6'
+      # So they get a dedicated group with NO update-types filter — every type,
+      # majors included — and it is listed BEFORE the catch-all, because
+      # Dependabot assigns each dependency to the FIRST matching group in order.
+      codeql-action:
+        patterns:
+          - "github/codeql-action*"
+      # Everything else: one PR per monthly batch of minor/patch action bumps.
+      # Majors stay individual because they need a human.
+      minor-and-patch:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
