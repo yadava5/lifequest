@@ -1,4 +1,5 @@
 import type { ApiClient } from '@lifequest/client';
+import { tierProgress } from './tiers';
 
 /**
  * Zero-backend demo client.
@@ -124,13 +125,15 @@ const DEMO_USER = {
   name: 'Nova Explorer',
   email: 'demo@lifequest.app',
   audience: 'LAID_OFF' as Audience,
-  tier: 'ADVENTURER',
 };
 
 const buildUser = () => ({
   ...DEMO_USER,
   coins: state.coins,
   lifetimeCoins: state.lifetimeCoins,
+  // Derived, never hardcoded: tiers.ts is the one ladder, and reading it here
+  // keeps the demo's tier honest as lifetime coins grow through quests.
+  tier: tierProgress(state.lifetimeCoins).tier,
   quests: [...state.progress.values()],
   redemptions: state.redemptions,
   ritualsToday: state.rituals,

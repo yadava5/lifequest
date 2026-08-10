@@ -80,7 +80,13 @@ async function main() {
         email: 'demo@lifequest.app',
         passwordHash: await hash('LifeQuest123!'),
         audience: Audience.LAID_OFF,
+        // Tier progress reads `lifetimeCoins`, never the spendable balance, so the
+        // two must agree here: the demo user has earned 1000 and redeemed nothing
+        // (the seed creates no Redemption rows). Leaving lifetimeCoins at its
+        // default of 0 would render a 1000-coin account at the bottom tier.
+        // Same baseline resetProgress restores in users.service.ts.
         coins: 1000,
+        lifetimeCoins: 1000,
       },
     }),
     ...quests.map((quest) =>
