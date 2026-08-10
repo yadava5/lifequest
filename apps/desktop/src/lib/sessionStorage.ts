@@ -1,6 +1,13 @@
 import type { StateStorage } from 'zustand/middleware';
 import { createJSONStorage } from 'zustand/middleware';
 
+declare global {
+  interface Window {
+    /** Injected by the Tauri runtime; absent in a plain browser. */
+    __TAURI_INTERNALS__?: unknown;
+  }
+}
+
 const isTauri = typeof window !== 'undefined' && Boolean(window.__TAURI_INTERNALS__);
 
 const memoryStorage: StateStorage = {
@@ -9,10 +16,12 @@ const memoryStorage: StateStorage = {
   removeItem: () => {},
 };
 
-type StoreModule = typeof import('@tauri-apps/plugin-store');
+/** Instance type, not `InstanceType<typeof Store>` — `Store`'s constructor is
+ *  private, so it does not satisfy the `new (...args: any) => any` constraint. */
+type TauriStore = import('@tauri-apps/plugin-store').Store;
 
 const createTauriStorage = (): StateStorage => {
-  let storePromise: Promise<InstanceType<StoreModule['Store']>> | null = null;
+  let storePromise: Promise<TauriStore> | null = null;
 
   const getStore = async () => {
     if (!storePromise) {

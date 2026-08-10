@@ -383,7 +383,6 @@ LifeQuest is, in its own landing page's words, *"a concept with a working protot
 - **Background jobs.** `docker-compose.dev.yml` starts Redis; nothing connects to it. Neither `bullmq` nor `ioredis` is installed, and content regeneration is triggered lazily on request rather than scheduled.
 - **Row-level security or any database-enforced tenancy.** Isolation today is entirely application-scoped: every guarded handler takes `userId` from `SessionGuard`, never from the payload. That is correct as far as it goes, and it is not the same guarantee Postgres policies would give.
 - **Wiring up what is already modelled.** The `Meetup` route with no consumer, the `ResumePrompt` table with no route, and the `Redemption.status` / `QuestProgress.notes` / `User.tier` columns that nothing writes are all scaffolding for features that have not been built.
-- **Removing dead code.** `apps/desktop/src/lib/tier.ts` exports a second, different tier ladder (`Explorer / Pathfinder / Adventurer / Trailblazer`) that **nothing imports**. The live ladder is `lib/tiers.ts`. If you are reading tier thresholds out of this repo, read `tiers.ts`.
 - **`docs/architecture.md` is a plan, not a description.** It says so at the top and lists, row by row, which of its own claims are intent rather than current state (tRPC, BullMQ, Lucia, Turborepo, OpenTelemetry, Sentry — none installed). Read it as a design record.
 
 ---

@@ -332,7 +332,7 @@ export const ScrambleText = ({
       onPointerLeave={onLeave}
       aria-label={text}
     >
-      {chars.map((c, i) => (
+      {chars.map((_c, i) => (
         <span
           key={i}
           data-ch

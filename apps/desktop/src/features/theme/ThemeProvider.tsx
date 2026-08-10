@@ -1,4 +1,5 @@
-import { createContext, useCallback, useContext, useEffect, useState, PropsWithChildren } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import type { PropsWithChildren } from 'react';
 
 type Theme = 'light' | 'dark';
 

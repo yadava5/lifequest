@@ -7,10 +7,10 @@
  * than a marketing line:
  *
  *   · TIER LADDER — the booklet prints the ACTIVE ladder imported by the app
- *     (lib/tiers.ts: EXPLORER · ADVENTURER · TRAILBLAZER · LUMINARY). A second,
- *     dead lib/tier.ts ("Pathfinder") has no importer anywhere in the client and
- *     nothing renders it — the landing card mirrors lib/tiers.ts by hand
- *     (LandingScreen.tsx:208-213). We print the live ladder, not the stale file.
+ *     (lib/tiers.ts: EXPLORER · ADVENTURER · TRAILBLAZER · LUMINARY). The
+ *     landing card does not import it; it mirrors those thresholds by hand
+ *     (LandingScreen.tsx:208-213). We print the ladder the app actually
+ *     computes from, not the hand-copied duplicate.
  *
  *   · CO-TENANT POSTGRES — `?schema=lifequest` is the DOCUMENTED deploy recipe
  *     for isolating LifeQuest's tables inside a shared Supabase

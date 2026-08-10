@@ -1,4 +1,5 @@
 import type { ApiClient } from '@lifequest/client';
+import type { LogRitualPayload, UpdateUserPayload } from '@lifequest/schemas';
 import { tierProgress } from './tiers';
 
 /**
@@ -161,7 +162,7 @@ export const createDemoClient = (): ApiClient => {
     },
     users: {
       me: () => delay(buildUser()),
-      update: (payload) => {
+      update: (payload: UpdateUserPayload) => {
         if (payload.name) DEMO_USER.name = payload.name;
         if (payload.audience) DEMO_USER.audience = payload.audience;
         return delay(buildUser());
@@ -170,7 +171,7 @@ export const createDemoClient = (): ApiClient => {
         state = seed();
         return delay(buildUser());
       },
-      logRitual: (payload) => {
+      logRitual: (payload: LogRitualPayload) => {
         state.rituals = [
           { id: `ritual-${Date.now()}`, name: payload.ritual, createdAt: now() },
           ...state.rituals,

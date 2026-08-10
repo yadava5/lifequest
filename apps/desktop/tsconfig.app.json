@@ -15,7 +15,12 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": "./src",
+    /* Must stay in lockstep with vite.config.ts's `resolve.alias` ('@' -> '/src').
+       Without this, tsc cannot resolve a single '@/…' import and the typecheck
+       degenerates into ~164 phantom "cannot find module" errors. */
+    "paths": {
+      "@/*": ["./src/*"]
+    },
 
     /* Linting */
     "strict": true,
