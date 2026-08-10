@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="200" viewBox="0 0 760 200"
+     role="img" aria-label="LifeQuest. Built for people rebuilding after job loss or retirement.">
+  <title>LifeQuest</title>
+  <style>
+    .desc { font: 400 15px ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+            "Helvetica Neue", Arial, sans-serif; fill: #546c78; }
+  </style>
+
+  <!-- Day panel: warm paper, flat colour (the app's own rule: no gradient branding). -->
+  <rect x="1.5" y="1.5" width="757" height="197" rx="16" fill="#faf7f0"
+        stroke="#e5ded2" stroke-width="1.5"/>
+
+  <!-- Lockup: quest-ring tile + stroke-built wordmark from logos/lifequest.svg, scaled 2x. -->
+  <g transform="translate(196,34) scale(2)">
+    <rect x="0.75" y="0.75" width="46.5" height="46.5" rx="12" fill="#0a0a0b"
+          stroke="rgba(128,128,128,0.4)" stroke-width="1.5"/>
+    <path d="M26.98,35.11 A11.5,11.5 0 1 1 35.11,26.98" fill="none" stroke="#f7f8f8"
+          stroke-width="3.8" stroke-linecap="round"/>
+    <path d="M29.3,29.3 L35.8,35.8" stroke="#f59e0b" stroke-width="3.8" stroke-linecap="round" fill="none"/>
+    <path d="M34.1,31.1 L35.8,35.8 L31.1,34.1" fill="none" stroke="#f59e0b" stroke-width="3.8"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path fill="#2dd4bf" stroke="none" d="M12,8.6 C12.34,10.81 13.19,11.66 15.4,12 C13.19,12.34 12.34,13.19 12,15.4 C11.66,13.19 10.81,12.34 8.6,12 C10.81,11.66 11.66,10.81 12,8.6 Z"/>
+    <g fill="none" stroke="#122630" stroke-width="3.2" stroke-linecap="round"
+       stroke-linejoin="round" transform="translate(0,14)">
+      <g transform="translate(64,0)"><path d="M0,0 L0,20 L11,20"/></g>
+      <g transform="translate(78.4,0)"><path d="M1.6,7 L1.6,20"/></g>
+      <g transform="translate(85,0)"><path d="M7.6,2.4 A4.2,4.2 0 0 0 3.4,6.6 L3.4,20"/><path d="M0,8.8 L7.6,8.8"/></g>
+      <g transform="translate(96,0)"><path d="M0.28,12.1 L10.72,12.1 A5.35,6.5 0 1 0 8.57,18.82"/></g>
+      <g transform="translate(110.4,0)"><path d="M0,5.75 A5.75,5.75 0 0 1 11.5,5.75 L11.5,14.25 A5.75,5.75 0 0 1 0,14.25 Z"/></g>
+      <g transform="translate(125.3,0)"><path d="M0.15,7 L0.15,14.6 A5.35,5.4 0 0 0 10.85,14.6"/><path d="M10.85,7 L10.85,20"/></g>
+      <g transform="translate(139.7,0)"><path d="M0.28,12.1 L10.72,12.1 A5.35,6.5 0 1 0 8.57,18.82"/></g>
+      <g transform="translate(154.1,0)"><path d="M9.6,8.7 C8.4,6.9 2.0,6.4 1.85,9.75 C1.7,13.1 9.9,12.1 9.9,16.2 C9.9,19.8 2.8,20.5 1.15,18.1"/></g>
+      <g transform="translate(168.5,0)"><path d="M3.4,2.6 L3.4,16.4 A3.6,3.6 0 0 0 7,20"/><path d="M0,7 L7.6,7"/></g>
+    </g>
+    <!-- Day-mode honey accents: the app deepens its gold on paper; same move here. -->
+    <path fill="#c2820a" stroke="none" d="M80,11.9 C80.4,14.5 81.4,15.5 84,15.9 C81.4,16.3 80.4,17.3 80,19.9 C79.6,17.3 78.6,16.3 76,15.9 C78.6,15.5 79.6,14.5 80,11.9 Z"/>
+    <path d="M117.8,29.2 L122.4,34.8" stroke="#c2820a" stroke-width="3.2" stroke-linecap="round" fill="none"/>
+  </g>
+
+  <text x="380" y="168" text-anchor="middle" class="desc">Built for people rebuilding after job loss or retirement</text>
+</svg>
