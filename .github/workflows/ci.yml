@@ -60,3 +60,60 @@ jobs:
       - run: npm run build:packages
       - run: npm run lint:desktop
       - run: npm run build:desktop
+
+  # The two jobs above are not the production build. They run on Node 20, they
+  # never run `prisma generate`, and they never install or build `booklet/` —
+  # so the System Card half of the deploy is untested by them. The production
+  # build is whatever `vercel.json` says, on Vercel's Node major, which is how
+  # #13 (@prisma/client 7) passed CI and still failed the deploy on 2026-08-07.
+  #
+  # This job closes that gap by running the deploy's own two commands. It reads
+  # them OUT OF vercel.json rather than restating them, so it cannot drift from
+  # the file Vercel actually obeys: a changed install or build command is
+  # tested by definition, and a missing one fails the job instead of quietly
+  # testing nothing. The commands go through the environment, never through a
+  # `${{ }}` expression, so vercel.json contents are data here, not workflow
+  # syntax.
+  #
+  # No env vars are set: `prisma generate` was measured to exit 0 with
+  # DATABASE_URL unset (it only reads the schema), and `vite build` needs no
+  # VITE_API_URL to compile. Nothing here needs a secret, and nothing here
+  # deploys.
+  vercel-parity:
+    name: Vercel - Install & Build (Node 24)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          # Vercel builds this project on Node 24.x. Pinning the same major is
+          # the point of the job; CI's 20 above is a different runtime.
+          node-version: 24
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            booklet/package-lock.json
+
+      - name: Read Vercel's install and build commands from vercel.json
+        run: |
+          node -e '
+            const fs = require("node:fs");
+            const v = JSON.parse(fs.readFileSync("vercel.json", "utf8"));
+            for (const [key, name] of [["installCommand", "VERCEL_INSTALL"], ["buildCommand", "VERCEL_BUILD"]]) {
+              const value = v[key];
+              if (typeof value !== "string" || !value.trim() || value.includes("\n")) {
+                console.error("vercel.json has no usable " + key + " - this job would otherwise test nothing");
+                process.exit(1);
+              }
+              console.log(key + ": " + value);
+              fs.appendFileSync(process.env.GITHUB_ENV, name + "=" + value + "\n");
+            }
+          '
+
+      - name: Install (vercel.json installCommand)
+        run: sh -c "$VERCEL_INSTALL"
+
+      # The full chain: build:packages, prisma generate, the API build, the
+      # System Card booklet install + embed build, then the desktop bundle.
+      - name: Build (vercel.json buildCommand)
+        run: sh -c "$VERCEL_BUILD"
